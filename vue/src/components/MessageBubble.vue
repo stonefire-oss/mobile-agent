@@ -61,11 +61,12 @@ const formattedTime = computed(() => {
 
 <style scoped>
 .message-bubble {
-  max-width: 80%;
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 12px;
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 10px;
   word-break: break-word;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
 }
 
 .message-user {
@@ -77,10 +78,10 @@ const formattedTime = computed(() => {
 
 .message-assistant {
   background: var(--assistant-bubble);
-  color: var(--text-primary);
+  color: #333333;
   margin-right: auto;
   margin-left: 8px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #e0e0e0;
 }
 
 .message-time {
@@ -160,7 +161,7 @@ const formattedTime = computed(() => {
 }
 
 .markdown-content :deep(a) {
-  color: #07c160;
+  color: var(--primary-color);
   text-decoration: none;
 }
 </style>

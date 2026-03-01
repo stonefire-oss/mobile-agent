@@ -1,11 +1,13 @@
 :root {
-  --primary-color: #07c160;
-  --bg-color: #f0f0f0;
-  --border-color: #e5e5e5;
-  --user-bubble: #95ec69;
+  --primary-color: #6200EE;
+  --primary-dark: #3700B3;
+  --bg-color: #ECE5DD;
+  --border-color: #dcdcdc;
+  --user-bubble: #DCF8C6;
   --assistant-bubble: #ffffff;
-  --text-primary: #1a1a1a;
+  --text-primary: #000000;
   --text-secondary: #999999;
+  --input-background: #FFFFFF;
 }
 
 * {

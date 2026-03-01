@@ -12,7 +12,9 @@
       :disabled="disabled || !inputText.trim()"
       @click="handleSend"
     >
-      发送
+      <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+      </svg>
     </button>
   </div>
 </template>
@@ -49,15 +51,15 @@ function handleSend() {
 .input-bar {
   display: flex;
   gap: 8px;
-  padding: 12px;
-  background: #f5f5f5;
-  border-top: 1px solid var(--border-color);
+  padding: 10px 12px;
+  background: #f7f7f7;
+  border-top: 1px solid #d9d9d9;
 }
 
 .input-bar input {
   flex: 1;
   padding: 10px 14px;
-  border: 1px solid var(--border-color);
+  border: 1px solid #d9d9d9;
   border-radius: 20px;
   font-size: 14px;
   outline: none;
@@ -73,21 +75,26 @@ function handleSend() {
 }
 
 .send-btn {
-  padding: 10px 20px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
   background: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 20px;
+  border-radius: 50%;
   font-size: 14px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .send-btn:disabled {
-  background: #ccc;
+  background: #b0b0b0;
   cursor: not-allowed;
 }
 
 .send-btn:not(:disabled):hover {
-  background: #06ad56;
+  background: var(--primary-dark);
 }
 </style>

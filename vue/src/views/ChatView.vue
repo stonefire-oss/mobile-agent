@@ -78,20 +78,24 @@ watch(
 
 .chat-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 16px;
+  padding: 12px 16px;
   background: var(--primary-color);
   color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
 }
 
 .chat-header h1 {
-  font-size: 18px;
+  font-size: 20px;
   margin: 0;
   font-weight: 500;
 }
 
 .clear-btn {
+  position: absolute;
+  right: 16px;
   padding: 6px 12px;
   background: rgba(255, 255, 255, 0.2);
   color: white;
