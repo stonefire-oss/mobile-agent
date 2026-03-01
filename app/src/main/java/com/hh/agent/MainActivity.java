@@ -16,7 +16,7 @@ import com.hh.agent.ui.MessageAdapter;
 import java.util.List;
 
 /**
- * 主界面 Activity
+ * 主界面 Activity - 原生 Java 实现
  */
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 

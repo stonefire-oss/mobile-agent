@@ -16,4 +16,7 @@
     <!-- 背景色 -->
     <color name="background">#ECE5DD</color>
     <color name="input_background">#FFFFFF</color>
+
+    <!-- 文字颜色 -->
+    <color name="text_secondary">#999999</color>
 </resources>
