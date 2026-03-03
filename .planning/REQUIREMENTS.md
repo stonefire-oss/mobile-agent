@@ -74,5 +74,25 @@
 - Unmapped: 0 ✓
 
 ---
+
+## v1.2 Requirements (清理 agent 模块)
+
+### Code Cleanup
+
+- [ ] **CLEAN-01**: 移除未使用的源文件
+- [ ] **CLEAN-02**: 移除未使用的头文件
+- [ ] **CLEAN-03**: 清理调试代码和临时注释
+
+### Build Cleanup
+
+- [ ] **CLEAN-04**: 简化 CMakeLists.txt 配置
+- [ ] **CLEAN-05**: 移除不需要的依赖
+
+### Code Quality
+
+- [ ] **CLEAN-06**: 修复编译警告
+- [ ] **CLEAN-07**: 统一代码风格
+
+---
 *Requirements defined: 2026-03-03*
-*Last updated: 2026-03-03 after initial definition*
+*Last updated: 2026-03-03 after v1.2 requirements added*

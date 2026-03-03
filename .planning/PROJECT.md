@@ -19,11 +19,11 @@
 
 ### Active
 
-- [ ] API Key 配置 - 通过配置文件为 Agent 提供 API Key
+- [ ] v1.2: 清理 agent 模块 - 移除不需要的代码和文件
 
-## Current Milestone: v1.1 API Key 配置
+## Current Milestone: v1.2 清理 agent 模块
 
-**Goal:** 提供配置文件方式设置 LLM API Key
+**Goal:** 清理 agent 模块中不需要的代码和文件
 
 ### Out of Scope
 
