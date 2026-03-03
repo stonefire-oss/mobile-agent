@@ -88,7 +88,6 @@ if(ANDROID)
     target_include_directories(icraw PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
     # Add include paths from Conan generated data files
-    # These must be included AFTER find_package but BEFORE linking
     include(${CONAN_DEPENDENCIES_DIR}/nlohmann_json-release-armv8-data.cmake)
     include(${CONAN_DEPENDENCIES_DIR}/spdlog-release-armv8-data.cmake)
     include(${CONAN_DEPENDENCIES_DIR}/fmt-release-armv8-data.cmake)
@@ -103,24 +102,23 @@ if(ANDROID)
         ${libcurl_INCLUDE_DIRS_RELEASE}
     )
 
-    # Conan libraries - use hardcoded paths (conan2 installed at ~/.conan2)
+    # Add compile definitions from spdlog (for external fmt)
+    target_compile_definitions(icraw PUBLIC ${spdlog_COMPILE_DEFINITIONS_RELEASE})
+
+    # Set Conan paths for linking
     set(CONAN_USER_HOME "$ENV{HOME}/.conan2")
     set(libcurl_PACKAGE_FOLDER_RELEASE "${CONAN_USER_HOME}/p/b/libcuee6a833948e64/p")
     set(sqlite3_PACKAGE_FOLDER_RELEASE "${CONAN_USER_HOME}/p/b/sqlitf38c5a96b1cb9/p")
     set(fmt_PACKAGE_FOLDER_RELEASE "${CONAN_USER_HOME}/p/b/fmtf605a6099d31d/p")
 
-    # Add library directories for linking
     link_directories(
         ${libcurl_PACKAGE_FOLDER_RELEASE}/lib
         ${sqlite3_PACKAGE_FOLDER_RELEASE}/lib
         ${fmt_PACKAGE_FOLDER_RELEASE}/lib
     )
-
-    # Add compile definitions from spdlog (for external fmt)
-    target_compile_definitions(icraw PUBLIC ${spdlog_COMPILE_DEFINITIONS_RELEASE})
 endif()
 
-# Link dependencies (using SQLite3 from Conan, not unofficial-sqlite3)
+# Link dependencies - use imported targets where available
 target_link_libraries(icraw PUBLIC
     nlohmann_json::nlohmann_json
     ${libcurl_PACKAGE_FOLDER_RELEASE}/lib/libcurl.so
