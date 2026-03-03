@@ -19,10 +19,11 @@
 
 ### Active
 
-- [ ] C++ Agent 核心引擎 (Android NDK)
-- [ ] JNI 桥接层 (Java ↔ C++)
-- [ ] 本地 Agent API 接口
-- [ ] 与现有 Android UI 集成
+- [ ] App 集成 - 使用 NativeNanobotApi 替换 HttpNanobotApi
+
+## Current Milestone: v1.1 App 集成
+
+**Goal:** 将本地 agent 模块集成到 app 中，替换 HTTP 调用
 
 ### Out of Scope
 

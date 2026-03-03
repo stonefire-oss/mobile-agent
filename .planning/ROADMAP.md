@@ -9,11 +9,23 @@
 
 ---
 
+## Milestones
+
+### v1.0: C++ 移植 (已完成)
+
+- Phase 1-3: Build System, JNI Bridge, API Integration
+
+### v1.1: App 集成 (进行中)
+
+---
+
 ## Phases
 
 - [x] **Phase 1: Build System & Agent Core** - C++ NDK 编译环境和 Agent 引擎基础 (completed 2026-03-03)
 - [x] **Phase 2: JNI Bridge** - Java ↔ C++ 双向通信层 (completed 2026-03-03)
 - [x] **Phase 3: API Integration** - NativeNanobotApi 实现替换 HTTP (completed 2026-03-03)
+
+- [ ] **Phase 4: App 集成** - 将 NativeNanobotApi 集成到 MainActivity
 
 ---
 
