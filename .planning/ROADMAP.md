@@ -16,6 +16,11 @@
 
 **Requirements:** CLEAN-01 to CLEAN-07
 
+**Plans:** 1 plan
+
+**Plan list:**
+- [ ] 06-01-PLAN.md — 清理未使用的目录和文件
+
 **Success Criteria** (what must be TRUE):
   1. 移除未使用的源文件和头文件
   2. 简化 CMakeLists.txt 配置

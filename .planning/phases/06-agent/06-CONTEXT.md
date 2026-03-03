@@ -14,10 +14,9 @@
 ## Implementation Decisions
 
 ### 清理范围
-- 移除 agent 模块中未使用的源文件和头文件
-- 简化 CMakeLists.txt，移除不需要的依赖和配置
-- 清理调试代码、注释掉的代码、临时代码
-- 代码风格检查和统一
+- 简化 CMakeLists.txt，移除不需要的依赖和配置，并且分析合理性
+- 梳理从cxxplatform复制过来的源文件和头文件，对比我们修改了什么，是否必要
+- 分析agent模块的目录格式，是否合理
 
 ### Claude's Discretion
 - 具体的清理策略由 planner 决定
@@ -29,10 +28,8 @@
 ## Specific Ideas
 
 用户选择了以下清理任务：
-1. 未使用文件 - 移除未使用的源文件和头文件
-2. 构建配置 - 简化 CMakeLists.txt
-3. 调试代码 - 清理调试代码和临时注释
-4. 代码风格 - 统一代码风格
+1. 构建配置 - 简化 CMakeLists.txt
+2. 调试代码 - 清理调试代码和临时注释
 
 </specifics>
 
