@@ -107,10 +107,11 @@ if(ANDROID)
         ${libcurl_INCLUDE_DIRS_RELEASE}
     )
 
-    # Set package folder paths for libraries
-    set(libcurl_PACKAGE_FOLDER_RELEASE "/Users/caixiao/.conan2/p/b/libcuee6a833948e64/p")
-    set(sqlite3_PACKAGE_FOLDER_RELEASE "/Users/caixiao/.conan2/p/b/sqlitf38c5a96b1cb9/p")
-    set(fmt_PACKAGE_FOLDER_RELEASE "/Users/caixiao/.conan2/p/b/fmtf605a6099d31d/p")
+    # Conan libraries - use hardcoded paths (conan2 installed at ~/.conan2)
+    set(CONAN_USER_HOME "$ENV{HOME}/.conan2")
+    set(libcurl_PACKAGE_FOLDER_RELEASE "${CONAN_USER_HOME}/p/b/libcuee6a833948e64/p")
+    set(sqlite3_PACKAGE_FOLDER_RELEASE "${CONAN_USER_HOME}/p/b/sqlitf38c5a96b1cb9/p")
+    set(fmt_PACKAGE_FOLDER_RELEASE "${CONAN_USER_HOME}/p/b/fmtf605a6099d31d/p")
 
     # Add library directories for linking
     link_directories(
@@ -124,7 +125,6 @@ if(ANDROID)
 endif()
 
 # Link dependencies (using SQLite3 from Conan, not unofficial-sqlite3)
-# Use full paths for libraries
 target_link_libraries(icraw PUBLIC
     nlohmann_json::nlohmann_json
     ${libcurl_PACKAGE_FOLDER_RELEASE}/lib/libcurl.so
