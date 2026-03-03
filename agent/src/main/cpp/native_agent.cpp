@@ -1,10 +1,15 @@
 #include <jni.h>
 #include <string>
+#include <memory>
 #include "icraw/core/logger.hpp"
 #include "icraw/mobile_agent.hpp"
+#include "icraw/config.hpp"
 
 // Define ICRAW_ANDROID for Android build
 #define ICRAW_ANDROID
+
+// Global MobileAgent instance
+static std::unique_ptr<icraw::MobileAgent> g_agent;
 
 extern "C" {
 
@@ -40,10 +45,27 @@ JNIEXPORT void JNICALL Java_com_hh_agent_library_NativeAgent_nativeInitialize(
         JNIEnv* env,
         jclass /* clazz */,
         jstring configPath) {
-    const char* path = env->GetStringUTFChars(configPath, nullptr);
-    if (path) {
-        icraw::Logger::get_instance().logger()->info("Initializing NativeAgent with config: {}", path);
-        env->ReleaseStringUTFChars(configPath, path);
+    // Get workspace path from Java
+    const char* workspace_path = nullptr;
+    if (configPath) {
+        workspace_path = env->GetStringUTFChars(configPath, nullptr);
+    }
+
+    // Create MobileAgent with default config
+    try {
+        auto config = icraw::IcrawConfig::load_default();
+        g_agent = icraw::MobileAgent::create_with_config(config);
+
+        icraw::Logger::get_instance().logger()->info(
+            "NativeAgent initialized successfully with workspace: {}",
+            workspace_path ? workspace_path : "(default)");
+    } catch (const std::exception& e) {
+        icraw::Logger::get_instance().logger()->error(
+            "Failed to initialize NativeAgent: {}", e.what());
+    }
+
+    if (workspace_path) {
+        env->ReleaseStringUTFChars(configPath, workspace_path);
     }
 }
 
@@ -57,15 +79,28 @@ JNIEXPORT jstring JNICALL Java_com_hh_agent_library_NativeAgent_nativeSendMessag
     const char* msg = env->GetStringUTFChars(message, nullptr);
     std::string response;
 
-    if (msg) {
-        icraw::Logger::get_instance().logger()->debug("Received message: {}", msg);
-
-        // Echo back for now - full agent implementation will come later
-        response = std::string("Echo: ") + msg;
-
-        env->ReleaseStringUTFChars(message, msg);
+    if (!msg) {
+        return env->NewStringUTF("");
     }
 
+    icraw::Logger::get_instance().logger()->debug("Received message: {}", msg);
+
+    // Check if agent is initialized
+    if (!g_agent) {
+        icraw::Logger::get_instance().logger()->warn("Agent not initialized, returning error");
+        response = "Error: Agent not initialized. Call nativeInitialize first.";
+    } else {
+        try {
+            // Call MobileAgent::chat()
+            response = g_agent->chat(msg);
+            icraw::Logger::get_instance().logger()->debug("Agent response: {}", response);
+        } catch (const std::exception& e) {
+            icraw::Logger::get_instance().logger()->error("Agent chat failed: {}", e.what());
+            response = std::string("Error: ") + e.what();
+        }
+    }
+
+    env->ReleaseStringUTFChars(message, msg);
     return env->NewStringUTF(response.c_str());
 }
 
@@ -76,6 +111,13 @@ JNIEXPORT void JNICALL Java_com_hh_agent_library_NativeAgent_nativeShutdown(
         JNIEnv* env,
         jclass /* clazz */) {
     icraw::Logger::get_instance().logger()->info("Shutting down NativeAgent");
+
+    // Clean up MobileAgent instance
+    if (g_agent) {
+        g_agent->stop();
+        g_agent.reset();
+        icraw::Logger::get_instance().logger()->info("MobileAgent destroyed");
+    }
 }
 
 } // extern "C"
