@@ -15,7 +15,7 @@
 
 - Phase 1-3: Build System, JNI Bridge, API Integration
 
-### v1.1: App 集成 (进行中)
+### v1.1: App 集成 (已完成)
 
 ---
 
@@ -25,7 +25,7 @@
 - [x] **Phase 2: JNI Bridge** - Java ↔ C++ 双向通信层 (completed 2026-03-03)
 - [x] **Phase 3: API Integration** - NativeNanobotApi 实现替换 HTTP (completed 2026-03-03)
 
-- [ ] **Phase 4: App 集成** - 将 NativeNanobotApi 集成到 MainActivity
+- [x] **Phase 4: App 集成** - 将 NativeNanobotApi 集成到 MainActivity (completed 2026-03-03)
 
 ---
 
