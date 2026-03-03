@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hh.agent.contract.MainContract;
 import com.hh.agent.lib.model.Message;
 import com.hh.agent.presenter.MainPresenter;
+import com.hh.agent.presenter.NativeNanobotApiAdapter;
 import com.hh.agent.ui.MessageAdapter;
 
 import java.util.List;
@@ -34,6 +35,9 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         // 初始化视图
         initViews();
+
+        // 加载 native agent 配置
+        NativeNanobotApiAdapter.loadConfigFromAssets(this);
 
         // 初始化 Presenter，使用 Native C++ Agent
         presenter = new MainPresenter(MainPresenter.ApiType.NATIVE, "native:default");

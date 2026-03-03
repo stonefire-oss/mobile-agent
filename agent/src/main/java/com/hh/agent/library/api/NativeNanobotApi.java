@@ -40,7 +40,10 @@ public class NativeNanobotApi implements NanobotApi {
     public synchronized void initialize(String configPath) {
         if (!initialized) {
             try {
-                NativeAgent.nativeInitialize(configPath);
+                int result = NativeAgent.nativeInitialize(configPath);
+                if (result != 0) {
+                    throw new RuntimeException("Native agent initialization failed with code: " + result);
+                }
                 initialized = true;
             } catch (Exception e) {
                 throw new RuntimeException("Failed to initialize native agent: " + e.getMessage(), e);

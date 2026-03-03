@@ -25,7 +25,7 @@
         <!-- 原生 Java 界面 -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <!-- Vue WebView 界面 -->
         <activity

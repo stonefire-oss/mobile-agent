@@ -16,7 +16,8 @@
 ### 配置方式
 - 使用 JSON 配置文件
 - 配置路径通过 Java 层传入 C++ Agent
-- 默认配置文件路径: `/data/data/com.hh.agent/files/config.json`
+- 默认配置文件路径: JSON打包在app的asset里面，预置在apk中
+- app初始化的时候，从asset中读取，传入agent中做初始化
 
 ### 配置内容
 - apiKey: LLM API Key

@@ -20,9 +20,10 @@ public class NativeAgent {
     /**
      * Initialize the native agent
      *
-     * @param configPath Path to configuration file
+     * @param configJson JSON configuration string
+     * @return 0 on success, -1 on failure
      */
-    public static native void nativeInitialize(String configPath);
+    public static native int nativeInitialize(String configJson);
 
     /**
      * Send a message to the agent and get a response

@@ -76,7 +76,6 @@ public class MainPresenter implements MainContract.Presenter {
             case NATIVE:
                 try {
                     NativeNanobotApiAdapter adapter = new NativeNanobotApiAdapter();
-                    // 初始化 Native Agent（使用空配置路径）
                     adapter.initialize("");
                     return adapter;
                 } catch (Exception e) {

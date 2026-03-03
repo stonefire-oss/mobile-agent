@@ -4,6 +4,6 @@
     "baseUrl": "https://api.minimaxi.com/anthropic"
   },
   "agent": {
-    "model": "MiniMax-Text-01"
+    "model": "MiniMax-M2.5-highspeed"
   }
 }

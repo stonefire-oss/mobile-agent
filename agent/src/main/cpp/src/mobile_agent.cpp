@@ -13,47 +13,67 @@ namespace icraw {
 // MobileAgent implementation
 MobileAgent::MobileAgent(const IcrawConfig& config)
     : config_(config) {
-    
+
     // Initialize logger if configured
     if (config_.logging.enabled && !config_.logging.directory.empty()) {
         Logger::get_instance().init(config_.logging.directory, config_.logging.level);
     }
-    
+
+    ICRAW_LOG_DEBUG("MobileAgent: Creating workspace at {}", config_.workspace_path.string());
+
     // Ensure workspace exists
-    std::filesystem::create_directories(config_.workspace_path);
-    
+    try {
+        std::filesystem::create_directories(config_.workspace_path);
+    } catch (const std::exception& e) {
+        ICRAW_LOG_ERROR("Failed to create workspace directory: {}", e.what());
+        throw;
+    }
+
     // Initialize components
+    ICRAW_LOG_DEBUG("MobileAgent: Creating MemoryManager");
     memory_manager_ = std::make_shared<MemoryManager>(config_.workspace_path);
+
+    ICRAW_LOG_DEBUG("MobileAgent: Creating SkillLoader");
     skill_loader_ = std::make_shared<SkillLoader>();
+
+    ICRAW_LOG_DEBUG("MobileAgent: Creating ToolRegistry");
     tool_registry_ = std::make_shared<ToolRegistry>();
     tool_registry_->set_base_path(config_.workspace_path.string());
     tool_registry_->set_memory_manager(memory_manager_.get());
     tool_registry_->register_builtin_tools();
-    
+
+    ICRAW_LOG_DEBUG("MobileAgent: Creating PromptBuilder");
     prompt_builder_ = std::make_shared<PromptBuilder>(
         memory_manager_, skill_loader_, tool_registry_);
-    
+
     // Create OpenAI-compatible provider with CurlHttpClient
+    ICRAW_LOG_DEBUG("MobileAgent: Creating OpenAICompatibleProvider (model: {})", config_.agent.model);
     auto provider = std::make_shared<OpenAICompatibleProvider>(
         config_.provider.api_key,
         config_.provider.base_url,
         config_.agent.model);
-    
+
     // Create and set HTTP client
+    ICRAW_LOG_DEBUG("MobileAgent: Creating CurlHttpClient");
     auto http_client = std::make_unique<CurlHttpClient>();
     provider->set_http_client(std::move(http_client));
-    
+
     llm_provider_ = provider;
-    
+
+    ICRAW_LOG_DEBUG("MobileAgent: Creating AgentLoop");
     agent_loop_ = std::make_unique<AgentLoop>(
-        memory_manager_, skill_loader_, tool_registry_, 
+        memory_manager_, skill_loader_, tool_registry_,
         llm_provider_, config_.agent);
-    
+
     // Load conversation history from database
+    ICRAW_LOG_DEBUG("MobileAgent: Loading history from memory");
     load_history_from_memory();
-    
+
     // Build system prompt (passing skills config from user config)
+    ICRAW_LOG_DEBUG("MobileAgent: Building system prompt");
     system_prompt_ = prompt_builder_->build_full(config_.skills);
+
+    ICRAW_LOG_DEBUG("MobileAgent: Initialization complete");
 }
 
 void MobileAgent::load_history_from_memory() {

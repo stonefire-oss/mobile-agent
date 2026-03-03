@@ -1,10 +1,12 @@
 package com.hh.agent.presenter;
 
+import android.content.Context;
 import com.hh.agent.lib.api.NanobotApi;
 import com.hh.agent.lib.model.Message;
 import com.hh.agent.lib.model.Session;
 import com.hh.agent.library.api.NativeNanobotApi;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +17,25 @@ import java.util.List;
 public class NativeNanobotApiAdapter implements NanobotApi {
 
     private final NativeNanobotApi nativeApi;
+    private static String configJson = "";
 
     public NativeNanobotApiAdapter() {
         this.nativeApi = NativeNanobotApi.getInstance();
+    }
+
+    /**
+     * 从 assets 读取配置文件
+     */
+    public static void loadConfigFromAssets(Context context) {
+        try {
+            InputStream is = context.getAssets().open("config.json");
+            byte[] buffer = new byte[is.available()];
+            is.read(buffer);
+            configJson = new String(buffer, "UTF-8");
+            is.close();
+        } catch (Exception e) {
+            configJson = "";
+        }
     }
 
     /**
@@ -27,8 +45,8 @@ public class NativeNanobotApiAdapter implements NanobotApi {
         try {
             // 先尝试加载 native 库
             System.loadLibrary("icraw");
-            // 初始化 Native Agent
-            nativeApi.initialize(configPath);
+            // 初始化 Native Agent，传入配置 JSON
+            nativeApi.initialize(configJson);
         } catch (UnsatisfiedLinkError e) {
             throw new RuntimeException("Failed to load native library: " + e.getMessage(), e);
         }
