@@ -27,12 +27,8 @@ if(ANDROID)
     message(STATUS "Conan dependencies dir: ${CONAN_DEPENDENCIES_DIR}")
 endif()
 
-# Compiler warnings
-if(MSVC)
-    add_compile_options(/W4)
-else()
-    add_compile_options(-Wall -Wextra -Wpedantic)
-endif()
+# Compiler warnings (Android NDK uses Clang)
+add_compile_options(-Wall -Wextra -Wpedantic)
 
 # Conan dependencies via find_package (from agent/build/armv8/Release/generators)
 find_package(nlohmann_json CONFIG REQUIRED)
