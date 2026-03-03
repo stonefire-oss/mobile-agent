@@ -1,7 +1,7 @@
 {
   "provider": {
     "apiKey": "YOUR_API_KEY_HERE",
-    "baseUrl": "https://api.minimaxi.com/anthropic"
+    "baseUrl": "https://api.minimaxi.com/v1"
   },
   "agent": {
     "model": "MiniMax-M2.5-highspeed"

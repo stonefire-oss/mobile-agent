@@ -83,8 +83,13 @@ bool CurlHttpClient::perform_request(const std::string& url,
     
     // Follow redirects
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    
+
+    // Enable SSL/TLS (disable for Android development)
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+
     // Perform the request
+    ICRAW_LOG_DEBUG("[HTTP] Request URL: {}", url);
     CURLcode res = curl_easy_perform(curl);
     
     // Free headers list
@@ -95,6 +100,7 @@ bool CurlHttpClient::perform_request(const std::string& url,
     if (res != CURLE_OK) {
         error.code = -1;
         error.message = curl_easy_strerror(res);
+        ICRAW_LOG_ERROR("[HTTP] Curl error: {} (code: {})", error.message, static_cast<int>(res));
         return false;
     }
     
@@ -183,7 +189,11 @@ bool CurlHttpClient::perform_request_stream(const std::string& url,
     
     // Follow redirects
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-    
+
+    // Enable SSL/TLS (disable for Android development)
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYPEER, 0L);
+    curl_easy_setopt(curl, CURLOPT_SSL_VERIFYHOST, 0L);
+
     // Disable buffering for real-time streaming
     curl_easy_setopt(curl, CURLOPT_BUFFERSIZE, 1L);
     

@@ -39,6 +39,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(ZLIB REQUIRED)
 find_package(SQLite3 CONFIG REQUIRED)
 find_package(CURL CONFIG REQUIRED)
+find_package(OpenSSL CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 
