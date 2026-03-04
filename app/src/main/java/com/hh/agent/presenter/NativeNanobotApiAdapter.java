@@ -61,7 +61,15 @@ public class NativeNanobotApiAdapter implements NanobotApi {
                 WorkspaceManager workspaceManager = new WorkspaceManager(context);
                 String workspacePath = workspaceManager.initialize();
                 // 将 workspace 路径添加到配置中
-                configJson = configJson.replace("\"workspace_path\"", "\"workspace_path\":\"" + workspacePath + "\"");
+                // C++ expects "workspacePath" field
+                if (!workspacePath.isEmpty()) {
+                    // 尝试找到最后一个 } 来添加 workspacePath
+                    int lastBrace = configJson.lastIndexOf('}');
+                    if (lastBrace > 0) {
+                        String newField = ",\"workspacePath\":\"" + workspacePath + "\"";
+                        configJson = configJson.substring(0, lastBrace) + newField + configJson.substring(lastBrace);
+                    }
+                }
             }
 
             // 初始化 Native Agent，传入配置 JSON
