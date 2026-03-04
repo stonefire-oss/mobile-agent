@@ -21,7 +21,7 @@ progress:
 
 **Core Value:** 在 Android 设备上运行本地 AI Agent，提供实时对话和设备控制能力，无需依赖远程服务器。
 
-**Current Focus:** Phase 6 - 清理 agent 模块
+**Current Focus:** Phase 7 - 预置 workspace
 
 ---
 
@@ -29,10 +29,10 @@ progress:
 
 | Field | Value |
 |-------|-------|
-| Phase | Not started (defining requirements) |
-| Plan | — |
-| Status | Defining requirements |
-| Progress | 0% |
+| Phase | 07-workspace |
+| Plan | 01 |
+| Status | Completed |
+| Progress | 100% |
 
 ---
 
@@ -40,9 +40,9 @@ progress:
 
 | Metric | Value |
 |--------|-------|
-| Total Phases | 3 |
+| Total Phases | 7 |
 | Total Requirements | 12 |
-| Completed Phases | 0 |
+| Completed Phases | 7 |
 | Completed Requirements | 6 (SYS-01, SYS-02, SYS-03, AGEN-01, AGEN-02, AGEN-03) |
 
 ---
@@ -81,6 +81,7 @@ progress:
 - 2026-03-03: Phase 1 Plan 1 completed - Conan dependencies installed for arm64-v8a
 - 2026-03-03: Phase 1 Plan 01a completed - Gradle NDK/CMake configured, cxxplatform sources copied
 - 2026-03-03: Phase 1 Plan 01b completed - Android log sink, JNI bindings, Gradle build verified
+- 2026-03-04: Phase 7 Plan 01 completed - Preset workspace with Java initialization
 
 ### Blockers
 
