@@ -17,7 +17,7 @@
 
 **Requirements:** WORKSPACE-01 to WORKSPACE-03
 
-**Plans:** 1 plan
+**Plans:** 1/1 plans complete
 
 **Plan list:**
 - [ ] 07-01-PLAN.md — 预置 workspace 内容
@@ -33,7 +33,7 @@
 | 3. API Integration | v1.0 | 1/1 | Complete |
 | 5. API Key 配置 | v1.1 | 1/1 | Complete |
 | 6. 清理 agent 模块 | v1.2 | 1/1 | Complete |
-| 7. 预置 workspace | v1.3 | 0/1 | Not started |
+| 7. 预置 workspace | v1.3 | Complete    | 2026-03-04 |
 
 ---
 
