@@ -4,6 +4,7 @@ import android.content.Context;
 import com.hh.agent.lib.api.NanobotApi;
 import com.hh.agent.lib.model.Message;
 import com.hh.agent.lib.model.Session;
+import com.hh.agent.library.WorkspaceManager;
 import com.hh.agent.library.api.NativeNanobotApi;
 
 import java.io.InputStream;
@@ -38,6 +39,15 @@ public class NativeNanobotApiAdapter implements NanobotApi {
         }
     }
 
+    private Context context;
+
+    /**
+     * 设置 Context（需要在 initialize 之前调用）
+     */
+    public void setContext(Context context) {
+        this.context = context.getApplicationContext();
+    }
+
     /**
      * 初始化 Native Agent
      */
@@ -45,6 +55,15 @@ public class NativeNanobotApiAdapter implements NanobotApi {
         try {
             // 先尝试加载 native 库
             System.loadLibrary("icraw");
+
+            // 初始化 workspace
+            if (context != null) {
+                WorkspaceManager workspaceManager = new WorkspaceManager(context);
+                String workspacePath = workspaceManager.initialize();
+                // 将 workspace 路径添加到配置中
+                configJson = configJson.replace("\"workspace_path\"", "\"workspace_path\":\"" + workspacePath + "\"");
+            }
+
             // 初始化 Native Agent，传入配置 JSON
             nativeApi.initialize(configJson);
         } catch (UnsatisfiedLinkError e) {
