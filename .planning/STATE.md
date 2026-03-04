@@ -29,9 +29,9 @@ progress:
 
 | Field | Value |
 |-------|-------|
-| Phase | Not started (defining requirements) |
+| Phase | 01-jni-channel |
 | Plan | — |
-| Status | Defining requirements |
+| Status | Context gathered |
 
 ---
 
@@ -61,6 +61,7 @@ progress:
 
 - 2026-03-04: v1.3 shipped - 预置 workspace
 - 2026-03-04: Started v1.4 - Android Tools 通道
+- 2026-03-04: Phase 1 context gathered - JNI 回调通道
 
 ### Blockers
 
