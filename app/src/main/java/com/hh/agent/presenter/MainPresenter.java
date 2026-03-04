@@ -1,5 +1,6 @@
 package com.hh.agent.presenter;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import com.hh.agent.contract.MainContract;
@@ -37,7 +38,7 @@ public class MainPresenter implements MainContract.Presenter {
      * 默认构造函数，使用 Mock API
      */
     public MainPresenter() {
-        this(ApiType.HTTP, "http:default");
+        this(null, ApiType.HTTP, "http:default");
     }
 
     /**
@@ -47,7 +48,18 @@ public class MainPresenter implements MainContract.Presenter {
      * @param sessionKey 会话 key
      */
     public MainPresenter(ApiType apiType, String sessionKey) {
-        this.nanobotApi = createApi(apiType);
+        this(null, apiType, sessionKey);
+    }
+
+    /**
+     * 指定 API 类型和 Context
+     *
+     * @param context   Android Context (用于 workspace 初始化)
+     * @param apiType   API 类型 (MOCK 或 HTTP)
+     * @param sessionKey 会话 key
+     */
+    public MainPresenter(Context context, ApiType apiType, String sessionKey) {
+        this.nanobotApi = createApi(context, apiType);
         this.executor = Executors.newSingleThreadExecutor();
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.sessionKey = sessionKey;
@@ -69,13 +81,16 @@ public class MainPresenter implements MainContract.Presenter {
     /**
      * 创建 API 实例
      */
-    private NanobotApi createApi(ApiType apiType) {
+    private NanobotApi createApi(Context context, ApiType apiType) {
         switch (apiType) {
             case HTTP:
                 return new HttpNanobotApi();
             case NATIVE:
                 try {
                     NativeNanobotApiAdapter adapter = new NativeNanobotApiAdapter();
+                    if (context != null) {
+                        adapter.setContext(context);
+                    }
                     adapter.initialize("");
                     return adapter;
                 } catch (Exception e) {

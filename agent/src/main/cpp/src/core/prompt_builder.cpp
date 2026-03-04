@@ -1,6 +1,7 @@
 #include "icraw/core/prompt_builder.hpp"
 #include "icraw/core/memory_manager.hpp"
 #include "icraw/core/skill_loader.hpp"
+#include "icraw/core/logger.hpp"
 #include "icraw/tools/tool_registry.hpp"
 #include <sstream>
 
@@ -22,7 +23,7 @@ std::string PromptBuilder::build_full() const {
     if (!soul.empty()) {
         ss << "# Identity\n\n" << soul << "\n\n";
     }
-    
+
     // 2. USER - User information
     std::string user = memory_manager_->read_identity_file("USER.md");
     if (!user.empty()) {
@@ -52,6 +53,7 @@ std::string PromptBuilder::build_full() const {
             if (!always_skills.empty()) {
                 ss << "# Active Skills\n\n";
                 ss << skill_loader_->get_skill_context(always_skills) << "\n\n";
+                ICRAW_LOG_INFO("PromptBuilder: Added {} always-skills to prompt", always_skills.size());
             }
 
             // Level 2: Skills summary (metadata only, on-demand loading)
@@ -88,7 +90,7 @@ std::string PromptBuilder::build_full(const SkillsConfig& skills_config) const {
     if (!soul.empty()) {
         ss << "# Identity\n\n" << soul << "\n\n";
     }
-    
+
     // 2. USER - User information
     std::string user = memory_manager_->read_identity_file("USER.md");
     if (!user.empty()) {
@@ -117,6 +119,7 @@ std::string PromptBuilder::build_full(const SkillsConfig& skills_config) const {
             if (!always_skills.empty()) {
                 ss << "# Active Skills\n\n";
                 ss << skill_loader_->get_skill_context(always_skills) << "\n\n";
+                ICRAW_LOG_INFO("PromptBuilder[ephemeral]: Added {} always-skills to prompt", always_skills.size());
             }
 
             // Level 2: Skills summary (metadata only, on-demand loading)
