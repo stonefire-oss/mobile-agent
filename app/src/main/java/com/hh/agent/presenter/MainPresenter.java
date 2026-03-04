@@ -23,7 +23,8 @@ public class MainPresenter implements MainContract.Presenter {
      */
     public enum ApiType {
         MOCK,   // Mock 实现
-        HTTP    // HTTP 调用 nanobot
+        HTTP,   // HTTP 调用 nanobot
+        NATIVE  // Native C++ Agent
     }
 
     private MainContract.View view;
@@ -72,6 +73,16 @@ public class MainPresenter implements MainContract.Presenter {
         switch (apiType) {
             case HTTP:
                 return new HttpNanobotApi();
+            case NATIVE:
+                try {
+                    NativeNanobotApiAdapter adapter = new NativeNanobotApiAdapter();
+                    adapter.initialize("");
+                    return adapter;
+                } catch (Exception e) {
+                    // 如果初始化失败，回退到 Mock API
+                    android.util.Log.e("MainPresenter", "Failed to initialize Native API: " + e.getMessage(), e);
+                    return new MockNanobotApi();
+                }
             case MOCK:
             default:
                 return new MockNanobotApi();
