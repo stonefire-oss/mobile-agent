@@ -24,9 +24,16 @@
 
 ### Active
 
-- [ ] v1.4: 待定义
+- [ ] v1.4: Android Tools 通道
 
-## Current Milestone: v1.4 待定义
+## Current Milestone: v1.4 Android Tools 通道
+
+**Goal:** 提供 C++ Agent 调用 Android 平台功能的通道
+
+**Target features:**
+- C++ 调用 Java 的统一 JNI 回调接口
+- 可配置的 Android Tools 注册机制
+- show_toast Tool 实现
 
 ## Context
 
@@ -58,4 +65,4 @@
 | workspace 预置 | 让 Agent 有初始身份和能力 | ✓ v1.3 shipped |
 
 ---
-*Last updated: 2026-03-04 complete v1.3*
+*Last updated: 2026-03-04 start v1.4*
