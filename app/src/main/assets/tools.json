@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "tools": [
+    {
+      "name": "show_toast",
+      "description": "显示 Toast 消息到屏幕",
+      "params": {
+        "message": {
+          "type": "string",
+          "required": true,
+          "description": "要显示的消息内容"
+        },
+        "duration": {
+          "type": "integer",
+          "required": false,
+          "default": 2000,
+          "description": "显示时长(毫秒)"
+        }
+      }
+    }
+  ]
+}

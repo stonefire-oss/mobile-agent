@@ -6,32 +6,32 @@
 
 ---
 
-## Phase 1: JNI 回调通道
+## Phase 1: JNI 回调通道 ✓
 
 **Goal:** C++ Agent 提供调用 Android 的统一接口
 
 **Requirements:**
-- TOOL-01
+- TOOL-01 ✓
 
 **Success criteria:**
-1. C++ 代码中可调用 `call_android_tool(tool_name, args)` 方法
-2. 同步返回 JSON 格式的执行结果
-3. JNI 层正确传递参数到 Java
+1. C++ 代码中可调用 `call_android_tool(tool_name, args)` 方法 ✓
+2. 同步返回 JSON 格式的执行结果 ✓
+3. JNI 层正确传递参数到 Java ✓
 
 ---
 
-## Phase 2: Java Tools 注册机制
+## Phase 2: Java Tools 注册机制 ✓
 
 **Goal:** Java 层接收并执行 Android Tools
 
 **Requirements:**
-- TOOL-02
-- TOOL-03
+- TOOL-02 ✓
+- TOOL-03 ✓
 
 **Success criteria:**
-1. Java 层提供 ToolExecutor 接口
-2. 从 tools.json 加载可用工具列表
-3. 根据 tool_name 路由到对应执行器
+1. Java 层提供 ToolExecutor 接口 ✓
+2. 从 tools.json 加载可用工具列表 ✓
+3. 根据 tool_name 路由到对应执行器 ✓
 
 ---
 
@@ -53,9 +53,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOOL-01: C++ call_android_tool 接口 | Phase 1 | Pending |
-| TOOL-02: Java Tools 注册机制 | Phase 2 | Pending |
-| TOOL-03: tools.json 配置 | Phase 2 | Pending |
+| TOOL-01: C++ call_android_tool 接口 | Phase 1 | ✓ Complete |
+| TOOL-02: Java Tools 注册机制 | Phase 2 | ✓ Complete |
+| TOOL-03: tools.json 配置 | Phase 2 | ✓ Complete |
 | TOOL-04: show_toast 实现 | Phase 3 | Pending |
 
 **Coverage:**

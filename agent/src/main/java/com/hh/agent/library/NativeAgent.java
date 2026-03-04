@@ -6,6 +6,9 @@ package com.hh.agent.library;
  */
 public class NativeAgent {
 
+    // Callback instance registered by Java layer
+    private static AndroidToolCallback sCallback;
+
     static {
         System.loadLibrary("icraw");
     }
@@ -34,7 +37,34 @@ public class NativeAgent {
     public static native String nativeSendMessage(String message);
 
     /**
+     * Call an Android tool
+     *
+     * @param toolName The name of the tool to call
+     * @param argsJson JSON string containing tool arguments
+     * @return JSON string with result
+     */
+    public static native String nativeCallAndroidTool(String toolName, String argsJson);
+
+    /**
      * Shutdown the native agent
      */
     public static native void nativeShutdown();
+
+    /**
+     * Register an Android tool callback
+     *
+     * @param callback The callback implementation
+     */
+    public static void registerAndroidToolCallback(AndroidToolCallback callback) {
+        sCallback = callback;
+    }
+
+    /**
+     * Get the registered Android tool callback
+     *
+     * @return The callback or null if not registered
+     */
+    public static AndroidToolCallback getAndroidToolCallback() {
+        return sCallback;
+    }
 }

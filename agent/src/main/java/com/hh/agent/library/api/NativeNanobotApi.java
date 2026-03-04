@@ -1,5 +1,7 @@
 package com.hh.agent.library.api;
 
+import android.content.Context;
+import com.hh.agent.library.AndroidToolManager;
 import com.hh.agent.library.NativeAgent;
 import com.hh.agent.library.model.Message;
 import com.hh.agent.library.model.Session;
@@ -18,6 +20,7 @@ public class NativeNanobotApi implements NanobotApi {
     private static NativeNanobotApi instance;
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
     private boolean initialized = false;
+    private AndroidToolManager toolManager;
 
     private NativeNanobotApi() {
     }
@@ -35,9 +38,10 @@ public class NativeNanobotApi implements NanobotApi {
     /**
      * 初始化 Native Agent
      *
+     * @param context Android Context (required for Android tools)
      * @param configPath 配置文件路径
      */
-    public synchronized void initialize(String configPath) {
+    public synchronized void initialize(Context context, String configPath) {
         if (!initialized) {
             try {
                 int result = NativeAgent.nativeInitialize(configPath);
@@ -48,6 +52,12 @@ public class NativeNanobotApi implements NanobotApi {
             } catch (Exception e) {
                 throw new RuntimeException("Failed to initialize native agent: " + e.getMessage(), e);
             }
+        }
+
+        // Initialize Android Tool Manager
+        if (toolManager == null && context != null) {
+            toolManager = new AndroidToolManager(context);
+            toolManager.initialize();
         }
     }
 
