@@ -19,9 +19,9 @@
 ## Implementation Decisions
 
 ### 注册方式
-- **注解扫描注册**: 使用 @AndroidTool 注解标记工具类，框架自动扫描注册
-- 原因: 与现有手动注册相比，更易扩展，新工具只需添加注解即可
-- 扫描范围: `com.hh.agent.library.tools` 包
+- **硬编码注册**: 在 AndroidToolManager.initialize() 中手动调用 tools.put() 注册
+- 原因: v1.5 保持简单，不引入反射和注解处理
+- 后续可优化为注解扫描（见 Deferred Ideas）
 
 ### Schema 验证
 - **验证 function 名称**: 检查 function 是否在注册表中存在
@@ -44,22 +44,20 @@
 
 **现有代码可复用:**
 - `ToolExecutor` 接口 - 保持不变
-- `AndroidToolManager` - 扩展支持注解扫描
+- `AndroidToolManager` - 扩展支持更多工具注册
 - `AndroidToolCallback` - JNI 回调接口保持不变
 
 **新增组件:**
-1. `@AndroidTool` 注解 - 标记工具类
-2. `ToolRegistry` 类 - 工具注册表核心（可从 AndroidToolManager 提取）
-3. 工具类移到 `com.hh.agent.library.tools` 包
+1. 扩展 AndroidToolManager - 添加更多工具注册
+2. 新增工具类 (display_notification, read_clipboard, take_screenshot)
 
-**工具注册示例:**
+**硬编码注册示例:**
 ```java
-@AndroidTool(name = "show_toast")
-public class ShowToastTool implements ToolExecutor {
-    @Override
-    public String execute(JSONObject args) {
-        // implementation
-    }
+public void initialize() {
+    tools.put("show_toast", new ShowToastTool(activity));
+    tools.put("display_notification", new DisplayNotificationTool(activity));
+    tools.put("read_clipboard", new ReadClipboardTool(activity));
+    tools.put("take_screenshot", new TakeScreenshotTool(activity));
 }
 ```
 
@@ -80,7 +78,7 @@ public class ShowToastTool implements ToolExecutor {
 - 错误处理: 返回包含 error 字段的 JSON
 
 ### Integration Points
-- AndroidToolManager.initialize() - 添加注解扫描逻辑
+- AndroidToolManager.initialize() - 硬编码注册所有工具
 - tools.json - 提供工具清单（通过 JNI 传递）
 - NativeAgent - 通过 AndroidToolCallback 接收调用
 
@@ -89,6 +87,7 @@ public class ShowToastTool implements ToolExecutor {
 <deferred>
 ## Deferred Ideas
 
+- **注解扫描注册**: 使用 @AndroidTool 注解 + 反射自动注册工具（后续优化方向）
 - 动态重载/热更新 - 后续迭代
 - 工具版本管理 - 后续迭代
 - 权限检查框架 - 后续迭代
