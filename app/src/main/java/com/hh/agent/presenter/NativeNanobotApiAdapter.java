@@ -45,7 +45,7 @@ public class NativeNanobotApiAdapter implements NanobotApi {
      * 设置 Context（需要在 initialize 之前调用）
      */
     public void setContext(Context context) {
-        this.context = context.getApplicationContext();
+        this.context = context;
     }
 
     /**
