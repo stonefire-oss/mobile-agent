@@ -63,6 +63,16 @@
 - Mapped to phases: 4
 - Unmapped: 0 ✓
 
+### Phase 4: 修复config.json安全问题
+
+**Goal:** [To be planned]
+**Requirements**: TBD
+**Depends on:** Phase 3
+**Plans:** 0 plans
+
+Plans:
+- [ ] TBD (run /gsd:plan-phase 4 to break down)
+
 ---
 
 *Roadmap created: 2026-03-04*

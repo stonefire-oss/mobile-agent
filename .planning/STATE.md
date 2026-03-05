@@ -80,6 +80,13 @@ None
 | 1 | JNI 回调通道 | ✓ Complete |
 | 2 | Java Tools 注册机制 | ✓ Complete |
 | 3 | show_toast Tool | ✓ Complete |
+| 4 | 修复config.json安全问题 | Added |
+
+---
+
+## Roadmap Evolution
+
+- Phase 4 added: 修复config.json安全问题
 
 ---
 
