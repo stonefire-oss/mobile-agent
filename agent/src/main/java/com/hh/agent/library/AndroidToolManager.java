@@ -3,6 +3,9 @@ package com.hh.agent.library;
 import android.content.Context;
 import android.util.Log;
 import com.hh.agent.library.tools.ShowToastTool;
+import com.hh.agent.library.tools.DisplayNotificationTool;
+import com.hh.agent.library.tools.ReadClipboardTool;
+import com.hh.agent.library.tools.TakeScreenshotTool;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -33,7 +36,10 @@ public class AndroidToolManager implements AndroidToolCallback {
 
         // Register built-in tools
         tools.put("show_toast", new ShowToastTool(getActivity()));
-        Log.i("AndroidToolManager", "Registered show_toast tool");
+        tools.put("display_notification", new DisplayNotificationTool(getActivity()));
+        tools.put("read_clipboard", new ReadClipboardTool(getActivity()));
+        tools.put("take_screenshot", new TakeScreenshotTool(getActivity()));
+        Log.i("AndroidToolManager", "Registered 4 tools: show_toast, display_notification, read_clipboard, take_screenshot");
 
         // Load tools.json from assets
         loadToolsConfig();
