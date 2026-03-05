@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: milestone
-status: unknown
+milestone: v1.5
+milestone_name: LLM → Android 调用管道
+status: in_progress
 last_updated: "2026-03-05T03:59:31.195Z"
 progress:
-  total_phases: 8
-  completed_phases: 6
-  total_plans: 10
-  completed_plans: 8
+  total_phases: 5
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # STATE: Mobile Agent - C++ 移植版
@@ -29,10 +29,10 @@ progress:
 
 | Field | Value |
 |-------|-------|
-| Phase | Not started (defining requirements) |
-| Plan | — |
-| Status | Defining requirements |
-| Last activity: | 2026-03-05 — Milestone v1.5 started |
+| Milestone | v1.5 LLM → Android 调用管道 |
+| Phase | Not started |
+| Status | Ready for Phase 1 discussion |
+| Last activity: | 2026-03-05 — v1.4 shipped, v1.5 ready |
 
 ---
 
@@ -40,19 +40,19 @@ progress:
 
 | Metric | Value |
 |--------|-------|
-| Total Phases | 0 |
-| Total Requirements | 0 |
-| Completed Phases | 0 |
-| Completed Requirements | 0 |
+| v1.4 Phases | 4 (shipped) |
+| v1.5 Phases | 5 (in progress) |
+| v1.4 Requirements | 4 ✓ |
+| v1.5 Requirements | 5 |
 
 ---
 
-## v1.4 Requirements
+## v1.4 Requirements (SHIPPED 2026-03-05)
 
-- **TOOL-01**: C++ 提供 call_android_tool(tool_name, args) 同步调用接口
-- **TOOL-02**: Java 层注册和执行 Android Tools 的机制
-- **TOOL-03**: 可配置的 tools.json 定义可用工具列表
-- **TOOL-04**: show_toast Tool 实现
+- **TOOL-01**: C++ 提供 call_android_tool(tool_name, args) 同步调用接口 ✓
+- **TOOL-02**: Java 层注册和执行 Android Tools 的机制 ✓
+- **TOOL-03**: 可配置的 tools.json 定义可用工具列表 ✓
+- **TOOL-04**: show_toast Tool 实现 ✓
 
 ---
 
@@ -69,9 +69,9 @@ progress:
 
 ### Recent Changes
 
+- 2026-03-05: v1.4 shipped - Android Tools 通道
+- 2026-03-05: v1.5 started - LLM → Android 调用管道
 - 2026-03-04: v1.3 shipped - 预置 workspace
-- 2026-03-04: Started v1.4 - Android Tools 通道
-- 2026-03-04: Phase 1 context gathered - JNI 回调通道
 
 ### Blockers
 
@@ -105,14 +105,21 @@ None
 
 ## v1.5 进度
 
-(Not started)
+| Phase | Name | Status |
+|-------|------|--------|
+| 1 | tools.json 迁移到 inputSchema | ● In discussion |
+| 2 | 通用 call_android_tool | ○ Not started |
+| 3 | 验证工具框架 | ○ Not started |
+| 4 | Skills 加载机制 | ○ Not started |
+| 5 | Skill 编排示例 | ○ Not started |
 
 ---
 
 ## Roadmap Evolution
 
-- Phase 4 added: 修复config.json安全问题
-- v1.5 started: LLM → Android 调用管道
+- v1.4 shipped: Android Tools 通道 (4 phases)
+- v1.5 started: LLM → Android 调用管道 (5 phases)
+- Phase 编号调整: 每个 milestone 独立编号 (v1.4 Phase 1-4, v1.5 Phase 1-5)
 
 ---
 
