@@ -1,78 +1,15 @@
-# Roadmap: v1.4 Android Tools 通道
+# Roadmap: Mobile Agent
 
-**Milestone:** v1.4 Android Tools 通道
-**Goal:** 提供 C++ Agent 调用 Android 平台功能的通道
-**Started:** 2026-03-04
+## Milestones
 
----
+- ✅ **v1.4 Android Tools 通道** — Phases 1-4 (shipped 2026-03-05)
 
-## Phase 1: JNI 回调通道 ✓
+## Progress
 
-**Goal:** C++ Agent 提供调用 Android 的统一接口
-
-**Requirements:**
-- TOOL-01 ✓
-
-**Success criteria:**
-1. C++ 代码中可调用 `call_android_tool(tool_name, args)` 方法 ✓
-2. 同步返回 JSON 格式的执行结果 ✓
-3. JNI 层正确传递参数到 Java ✓
+| Phase | Milestone | Status |
+|-------|-----------|--------|
+| 1-4 | v1.4 | ✓ Complete |
 
 ---
 
-## Phase 2: Java Tools 注册机制 ✓
-
-**Goal:** Java 层接收并执行 Android Tools
-
-**Requirements:**
-- TOOL-02 ✓
-- TOOL-03 ✓
-
-**Success criteria:**
-1. Java 层提供 ToolExecutor 接口 ✓
-2. 从 tools.json 加载可用工具列表 ✓
-3. 根据 tool_name 路由到对应执行器 ✓
-
----
-
-## Phase 3: show_toast Tool ✓
-
-**Goal:** 实现第一个 Android Tool 示例
-
-**Requirements:**
-- TOOL-04 ✓
-
-**Success criteria:**
-1. 配置文件中注册 show_toast 工具 ✓
-2. Agent 可通过 call_android_tool 调用 ✓
-3. 显示 Toast 消息到屏幕 ✓
-
----
-
-## Traceability
-
-| Requirement | Phase | Status |
-|-------------|-------|--------|
-| TOOL-01: C++ call_android_tool 接口 | Phase 1 | ✓ Complete |
-| TOOL-02: Java Tools 注册机制 | Phase 2 | ✓ Complete |
-| TOOL-03: tools.json 配置 | Phase 2 | ✓ Complete |
-| TOOL-04: show_toast 实现 | Phase 3 | ✓ Complete |
-
-**Coverage:**
-- v1.4 requirements: 4 total
-- Mapped to phases: 4
-- Unmapped: 0 ✓
-
-### Phase 4: 修复config.json安全问题
-
-**Goal:** [To be planned]
-**Requirements**: TBD
-**Depends on:** Phase 3
-**Plans:** 0 plans
-
-Plans:
-- [ ] TBD (run /gsd:plan-phase 4 to break down)
-
----
-
-*Roadmap created: 2026-03-04*
+*Roadmap updated: 2026-03-05*
