@@ -330,4 +330,46 @@ JNIEXPORT void JNICALL Java_com_hh_agent_library_NativeAgent_nativeRegisterAndro
     icraw::Logger::get_instance().logger()->info("AndroidToolCallback registered via JNI");
 }
 
+/**
+ * Set tools schema from Java (JSON format)
+ * This allows Java to pass tools.json content to C++ for tool registration
+ */
+JNIEXPORT void JNICALL Java_com_hh_agent_library_NativeAgent_nativeSetToolsSchema(
+        JNIEnv* env,
+        jclass /* clazz */,
+        jstring schemaJson) {
+
+    if (!g_agent) {
+        icraw::Logger::get_instance().logger()->warn("nativeSetToolsSchema: Agent not initialized");
+        return;
+    }
+
+    const char* schema_json = nullptr;
+    if (schemaJson) {
+        schema_json = env->GetStringUTFChars(schemaJson, nullptr);
+    }
+
+    if (!schema_json || strlen(schema_json) == 0) {
+        icraw::Logger::get_instance().logger()->warn("nativeSetToolsSchema: Empty schema JSON");
+        if (schema_json) {
+            env->ReleaseStringUTFChars(schemaJson, schema_json);
+        }
+        return;
+    }
+
+    try {
+        auto schema = nlohmann::json::parse(schema_json);
+        auto& registry = g_agent->get_tool_registry();
+
+        // Call the new method to register tools from external schema
+        registry->register_tools_from_schema(schema);
+
+        icraw::Logger::get_instance().logger()->info("nativeSetToolsSchema: Successfully registered tools from schema");
+    } catch (const std::exception& e) {
+        icraw::Logger::get_instance().logger()->error("nativeSetToolsSchema: Failed to parse schema: {}", e.what());
+    }
+
+    env->ReleaseStringUTFChars(schemaJson, schema_json);
+}
+
 } // extern "C"

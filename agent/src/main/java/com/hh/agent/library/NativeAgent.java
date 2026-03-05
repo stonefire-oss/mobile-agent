@@ -74,4 +74,12 @@ public class NativeAgent {
     public static AndroidToolCallback getAndroidToolCallback() {
         return sCallback;
     }
+
+    /**
+     * Set tools schema from JSON string
+     * This allows Java to pass tools.json content to C++ for tool registration
+     *
+     * @param schemaJson JSON string containing tools schema
+     */
+    public static native void nativeSetToolsSchema(String schemaJson);
 }
