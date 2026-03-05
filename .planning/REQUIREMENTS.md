@@ -3,13 +3,27 @@
 **Defined:** 2026-03-05
 **Core Value:** 在 Android 设备上运行本地 AI Agent，提供实时对话和设备控制能力，无需依赖远程服务器。
 
+## v1.5 架构设计
+
+### 核心设计原则
+
+- **单一工具原则**: 暴露给 LLM 的只有一个通用工具 `call_android_tool`
+- **功能枚举**: 通过 enum 限制 LLM 可选的功能名称
+- **注册表模式**: Android 端通过注册表映射 function 名称到具体 Executor
+
 ## v1.5 Requirements
 
 ### 工具管道
 
-- [ ] **PIPE-01**: tools.json 迁移到 inputSchema 格式（MCP 标准）
-- [ ] **PIPE-02**: 通用的 call_android_tool 工具（JSON 参数调用任意 Android 功能）
-- [ ] **PIPE-03**: 内置工具清单（show_toast，已实现，仅验证框架）
+- [ ] **PIPE-01**: 定义 call_android_tool 的 inputSchema (function enum + args)
+- [x] **PIPE-02**: C++ 端改造，只暴露 call_android_tool 给 LLM
+- [ ] **PIPE-03**: Android 端注册表实现 (function → Executor 映射)
+
+### 内置功能
+
+- [ ] **ANDROID-01**: show_toast 功能实现
+- [ ] **ANDROID-02**: display_notification 功能实现
+- [ ] **ANDROID-03**: read_clipboard 功能实现
 
 ### Skills 编排
 
@@ -19,7 +33,7 @@
 
 ### 执行模式
 
-- [ ] **MODE-01**: 完全自主调用（无用户确认）
+- [x] **MODE-01**: 完全自主调用（无用户确认）
 - [ ] **MODE-02**: TODO - 添加需要用户确认的调用模式
 
 ## Out of Scope
@@ -34,21 +48,23 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PIPE-01 | Phase 1 | Pending |
-| PIPE-02 | Phase 2 | Pending |
-| PIPE-03 | Phase 3 | Pending |
-| SKILL-01 | Phase 4 | Pending |
-| SKILL-02 | Phase 4 | Pending |
-| SKILL-03 | Phase 5 | Pending |
-| MODE-01 | Phase 2 | Pending |
-| MODE-02 | Future | Pending |
+| PIPE-01: call_android_tool schema | Phase 1 | Pending |
+| PIPE-02: C++ 只暴露通用工具 | Phase 2 | Pending |
+| PIPE-03: Android 注册表 | Phase 3 | Pending |
+| ANDROID-01: show_toast | Phase 4 | Pending |
+| ANDROID-02: notification | Phase 4 | Pending |
+| ANDROID-03: clipboard | Phase 4 | Pending |
+| SKILL-01: Skills 加载 | Phase 4 | Pending |
+| SKILL-02: 工具调用触发 | Phase 5 | Pending |
+| SKILL-03: 示例 Skill | Phase 5 | Pending |
+| MODE-01: 自主调用 | Phase 2 | Pending |
+| MODE-02: 确认模式 | Future | Pending |
 
 **Coverage:**
-- v1.5 requirements: 8 total
+- v1.5 requirements: 11 total
 - Mapped to phases: 5
-- 最小集验证
 - Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-03-05*
-*Last updated: 2026-03-05 after research*
+*Last updated: 2026-03-05 - architecture redesign*
