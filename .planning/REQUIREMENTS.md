@@ -1,53 +1,54 @@
-# Requirements: Mobile Agent - Android Tools 通道
+# Requirements: Mobile Agent - v1.5
 
-**Defined:** 2026-03-04
+**Defined:** 2026-03-05
 **Core Value:** 在 Android 设备上运行本地 AI Agent，提供实时对话和设备控制能力，无需依赖远程服务器。
 
-## v1.4 Requirements
+## v1.5 Requirements
 
-### Tools 通道
+### 工具管道
 
-- [ ] **TOOL-01**: C++ 提供 call_android_tool(tool_name, args) 同步调用接口
-  - 参数: tool_name (string), args (JSON object)
-  - 返回: JSON 格式的执行结果
-  - 同步阻塞模式
+- [ ] **PIPE-01**: tools.json 迁移到 inputSchema 格式（MCP 标准）
+- [ ] **PIPE-02**: 通用的 call_android_tool 工具（JSON 参数调用任意 Android 功能）
+- [ ] **PIPE-03**: 内置工具清单（show_toast，已实现，仅验证框架）
 
-- [ ] **TOOL-02**: Java 层注册和执行 Android Tools 的机制
-  - ToolExecutor 接口定义
-  - 根据 tool_name 路由到对应执行器
-  - 返回执行结果给 C++
+### Skills 编排
 
-- [ ] **TOOL-03**: 可配置的 tools.json 定义可用工具列表
-  - tools 数组，每个包含 name, description, params 定义
-  - 从 assets 目录加载
+- [ ] **SKILL-01**: 定义 Android Skills 加载机制
+- [ ] **SKILL-02**: Skill 触发工具调用的模式
+- [ ] **SKILL-03**: 示例 Skill（通知用户的工作流）
 
-- [ ] **TOOL-04**: show_toast Tool 实现
-  - 显示 Toast 消息到屏幕
-  - 参数: message (string)
+### 执行模式
+
+- [ ] **MODE-01**: 完全自主调用（无用户确认）
+- [ ] **MODE-02**: TODO - 添加需要用户确认的调用模式
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| 异步调用 | 当前场景不需要，后续可扩展 |
-| AIDL 通信 | JNI 方式已足够 |
-| 动态注册 Tools | 第一阶段使用静态配置 |
+| 动态工具注册 | v1.5 先做内置清单，后续扩展 |
+| MCP Server | 暂不需要，保持简单 |
+| 权限系统 | 后续迭代 |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TOOL-01 | Phase 1: JNI 回调通道 | Pending |
-| TOOL-02 | Phase 2: Java Tools 注册机制 | Pending |
-| TOOL-03 | Phase 2: Java Tools 注册机制 | Pending |
-| TOOL-04 | Phase 3: show_toast Tool | Pending |
+| PIPE-01 | Phase 1 | Pending |
+| PIPE-02 | Phase 2 | Pending |
+| PIPE-03 | Phase 3 | Pending |
+| SKILL-01 | Phase 4 | Pending |
+| SKILL-02 | Phase 4 | Pending |
+| SKILL-03 | Phase 5 | Pending |
+| MODE-01 | Phase 2 | Pending |
+| MODE-02 | Future | Pending |
 
 **Coverage:**
-- v1.4 requirements: 4 total
-- Mapped to phases: 4
+- v1.5 requirements: 8 total
+- Mapped to phases: 5
+- 最小集验证
 - Unmapped: 0 ✓
 
 ---
-
-*Requirements defined: 2026-03-04*
-*Last updated: 2026-03-04 after initial definition*
+*Requirements defined: 2026-03-05*
+*Last updated: 2026-03-05 after research*
