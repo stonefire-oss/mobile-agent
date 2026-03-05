@@ -22,20 +22,22 @@
 - ✓ 清理 agent 模块 — v1.2
 - ✓ 预置 workspace — v1.3 (shipped 2026-03-04)
 - ✓ Android Tools 通道 — v1.4 (shipped 2026-03-05)
+- ✓ LLM → Android 调用管道 — v1.5 (shipped 2026-03-05)
 
 ### Active
 
-- [ ] v1.5: LLM → Android 调用管道
+- [ ] v1.6: (待规划)
 
 ## Current Milestone: v1.5 LLM → Android 调用管道
 
 **Goal:** 将 show_toast 泛化为通用的 LLM 调用 Android 平台功能的管道，支持 Skills 编排工作流
 
-**Target features:**
-- 通用的 LLM → Android 调用管道（JSON 结构化参数）
-- 内置工具清单（先框架，后续扩展）
-- Skills 编排多步骤工作流
-- 完全自主调用模式（后续可添加用户确认）
+**Completed features (v1.5):**
+- ✓ 通用的 LLM → Android 调用管道（JSON 结构化参数）
+- ✓ 内置工具清单：show_toast, display_notification, read_clipboard, take_screenshot
+- ✓ C++ tool_registry 从 tools.json 加载
+- ✓ AndroidToolManager 注册表实现
+- ✓ 完全自主调用模式
 
 ## Context
 
