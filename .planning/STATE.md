@@ -21,7 +21,7 @@ progress:
 
 **Core Value:** 在 Android 设备上运行本地 AI Agent，提供实时对话和设备控制能力，无需依赖远程服务器。
 
-**Current Focus:** v1.4 Android Tools 通道
+**Current Focus:** v1.5 LLM → Android 调用管道
 
 ---
 
@@ -29,9 +29,10 @@ progress:
 
 | Field | Value |
 |-------|-------|
-| Phase | 01-jni-channel |
+| Phase | Not started (defining requirements) |
 | Plan | — |
-| Status | Context gathered |
+| Status | Defining requirements |
+| Last activity: | 2026-03-05 — Milestone v1.5 started |
 
 ---
 
@@ -52,6 +53,15 @@ progress:
 - **TOOL-02**: Java 层注册和执行 Android Tools 的机制
 - **TOOL-03**: 可配置的 tools.json 定义可用工具列表
 - **TOOL-04**: show_toast Tool 实现
+
+---
+
+## v1.5 Requirements
+
+- **PIPE-01**: 通用的 LLM → Android 调用管道（JSON 结构化参数）
+- **PIPE-02**: 内置工具框架（支持扩展注册）
+- **PIPE-03**: Skills 编排多步骤工作流
+- **PIPE-04**: 完全自主调用模式
 
 ---
 
@@ -89,13 +99,20 @@ None
 | 1 | JNI 回调通道 | ✓ Complete |
 | 2 | Java Tools 注册机制 | ✓ Complete |
 | 3 | show_toast Tool | ✓ Complete |
-| 4 | 修复config.json安全问题 | In Progress |
+| 4 | 修复config.json安全问题 | ✓ Complete |
+
+---
+
+## v1.5 进度
+
+(Not started)
 
 ---
 
 ## Roadmap Evolution
 
 - Phase 4 added: 修复config.json安全问题
+- v1.5 started: LLM → Android 调用管道
 
 ---
 
