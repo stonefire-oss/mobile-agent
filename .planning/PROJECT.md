@@ -1,12 +1,12 @@
-# Mobile Agent - C++ 移植版
+# Mobile Agent - 手机上的 AI Agent
 
 ## What This Is
 
-将 cxxplatform (Windows/C++ Agent 原型) 移植到 Android 平台，使用 C++ 技术栈实现本地 Agent 能力，替代现有的 Nanobot HTTP 后端服务。
+在 Android 手机上运行的 AI Agent，通过文字聊天（后续支持语音）作为交互界面，能调用手机应用提供的各种能力（打卡、发消息等）来自动化工作流。
 
 ## Core Value
 
-在 Android 设备上运行本地 AI Agent，提供实时对话和设备控制能力，无需依赖远程服务器。
+让用户通过自然对话，指挥手机自动完成日常任务。
 
 ## Requirements
 
@@ -23,36 +23,54 @@
 - ✓ 预置 workspace — v1.3 (shipped 2026-03-04)
 - ✓ Android Tools 通道 — v1.4 (shipped 2026-03-05)
 - ✓ LLM → Android 调用管道 — v1.5 (shipped 2026-03-05)
+- ✓ 自定义 Skills 机制 — v1.6 (shipped 2026-03-06)
+- ✓ Agent 调用 Tools — v1.6 (shipped 2026-03-06)
 
 ### Active
 
-- [ ] v1.6: (待规划)
+- [ ] v2.0: (待规划)
 
-## Current Milestone: v1.5 LLM → Android 调用管道
+## Current Milestone: v1.6 自定义 Skills 验证
 
-**Goal:** 将 show_toast 泛化为通用的 LLM 调用 Android 平台功能的管道，支持 Skills 编排工作流
+**Status:** ✓ SHIPPED 2026-03-06
 
-**Completed features (v1.5):**
-- ✓ 通用的 LLM → Android 调用管道（JSON 结构化参数）
-- ✓ 内置工具清单：show_toast, display_notification, read_clipboard, take_screenshot
-- ✓ C++ tool_registry 从 tools.json 加载
-- ✓ AndroidToolManager 注册表实现
-- ✓ 完全自主调用模式
+**Delivered:**
+- SKILL.md 格式定义和 YAML frontmatter 解析
+- C++ 层 SkillLoader 加载机制
+- search_contacts / send_im_message Android Tools
+- im_sender 测试 Skill 通过 UAT (6/6)
+
+## Next Milestone Goals
+
+v1.6 完成后，项目已具备：
+- Agent 基础架构
+- Skills 定义和加载
+- Tool 注册和调用
+
+待探索方向：
+- 更多 Android Tools (如相机、文件处理)
+- 语音交互
+- MCP 集成
 
 ## Context
 
 **现有代码库:**
-- `mobile-agent` - Android 应用
-- `cxxplatform` - Windows C++ Agent 原型
+- `mobile-agent` - Android 应用（含 C++ Agent 引擎）
+- `cxxplatform` - Windows C++ Agent 原型（参考）
 - `agent` - Android C++ Agent 模块
 
-**cxxplatform workspace 内容:**
-- `USER.md` - 用户信息占位符
-- `SOUL.md` - Agent 身份定义
-- `skills/` - 技能配置
+**架构演进:**
+- ~~旧架构：App 通过 HTTP 连接 PC 上的 Nanobot 服务（需要 adb reverse）~~
+- **新架构：Agent 直接运行在手机本地**，不依赖 PC
+
+**Agent 运行时:**
+- LLM 调用在手机本地执行
+- 不需要网络代理或 adb 端口转发
+- 保护隐私，离线可用（需要 LLM API key）
 
 ## Constraints
 
+- **版本规则**: v1.6 之后使用整数版本号 (v2.0, v3.0)，不使用小数点 (v1.7, v1.8)
 - **技术栈**: C++ (原生) + Java (Android UI) — 必须
 - **兼容性**: minSdk 24 (Android 7.0)
 - **NDK**: NDK 26.3.11579264
@@ -62,14 +80,16 @@
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| 本地运行优先 | 减少网络延迟，保护隐私 | ✓ |
+| 本地运行 | Agent 运行在手机本地，保护隐私 | ✓ |
 | 保持 UI 不变 | 减少回归风险 | ✓ |
 | JNI 通信 | 标准 Java/C++ 互操作方式 | ✓ |
 | local.properties | 管理本地 apiKey 配置 | ✓ |
 | workspace 预置 | 让 Agent 有初始身份和能力 | ✓ v1.3 shipped |
 | Android Tools 通道 | 统一的 JNI 回调 + 工具注册机制 | ✓ v1.4 shipped |
-| 通用 Android 调用管道 | LLM 通过 JSON 参数调用 Android 功能 | — v1.5 进行中 |
-| 完全自主调用 | LLM 直接执行，无需用户确认 | — v1.5 进行中 |
+| 通用 Android 调用管道 | LLM 通过 JSON 参数调用 Android 功能 | ✓ v1.5 shipped |
+| 完全自主调用 | LLM 直接执行，无需用户确认 | ✓ v1.5 shipped |
+| 自定义 Skills | Agent 通过 Skill 调用 Android Tools | ✓ v1.6 shipped |
+| Skill 调用 Tool | 多步骤工具链，Tool 结果返回给 LLM | ✓ v1.6 shipped |
 
 ---
-*Last updated: 2026-03-05 start v1.5*
+*Last updated: 2026-03-06 — v1.6 shipped*

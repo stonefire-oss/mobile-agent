@@ -1,70 +1,45 @@
-# Requirements: Mobile Agent - v1.5
+# Requirements: Mobile Agent - v1.6
 
-**Defined:** 2026-03-05
+**Defined:** 2026-03-06
 **Core Value:** 在 Android 设备上运行本地 AI Agent，提供实时对话和设备控制能力，无需依赖远程服务器。
 
-## v1.5 架构设计
+## v1.6 Requirements
 
-### 核心设计原则
+### 自定义 Skills 机制
 
-- **单一工具原则**: 暴露给 LLM 的只有一个通用工具 `call_android_tool`
-- **功能枚举**: 通过 enum 限制 LLM 可选的功能名称
-- **注册表模式**: Android 端通过注册表映射 function 名称到具体 Executor
+- [x] **SKILL-01**: 定义自定义 Skill 的配置文件格式 (JSON/YAML)
+- [x] **SKILL-02**: C++ 层加载自定义 Skills 的机制
 
-## v1.5 Requirements
+### Agent 调用 Tools
 
-### 工具管道
-
-- [ ] **PIPE-01**: 定义 call_android_tool 的 inputSchema (function enum + args)
-- [x] **PIPE-02**: C++ 端改造，只暴露 call_android_tool 给 LLM
-- [ ] **PIPE-03**: Android 端注册表实现 (function → Executor 映射)
-
-### 内置功能
-
-- [ ] **ANDROID-01**: show_toast 功能实现
-- [ ] **ANDROID-02**: display_notification 功能实现
-- [ ] **ANDROID-03**: read_clipboard 功能实现
-
-### Skills 编排
-
-- [ ] **SKILL-01**: 定义 Android Skills 加载机制
-- [ ] **SKILL-02**: Skill 触发工具调用的模式
-- [ ] **SKILL-03**: 示例 Skill（通知用户的工作流）
-
-### 执行模式
-
-- [x] **MODE-01**: 完全自主调用（无用户确认）
-- [ ] **MODE-02**: TODO - 添加需要用户确认的调用模式
+- [x] **CALL-01**: Agent 能够解析 Skill 定义，调用对应的 Android Tools
+- [x] **CALL-02**: 支持多步骤的 Tool 调用链
+- [x] **CALL-03**: 处理 Tool 调用结果并返回给 Agent
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| 动态工具注册 | v1.5 先做内置清单，后续扩展 |
+| 动态工具注册 | v1.6 验证机制，后续扩展 |
 | MCP Server | 暂不需要，保持简单 |
 | 权限系统 | 后续迭代 |
+| SKILL-03: Skills 依赖处理 | 暂不需要，简化设计 |
+| TEST-01/02/03: 端到端验证 | im_sender 示例已在 v16-02 通过 UAT 验证 |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PIPE-01: call_android_tool schema | Phase 1 | Pending |
-| PIPE-02: C++ 只暴露通用工具 | Phase 2 | Pending |
-| PIPE-03: Android 注册表 | Phase 3 | Pending |
-| ANDROID-01: show_toast | Phase 4 | Pending |
-| ANDROID-02: notification | Phase 4 | Pending |
-| ANDROID-03: clipboard | Phase 4 | Pending |
-| SKILL-01: Skills 加载 | Phase 4 | Pending |
-| SKILL-02: 工具调用触发 | Phase 5 | Pending |
-| SKILL-03: 示例 Skill | Phase 5 | Pending |
-| MODE-01: 自主调用 | Phase 2 | Pending |
-| MODE-02: 确认模式 | Future | Pending |
+| SKILL-01: Skill 配置文件格式 | Phase v16-01 | Verified |
+| SKILL-02: Skills 加载机制 | Phase v16-01 | Verified |
+| CALL-01: Skill 解析调用 | Phase v16-02 | Verified |
+| CALL-02: 多步骤 Tool 调用链 | Phase v16-02 | Verified |
+| CALL-03: Tool 结果处理 | Phase v16-02 | Verified |
 
 **Coverage:**
-- v1.5 requirements: 11 total
+- v1.6 requirements: 5 total
 - Mapped to phases: 5
-- Unmapped: 0 ✓
+- All verified ✓
 
 ---
-*Requirements defined: 2026-03-05*
-*Last updated: 2026-03-05 - architecture redesign*
+*Requirements defined: 2026-03-06*
