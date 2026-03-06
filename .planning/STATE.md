@@ -138,21 +138,31 @@ None
 
 | Phase | Name | Status |
 |-------|------|--------|
-| 1 | 自定义 Skills 机制 | ● In discussion |
-| 2 | Agent 通过 Skill 调用 Android Tools | ○ Not started |
-| 3 | 端到端任务验证 | ○ Not started |
+| 1 | 自定义 Skills 机制 | ✓ Complete |
+| 2 | Agent 通过 Skill 调用 Android Tools | ✓ Complete |
+| 3 | 端到端任务验证 | ✓ Complete |
 
 ---
 
-## Current Position (v16-01-01)
+## v2.0 进度
+
+| Phase | Name | Status |
+|-------|------|--------|
+| v20-01 | 代码清理 | ✓ Complete |
+| v20-02 | 重命名 | ○ Not started |
+| v20-03 | 代码迁移 | ○ Not started |
+| v20-04 | 验证 | ○ Not started |
+
+---
+
+## Current Position (v20-01)
 
 | Field | Value |
 |-------|-------|
-| Milestone | v1.6 自定义 Skills 验证 |
-| Phase | v16-01 (自定义 Skills 机制) |
-| Plan | v16-01-01 |
-| Status | Complete (verified) |
-| Last activity: | 2026-03-06 — Plan v16-01-01 verified |
+| Milestone | v2.0 接入真实项目 |
+| Phase | v20-01 (代码清理) |
+| Status | Complete |
+| Last activity: | 2026-03-06 — Phase v20-01 代码清理完成 |
 
 ---
 
