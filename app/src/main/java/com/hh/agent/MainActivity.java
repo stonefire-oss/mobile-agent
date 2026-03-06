@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         NativeNanobotApiAdapter.loadConfigFromAssets(this);
 
         // 初始化 Presenter，使用 Native C++ Agent
-        presenter = new MainPresenter(this, MainPresenter.ApiType.NATIVE, "native:default");
+        presenter = new MainPresenter(this, "native:default");
         presenter.attachView(this);
 
         // 加载历史消息

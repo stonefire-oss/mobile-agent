@@ -5,9 +5,6 @@ import android.os.Handler;
 import android.os.Looper;
 import com.hh.agent.contract.MainContract;
 import com.hh.agent.lib.api.NanobotApi;
-import com.hh.agent.lib.config.NanobotConfig;
-import com.hh.agent.lib.http.HttpNanobotApi;
-import com.hh.agent.lib.impl.MockNanobotApi;
 import com.hh.agent.lib.model.Message;
 
 import java.util.List;
@@ -16,17 +13,9 @@ import java.util.concurrent.Executors;
 
 /**
  * MainActivity 的 Presenter 实现
+ * 使用 Native C++ Agent
  */
 public class MainPresenter implements MainContract.Presenter {
-
-    /**
-     * API 类型枚举
-     */
-    public enum ApiType {
-        MOCK,   // Mock 实现
-        HTTP,   // HTTP 调用 nanobot
-        NATIVE  // Native C++ Agent
-    }
 
     private MainContract.View view;
     private final NanobotApi nanobotApi;
@@ -35,72 +24,39 @@ public class MainPresenter implements MainContract.Presenter {
     private final String sessionKey;
 
     /**
-     * 默认构造函数，使用 Mock API
-     */
-    public MainPresenter() {
-        this(null, ApiType.HTTP, "http:default");
-    }
-
-    /**
-     * 指定 API 类型
+     * 构造函数，使用 Native Agent
      *
-     * @param apiType   API 类型 (MOCK 或 HTTP)
+     * @param context   Android Context
      * @param sessionKey 会话 key
      */
-    public MainPresenter(ApiType apiType, String sessionKey) {
-        this(null, apiType, sessionKey);
-    }
-
-    /**
-     * 指定 API 类型和 Context
-     *
-     * @param context   Android Context (用于 workspace 初始化)
-     * @param apiType   API 类型 (MOCK 或 HTTP)
-     * @param sessionKey 会话 key
-     */
-    public MainPresenter(Context context, ApiType apiType, String sessionKey) {
-        this.nanobotApi = createApi(context, apiType);
+    public MainPresenter(Context context, String sessionKey) {
+        this.nanobotApi = createApi(context);
         this.executor = Executors.newSingleThreadExecutor();
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.sessionKey = sessionKey;
     }
 
     /**
-     * 指定自定义 NanobotApi
-     *
-     * @param nanobotApi 自定义 API 实现
-     * @param sessionKey 会话 key
+     * 简化构造函数
      */
-    public MainPresenter(NanobotApi nanobotApi, String sessionKey) {
-        this.nanobotApi = nanobotApi;
-        this.executor = Executors.newSingleThreadExecutor();
-        this.mainHandler = new Handler(Looper.getMainLooper());
-        this.sessionKey = sessionKey;
+    public MainPresenter(String sessionKey) {
+        this(null, sessionKey);
     }
 
     /**
-     * 创建 API 实例
+     * 创建 API 实例 - 只使用 Native Agent
      */
-    private NanobotApi createApi(Context context, ApiType apiType) {
-        switch (apiType) {
-            case HTTP:
-                return new HttpNanobotApi();
-            case NATIVE:
-                try {
-                    NativeNanobotApiAdapter adapter = new NativeNanobotApiAdapter();
-                    if (context != null) {
-                        adapter.setContext(context);
-                    }
-                    adapter.initialize("");
-                    return adapter;
-                } catch (Exception e) {
-                    // 如果初始化失败，回退到 Mock API
-                    android.util.Log.e("MainPresenter", "Failed to initialize Native API: " + e.getMessage(), e);
-                    return new MockNanobotApi();
-                }
-            case MOCK:
-            default:
-                return new MockNanobotApi();
+    private NanobotApi createApi(Context context) {
+        try {
+            NativeNanobotApiAdapter adapter = new NativeNanobotApiAdapter();
+            if (context != null) {
+                adapter.setContext(context);
+            }
+            adapter.initialize("");
+            return adapter;
+        } catch (Exception e) {
+            // 如果初始化失败，抛出异常
+            throw new RuntimeException("Failed to initialize Native API: " + e.getMessage(), e);
         }
     }
 
