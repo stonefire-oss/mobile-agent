@@ -52,7 +52,7 @@
 3. 项目可编译通过
 
 **Plans:**
-- [ ] v20-02-01-PLAN.md — Nanobot → MobileAgent 重命名
+1/1 plans complete
 
 ---
 
