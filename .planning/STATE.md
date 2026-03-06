@@ -149,20 +149,20 @@ None
 | Phase | Name | Status |
 |-------|------|--------|
 | v20-01 | 代码清理 | ✓ Complete |
-| v20-02 | 重命名 | ○ Not started |
+| v20-02 | 重命名 | ● In progress |
 | v20-03 | 代码迁移 | ○ Not started |
 | v20-04 | 验证 | ○ Not started |
 
 ---
 
-## Current Position (v20-01)
+## Current Position (v20-02)
 
 | Field | Value |
 |-------|-------|
 | Milestone | v2.0 接入真实项目 |
-| Phase | v20-01 (代码清理) |
-| Status | Complete |
-| Last activity: | 2026-03-06 — Phase v20-01 代码清理完成 |
+| Phase | v20-02 (重命名) |
+| Status | Context gathered |
+| Last activity: | 2026-03-06 — Phase v20-02 context gathered |
 
 ---
 
