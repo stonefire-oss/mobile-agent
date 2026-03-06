@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import com.hh.agent.contract.MainContract;
-import com.hh.agent.library.api.NanobotApi;
+import com.hh.agent.library.api.MobileAgentApi;
 import com.hh.agent.library.model.Message;
 
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 public class MainPresenter implements MainContract.Presenter {
 
     private MainContract.View view;
-    private final NanobotApi nanobotApi;
+    private final MobileAgentApi mobileAgentApi;
     private final ExecutorService executor;
     private final Handler mainHandler;
     private final String sessionKey;
@@ -30,7 +30,7 @@ public class MainPresenter implements MainContract.Presenter {
      * @param sessionKey 会话 key
      */
     public MainPresenter(Context context, String sessionKey) {
-        this.nanobotApi = createApi(context);
+        this.mobileAgentApi = createApi(context);
         this.executor = Executors.newSingleThreadExecutor();
         this.mainHandler = new Handler(Looper.getMainLooper());
         this.sessionKey = sessionKey;
@@ -46,9 +46,9 @@ public class MainPresenter implements MainContract.Presenter {
     /**
      * 创建 API 实例 - 只使用 Native Agent
      */
-    private NanobotApi createApi(Context context) {
+    private MobileAgentApi createApi(Context context) {
         try {
-            NativeNanobotApiAdapter adapter = new NativeNanobotApiAdapter();
+            NativeMobileAgentApiAdapter adapter = new NativeMobileAgentApiAdapter();
             if (context != null) {
                 adapter.setContext(context);
             }
@@ -69,9 +69,9 @@ public class MainPresenter implements MainContract.Presenter {
         executor.execute(() -> {
             try {
                 // 确保会话存在
-                nanobotApi.getSession(sessionKey);
+                mobileAgentApi.getSession(sessionKey);
 
-                List<Message> messages = nanobotApi.getHistory(sessionKey, 50);
+                List<Message> messages = mobileAgentApi.getHistory(sessionKey, 50);
 
                 if (view != null) {
                     mainHandler.post(() -> {
@@ -122,7 +122,7 @@ public class MainPresenter implements MainContract.Presenter {
         executor.execute(() -> {
             try {
                 // 发送消息，获取回复
-                Message response = nanobotApi.sendMessage(content, sessionKey);
+                Message response = mobileAgentApi.sendMessage(content, sessionKey);
 
                 if (view != null) {
                     mainHandler.post(() -> {

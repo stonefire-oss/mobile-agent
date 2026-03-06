@@ -1,27 +1,27 @@
 package com.hh.agent.presenter;
 
 import android.content.Context;
-import com.hh.agent.library.api.NanobotApi;
+import com.hh.agent.library.api.MobileAgentApi;
 import com.hh.agent.library.model.Message;
 import com.hh.agent.library.model.Session;
 import com.hh.agent.library.WorkspaceManager;
-import com.hh.agent.library.api.NativeNanobotApi;
+import com.hh.agent.library.api.NativeMobileAgentApi;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * NativeNanobotApi 适配器
+ * NativeMobileAgentApi 适配器
  * 将 agent 模块的 Message/Session 模型转换为 lib 模块的模型
  */
-public class NativeNanobotApiAdapter implements NanobotApi {
+public class NativeMobileAgentApiAdapter implements MobileAgentApi {
 
-    private final NativeNanobotApi nativeApi;
+    private final NativeMobileAgentApi nativeApi;
     private static String configJson = "";
 
-    public NativeNanobotApiAdapter() {
-        this.nativeApi = NativeNanobotApi.getInstance();
+    public NativeMobileAgentApiAdapter() {
+        this.nativeApi = NativeMobileAgentApi.getInstance();
     }
 
     /**

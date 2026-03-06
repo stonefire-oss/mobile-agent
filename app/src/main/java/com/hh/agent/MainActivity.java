@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.hh.agent.contract.MainContract;
 import com.hh.agent.library.model.Message;
 import com.hh.agent.presenter.MainPresenter;
-import com.hh.agent.presenter.NativeNanobotApiAdapter;
+import com.hh.agent.presenter.NativeMobileAgentApiAdapter;
 import com.hh.agent.ui.MessageAdapter;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         initViews();
 
         // 加载 native agent 配置
-        NativeNanobotApiAdapter.loadConfigFromAssets(this);
+        NativeMobileAgentApiAdapter.loadConfigFromAssets(this);
 
         // 初始化 Presenter，使用 Native C++ Agent
         presenter = new MainPresenter(this, "native:default");
@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     public void showThinking() {
         Message thinkingMsg = new Message();
         thinkingMsg.setRole("thinking");
-        thinkingMsg.setContent("Nanobot 正在思考...");
+        thinkingMsg.setContent("MobileAgent 正在思考...");
         thinkingMsg.setTimestamp(System.currentTimeMillis());
         adapter.addMessage(thinkingMsg);
         rvMessages.scrollToPosition(adapter.getItemCount() - 1);
