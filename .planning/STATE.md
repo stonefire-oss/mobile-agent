@@ -92,8 +92,9 @@ None
 
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
-| 1 | 清理 lib 中未使用的 gradle 依赖 | 2026-03-05 | 020f92a | [1-lib-gradle](./quick/1-lib-gradle/) |
-| 2 | 清理 agent 中用不到的 gradle 依赖 | 2026-03-05 | | [2-agent-gradle](./quick/2-agent-gradle/) |
+| 1 | 检查SOUL.md和USER.md有没有加载 | 2026-03-04 | - | [1-soul-md-user-md](./quick/1-soul-md-user-md/) |
+| 2 | 清理 agent 中未使用的 gradle 依赖 | 2026-03-05 | f9c095c | [2-agent-gradle](./quick/2-agent-gradle/) |
+| 3 | 整理 .planning 目录结构 | 2026-03-06 | 069b6e0 | [3-planning](./quick/3-planning/) |
 
 ---
 
