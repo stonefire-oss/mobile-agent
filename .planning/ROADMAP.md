@@ -8,51 +8,31 @@
 
 ---
 
-## v1.6 Roadmap
+## v1.6 (Shipped)
 
-### Phase v16-01: 自定义 Skills 机制
+<details>
+<summary>✅ v1.6 自定义 Skills 验证 (Phases v16-01 to v16-02) — SHIPPED 2026-03-06</summary>
 
-**Goal:** 实现自定义 Skills 的定义和加载机制
+- [x] Phase v16-01: 自定义 Skills 机制 (1/1 plans) — completed 2026-03-06
+- [x] Phase v16-02: Agent 调用 Tools (1/1 plans) — completed 2026-03-06
 
-**Requirements:**
-- SKILL-01: 定义自定义 Skill 的配置文件格式 (JSON/YAML)
-- SKILL-02: C++ 层加载自定义 Skills 的机制
+**Key Deliverables:**
+- SKILL.md 格式定义和 YAML frontmatter 解析
+- C++ 层 SkillLoader 加载机制
+- search_contacts / send_im_message Android Tools
+- im_sender 测试 Skill
 
-**Success criteria:**
-1. 可以在配置文件中定义 Skill
-2. C++ 层能够加载 Skills
-
-**Plans:**
-1/1 plans complete
-
----
-
-### Phase v16-02: Agent 调用 Tools
-
-**Goal:** 实现 Agent 通过 Skill 调用 Android 内置 Tools 的能力
-
-**Requirements:**
-- CALL-01: Agent 能够解析 Skill 定义，调用对应的 Android Tools
-- CALL-02: 支持多步骤的 Tool 调用链
-- CALL-03: 处理 Tool 调用结果并返回给 Agent
-
-**Success criteria:**
-1. Agent 解析 Skill 并触发 Tool 调用
-2. 多步骤 Tool 调用链正常工作
-3. Tool 结果正确返回给 Agent
-
-**Plans:**
-1/1 plans complete
+</details>
 
 ---
 
 ## Progress
 
-| Milestone | Phase Range | Status |
-|-----------|-------------|--------|
+| Milestone | Phase Range | Status | Completed |
+|-----------|-------------|--------|-----------|
 | v1.6 | v16-01 to v16-02 | ✓ Complete | 2026-03-06 |
 | v1.5 | v15-01 to v15-03 | ✓ Complete | 2026-03-05 |
-| v1.4 | 1-4 | ✓ Complete |
+| v1.4 | 1-4 | ✓ Complete | 2026-03-05 |
 
 ---
 

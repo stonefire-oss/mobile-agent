@@ -1,5 +1,14 @@
 # Milestones
 
+## v1.6 自定义 Skills 验证 (Shipped: 2026-03-06)
+
+**Phases completed:** 2 phases, 2 plans, 0 tasks
+
+**Key accomplishments:**
+- (none recorded)
+
+---
+
 ## v1.5 LLM → Android 调用管道 (Shipped: 2026-03-05)
 
 **Phases completed:** 6 phases, 8 plans, 0 tasks
