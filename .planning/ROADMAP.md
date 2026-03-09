@@ -2,10 +2,36 @@
 
 ## Milestones
 
+- ⏳ **v2.1 架构重构** — Phases 1 to 5 (in progress)
 - ✅ **v2.0 接入真实项目** — Phases v20-01 to v20-04 (shipped 2026-03-09)
 - ✅ **v1.6 自定义 Skills 验证** — Phases v16-01 to v16-02 (shipped 2026-03-06)
 - ✅ **v1.5 LLM → Android 调用管道** — Phases v15-01 to v15-03 (shipped 2026-03-05)
 - ✅ **v1.4 Android Tools 通道** — Phases 1-4 (shipped 2026-03-05)
+
+---
+
+## v2.1 (In Progress)
+
+<details>
+<summary>⏳ v2.1 架构重构 (Phases 1 to 5) — Started 2026-03-09</summary>
+
+**Goal:** 将 app 模块拆分为 app + agent-android，实现三层架构
+
+**Phases:**
+- [ ] Phase 1: 新增 agent-android 模块
+- [ ] Phase 2: 重命名模块 (agent → agent-core, app 简化为壳)
+- [ ] Phase 3: 代码下沉 (AndroidToolManager, WorkspaceManager, Tools → agent-android)
+- [ ] Phase 4: 启动流程梳理 (内存泄漏、主线程阻塞)
+- [ ] Phase 5: 接入文档
+
+**Key Deliverables:**
+- agent-android 模块（Android 适配层）
+- agent-core 模块（纯 Java 核心，原 agent 重命名）
+- app 简化为接入演示壳
+- 启动流程优化
+- 完整接入文档
+
+</details>
 
 ---
 
@@ -55,6 +81,7 @@
 
 | Milestone | Phase Range | Status | Completed |
 |-----------|-------------|--------|-----------|
+| v2.1 | 1 to 5 | ⏳ In Progress | — |
 | v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
 | v1.6 | v16-01 to v16-02 | ✓ Complete | 2026-03-06 |
 | v1.5 | v15-01 to v15-03 | ✓ Complete | 2026-03-05 |

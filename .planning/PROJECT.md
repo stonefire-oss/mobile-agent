@@ -32,35 +32,18 @@
 
 ### Active
 
-- [ ] v3.0: 下一里程碑（待定义）
+- [ ] v2.1: 架构重构 - 三层模块化
 
-## Current Milestone: v1.6 自定义 Skills 验证
+## Current Milestone: v2.1 架构重构
 
-**Status:** ✓ SHIPPED 2026-03-06
+**Goal:** 将 app 模块拆分为 app + agent-android，实现三层架构：app(接入演示) → agent-android(Android适配) → agent-core(纯Java核心)
 
-**Delivered:**
-- SKILL.md 格式定义和 YAML frontmatter 解析
-- C++ 层 SkillLoader 加载机制
-- search_contacts / send_im_message Android Tools
-- im_sender 测试 Skill 通过 UAT (6/6)
-
-## Current Milestone: v2.0 接入真实项目
-
-**Status:** ✓ SHIPPED 2026-03-09
-
-**Delivered:**
-- Nanobot → MobileAgent 重命名完成（Java + C++）
-- 平台工具从 agent 迁移到 app 模块（6 个 Tools + AndroidToolManager）
-- agent 模块实现纯 Java AAR（无 Android 依赖）
-- Agent API 改为接收 JSON 字符串（职责分离）
-- APK 编译成功，聊天和 Android Tools 验证通过
-
-**Tech Debt:**
-- CLEAN-01~CLEAN-05 未正式验证（实际已完成）
-
----
-
-## v1.6 自定义 Skills 验证 (Shipped: 2026-03-06)
+**Target features:**
+- 新增 agent-android 模块（Android 适配层）
+- agent 模块重命名为 agent-core
+- 代码下沉：AndroidToolManager、WorkspaceManager、Tools → agent-android
+- 启动流程梳理：检查内存泄漏、主线程阻塞
+- 接入文档：README + 示例项目结构
 
 ## Context
 
@@ -105,4 +88,4 @@
 | JSON String API | app 读取文件，agent 只接收数据 | ✓ v2.0 shipped |
 
 ---
-*Last updated: 2026-03-09 — v2.0 shipped*
+*Last updated: 2026-03-09 — v2.1 started*

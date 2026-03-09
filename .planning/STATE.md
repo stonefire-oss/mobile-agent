@@ -1,14 +1,14 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: 接入真实项目
-status: unknown
-last_updated: "2026-03-09T02:56:26.684Z"
+milestone: v2.1
+milestone_name: 架构重构
+status: defining_requirements
+last_updated: "2026-03-09T03:00:00.000Z"
 progress:
-  total_phases: 7
-  completed_phases: 5
-  total_plans: 7
-  completed_plans: 7
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
 ---
 
 # STATE: Mobile Agent - C++ 移植版
@@ -29,10 +29,10 @@ progress:
 
 | Field | Value |
 |-------|-------|
-| Milestone | v2.0 接入真实项目 |
-| Phase | v20-04 (verification) |
-| Status | Plan v20-04-01 completed |
-| Last activity: | 2026-03-09 — Completed quick task 6: 移除 agent 模块 config-template.gradle 显式引用 |
+| Milestone | v2.1 架构重构 |
+| Phase | Not started (defining requirements) |
+| Status | Defining requirements |
+| Last activity: | 2026-03-09 — Milestone v2.1 started |
 
 ---
 
@@ -155,18 +155,23 @@ None
 | v20-01 | 代码清理 | ✓ Complete |
 | v20-02 | 重命名 | ✓ Complete |
 | v20-03 | 代码迁移 | ✓ Complete |
-| v20-04 | 验证 | ● In progress |
+| v20-04 | 验证 | ✓ Complete |
 
 ---
 
-## Current Position (v20-04)
+## v2.1 进度
 
-| Field | Value |
-|-------|-------|
-| Milestone | v2.0 接入真实项目 |
-| Phase | v20-04 (verification) |
-| Status | Plan v20-04-01 completed |
-| Last activity: | 2026-03-09 — Verification plan v20-04-01 completed |
+| Phase | Name | Status |
+|-------|------|--------|
+| 1 | 新增 agent-android 模块 | ○ Pending |
+| 2 | agent → agent-core 重命名 | ○ Pending |
+| 3 | 代码下沉到 agent-android | ○ Pending |
+| 4 | 启动流程梳理 | ○ Pending |
+| 5 | 接入文档 | ○ Pending |
+
+---
+
+## Current Position (v2.1)
 
 ---
 
@@ -175,7 +180,8 @@ None
 - v1.4 shipped: Android Tools 通道 (4 phases)
 - v1.5 shipped: LLM → Android 调用管道 (5 phases)
 - v1.6 shipped: 自定义 Skills 验证 (3 phases)
-- v2.0 started: 接入真实项目 (TBD)
+- v2.0 shipped: 接入真实项目 (4 phases)
+- v2.1 started: 架构重构 - 三层模块化 (5 phases)
 - Phase 编号调整: 每个 milestone 独立编号
 
 ---
