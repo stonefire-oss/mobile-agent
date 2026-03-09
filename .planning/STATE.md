@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v2.1
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-09T08:31:00.000Z"
+last_updated: "2026-03-09T09:26:31.865Z"
 progress:
   total_phases: 5
-  completed_phases: 4
-  total_plans: 5
-  completed_plans: 4
+  completed_phases: 3
+  total_plans: 9
+  completed_plans: 6
 ---
 
 # STATE: Mobile Agent - C++ 移植版
@@ -169,7 +169,7 @@ None
 | 2 | agent → agent-core 重命名 | ○ Pending |
 | 3 | 代码下沉到 agent-android | ○ Pending |
 | 4 | 启动流程梳理 | ○ Pending |
-| 5 | API Key 管理 | ✓ Complete (P01, P02) |
+| 5 | API Key 管理 | ✓ Complete (P01, P02, P04) |
 
 ---
 

@@ -22,7 +22,7 @@
 - [x] Phase 2: 重命名模块 (agent → agent-core, app 简化为壳) (1/1 plans) (completed 2026-03-09)
 - [x] Phase 3: 代码下沉 (AndroidToolManager, WorkspaceManager, Tools → agent-android) (completed 2026-03-09)
 - [x] Phase 4: 启动流程梳理 (内存泄漏、主线程阻塞) (completed 2026-03-09)
-- [ ] Phase 5: 接入文档 (2/5 plans)
+- [ ] Phase 5: 接入文档 (4/5 plans)
 
 **Key Deliverables:**
 - agent-android 模块（Android 适配层）
@@ -36,8 +36,8 @@
 - [x] 02-rename-modules/02-PLAN.md — 重命名模块 (agent → agent-core, app 简化为壳)
 - [x] 05-api-key/05-01-PLAN.md — 扩展 ToolExecutor 接口
 - [x] 05-api-key/05-02-PLAN.md — 6 个 Tool 实现新方法
-- [ ] 05-api-key/05-03-PLAN.md — AndroidToolManager 动态生成 tools.json
-- [ ] 05-api-key/05-04-PLAN.md — WorkspaceManager Skills 初始化修改
+- [x] 05-api-key/05-03-PLAN.md — AndroidToolManager 动态生成 tools.json
+- [x] 05-api-key/05-04-PLAN.md — WorkspaceManager Skills 初始化修改
 - [ ] 05-api-key/05-05-PLAN.md — 接入文档（README、API）
 
 </details>
