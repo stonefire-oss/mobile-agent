@@ -92,7 +92,7 @@
 3. APK 可以正常安装运行
 
 **Plans:**
-- [ ] v20-04-01-PLAN.md — 验证编译和功能
+1/1 plans complete
 
 ---
 

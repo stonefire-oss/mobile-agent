@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v2.0
 milestone_name: 接入真实项目
 status: unknown
-last_updated: "2026-03-09T02:40:33.704Z"
+last_updated: "2026-03-09T02:42:28.673Z"
 progress:
   total_phases: 6
   completed_phases: 5
