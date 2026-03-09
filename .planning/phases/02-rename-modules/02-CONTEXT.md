@@ -23,8 +23,8 @@
 
 ### 代码划分
 - agent-core: 纯 Java 核心逻辑，无 Android 依赖
-- agent-android: Android 适配层（Phase 1 已创建）
-- app: 仅保留 Activity 和简单绑定
+- agent-android: Android 适配层 + Activity/UI（Phase 1 已创建）
+- app: 仅保留入口和简单绑定，跳转到 agent-android 的 Activity
 
 ### 文件路径
 - 目录重命名：agent → agent-core
@@ -35,7 +35,7 @@
 <specifics>
 ## Specific Ideas
 
-No specific requirements — open to standard approaches
+- **Activity 复用**: app 模块的 Activity 和 UI 相关代码移入 agent-android，其他 Android app 只需依赖 agent-android 并跳转到 `AgentActivity` 即可接入
 
 </specifics>
 
