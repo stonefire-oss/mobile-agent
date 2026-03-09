@@ -4,28 +4,18 @@
 
 ## 架构概览
 
-Mobile Agent 采用三层模块化架构：
-
 ```
 ┌─────────────────────────────────────────────┐
-│  app (演示壳)                                │
-│  - MainActivity (UI 入口)                   │
-│  - 配置加载与初始化绑定                       │
+│  app (Android 应用模块)                       │
+│  - UI 层: Activity, Presenter, Adapter       │
+│  - 工具实现: ShowToastTool 等               │
+│  - AndroidToolManager, WorkspaceManager     │
 └─────────────────┬───────────────────────────┘
                   ↓ 依赖
 ┌─────────────────────────────────────────────┐
-│  agent-android (Android 适配层)              │
-│  - AndroidToolManager (工具管理)             │
-│  - WorkspaceManager (工作空间)               │
-│  - Android Tools (Toast, 通知, 剪贴板等)      │
-│  - NativeMobileAgentApiAdapter              │
-└─────────────────┬───────────────────────────┘
-                  ↓ 依赖
-┌─────────────────────────────────────────────┐
-│  agent-core (核心库)                          │
-│  - C++ JNI 绑定                              │
-│  - ToolExecutor 接口                        │
-│  - Agent 逻辑                               │
+│  agent (Android Library + Native)            │
+│  - Java: API 接口, ToolExecutor, 模型       │
+│  - C++: JNI 绑定, Agent 核心逻辑            │
 └─────────────────────────────────────────────┘
 ```
 
@@ -33,14 +23,14 @@ Mobile Agent 采用三层模块化架构：
 
 | 模块 | 职责 |
 |------|------|
-| **app** | 演示壳，包含 Activity 和简单绑定，不包含业务逻辑 |
-| **agent-core** | 核心库，提供 C++ JNI 绑定和 ToolExecutor 接口 |
-| **agent-android** | Android 适配层，包含所有 Android 工具实现和工作空间管理 |
+| **app** | Android 应用，包含 UI 和工具实现 |
+| **agent** | Library 模块，提供 Java API 和 C++ 原生代码 |
+| **cxxplatform** | 独立 C++ 平台，用于测试和参考 |
 
 ### 依赖关系
 
 ```
-app → agent-android → agent-core
+app → agent
 ```
 
 ## 快速开始
@@ -93,31 +83,40 @@ app → agent-android → agent-core
 
 ```
 mobile-agent/
-├── app/                          # 演示壳模块
-│   ├── src/main/
-│   │   ├── java/.../MainActivity.kt
-│   │   ├── assets/
-│   │   └── AndroidManifest.xml
+├── app/                         # Android 应用模块
+│   └── src/main/
+│       ├── java/com/hh/agent/
+│       │   ├── MainActivity.java        # 主界面
+│       │   ├── LauncherActivity.java   # 启动页
+│       │   ├── contract/               # MVP Contract
+│       │   ├── presenter/              # 业务逻辑
+│       │   ├── ui/                    # UI 组件
+│       │   ├── tools/                 # Android 工具
+│       │   │   ├── ShowToastTool.java
+│       │   │   ├── TakeScreenshotTool.java
+│       │   │   └── ...
+│       │   ├── AndroidToolManager.java # 工具管理
+│       │   └── WorkspaceManager.java   # 工作空间
+│       ├── res/                       # 资源文件
+│       └── AndroidManifest.xml
 │
-├── agent-android/                # Android 适配层
-│   └── src/main/java/.../
-│       ├── AndroidToolManager.java
-│       ├── WorkspaceManager.java
-│       └── tool/                 # Android 工具实现
-│           ├── ShowToastTool.java
-│           ├── DisplayNotificationTool.java
-│           └── ...
+├── agent/                       # Android Library (Native)
+│   └── src/main/
+│       ├── java/com/hh/agent/library/
+│       │   ├── api/                   # API 接口
+│       │   │   ├── MobileAgentApi.java
+│       │   │   └── NativeMobileAgentApi.java
+│       │   ├── model/                # 数据模型
+│       │   └── ToolExecutor.java     # 工具接口
+│       └── cpp/                      # C++ 原生代码
+│           ├── native_agent.cpp       # JNI 入口
+│           ├── include/icraw/         # 头文件
+│           └── src/core/              # 核心实现
 │
-├── agent-core/                   # 核心库
-│   ├── src/main/
-│   │   ├── cpp/                 # C++ JNI 代码
-│   │   ├── java/                # Java 接口
-│   │   └── assets/              # 内置 Skills
-│   └── src/main/jniLibs/        # 预编译 so 库
-│
-├── docs/                         # 文档
-├── config.json.template          # 配置模板
-├── build.gradle                  # 根构建文件
+├── cxxplatform/                 # 独立 C++ 平台 (测试/参考)
+├── docs/                        # 文档
+├── config.json.template         # 配置模板
+├── build.gradle                 # 根构建文件
 └── settings.gradle
 ```
 
@@ -152,17 +151,17 @@ mobile-agent/
 
 ## 开发指南
 
-### 模块职责边界
+### 模块职责
 
-- **app**: 只负责 UI 展示和初始化，不包含任何业务逻辑
-- **agent-android**: 包含所有 Android 平台相关代码，不包含 C++
-- **agent-core**: 纯逻辑层，无 Android 依赖
+- **app**: Android 应用，包含 UI、工具实现、业务逻辑
+- **agent**: Library 模块，提供 API 接口和 C++ 原生代码
+- **cxxplatform**: 独立 C++ 实现，用于测试
 
 ### 代码风格
 
-- Java 代码使用驼峰命名
-- 包名: `com.hh.agent.{module}`
-- 遵循 Android 编码规范
+- Java: 驼峰命名，包名 `com.hh.agent`
+- C++: snake_case 文件，PascalCase 类/命名空间
+- 参考 [.planning/codebase/STRUCTURE.md](.planning/codebase/STRUCTURE.md)
 
 ## 许可证
 
