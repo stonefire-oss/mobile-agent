@@ -18,7 +18,7 @@
 **Goal:** 将 app 模块拆分为 app + agent-android，实现三层架构
 
 **Phases:**
-- [ ] Phase 1: 新增 agent-android 模块
+- [x] Phase 1: 新增 agent-android 模块 (1/1 plans)
 - [ ] Phase 2: 重命名模块 (agent → agent-core, app 简化为壳)
 - [ ] Phase 3: 代码下沉 (AndroidToolManager, WorkspaceManager, Tools → agent-android)
 - [ ] Phase 4: 启动流程梳理 (内存泄漏、主线程阻塞)
@@ -30,6 +30,9 @@
 - app 简化为接入演示壳
 - 启动流程优化
 - 完整接入文档
+
+**Plans:**
+- [x] 01-agent-android-module/01-PLAN.md — 新增 agent-android 模块
 
 </details>
 
