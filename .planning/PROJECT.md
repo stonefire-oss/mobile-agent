@@ -25,10 +25,14 @@
 - ✓ LLM → Android 调用管道 — v1.5 (shipped 2026-03-05)
 - ✓ 自定义 Skills 机制 — v1.6 (shipped 2026-03-06)
 - ✓ Agent 调用 Tools — v1.6 (shipped 2026-03-06)
+- ✓ Nanobot → MobileAgent 重命名 — v2.0 (shipped 2026-03-09)
+- ✓ 代码迁移 (平台逻辑从 agent 到 app) — v2.0 (shipped 2026-03-09)
+- ✓ 纯 Java AAR (无 Android 依赖) — v2.0 (shipped 2026-03-09)
+- ✓ JSON String API 接口 — v2.0 (shipped 2026-03-09)
 
 ### Active
 
-- [ ] v2.0: 接入真实项目 - AAR 打包 + 重构 (本里程碑)
+- [ ] v3.0: 下一里程碑（待定义）
 
 ## Current Milestone: v1.6 自定义 Skills 验证
 
@@ -42,14 +46,17 @@
 
 ## Current Milestone: v2.0 接入真实项目
 
-**Goal:** 重构代码架构，打包 AAR，清理旧代码，统一命名
+**Status:** ✓ SHIPPED 2026-03-09
 
-**Target features:**
-- 打包 agent 模块为 AAR（C++ 核心 + Android 管道 + JNI 适配）
-- 打包 app 模块为 AAR（Android 平台逻辑）
-- 清理 Vue 相关代码
-- 清理 nanobot 连接相关代码，统一重命名
-- 平台相关逻辑从 agent 上移到 app 模块
+**Delivered:**
+- Nanobot → MobileAgent 重命名完成（Java + C++）
+- 平台工具从 agent 迁移到 app 模块（6 个 Tools + AndroidToolManager）
+- agent 模块实现纯 Java AAR（无 Android 依赖）
+- Agent API 改为接收 JSON 字符串（职责分离）
+- APK 编译成功，聊天和 Android Tools 验证通过
+
+**Tech Debt:**
+- CLEAN-01~CLEAN-05 未正式验证（实际已完成）
 
 ---
 
@@ -93,6 +100,10 @@
 | 完全自主调用 | LLM 直接执行，无需用户确认 | ✓ v1.5 shipped |
 | 自定义 Skills | Agent 通过 Skill 调用 Android Tools | ✓ v1.6 shipped |
 | Skill 调用 Tool | 多步骤工具链，Tool 结果返回给 LLM | ✓ v1.6 shipped |
+| Nanobot → MobileAgent | 统一品牌命名 | ✓ v2.0 shipped |
+| 平台分离 | Tools/Manager 在 app，agent 纯 Java | ✓ v2.0 shipped |
+| Callback 接口 | AndroidToolCallback 解耦 agent/app | ✓ v2.0 shipped |
+| JSON String API | app 读取文件，agent 只接收数据 | ✓ v2.0 shipped |
 
 ---
-*Last updated: 2026-03-06 — v2.0 started*
+*Last updated: 2026-03-09 — v2.0 shipped*
