@@ -84,8 +84,7 @@
 
 | Milestone | Phase Range | Status | Completed |
 |-----------|-------------|--------|-----------|
-| v2.1 | 1 to 5 | ⏳ In Progress | — |
-| v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
+| v2.1 | 1 to 5 | 1/1 | Complete   | 2026-03-09 | v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
 | v1.6 | v16-01 to v16-02 | ✓ Complete | 2026-03-06 |
 | v1.5 | v15-01 to v15-03 | ✓ Complete | 2026-03-05 |
 | v1.4 | 1-4 | ✓ Complete | 2026-03-05 |
