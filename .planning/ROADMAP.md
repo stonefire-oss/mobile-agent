@@ -71,7 +71,7 @@
 3. 编译通过
 
 **Plans:**
-- [x] v20-03-01-PLAN.md — 迁移 tools/ 和 managers 到 app 模块
+2/2 plans complete
 - [x] v20-03-02-PLAN.md — 修复 Android 依赖 (gap closure)
 
 ---
