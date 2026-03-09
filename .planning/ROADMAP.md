@@ -19,7 +19,7 @@
 
 **Phases:**
 - [x] Phase 1: 新增 agent-android 模块 (1/1 plans)
-- [ ] Phase 2: 重命名模块 (agent → agent-core, app 简化为壳)
+- [ ] Phase 2: 重命名模块 (agent → agent-core, app 简化为壳) (1/1 plans)
 - [ ] Phase 3: 代码下沉 (AndroidToolManager, WorkspaceManager, Tools → agent-android)
 - [ ] Phase 4: 启动流程梳理 (内存泄漏、主线程阻塞)
 - [ ] Phase 5: 接入文档
@@ -33,6 +33,7 @@
 
 **Plans:**
 - [x] 01-agent-android-module/01-PLAN.md — 新增 agent-android 模块
+- [ ] 02-rename-modules/02-PLAN.md — 重命名模块 (agent → agent-core, app 简化为壳)
 
 </details>
 
@@ -84,7 +85,7 @@
 
 | Milestone | Phase Range | Status | Completed |
 |-----------|-------------|--------|-----------|
-| v2.1 | 1 to 5 | 1/1 | Complete    | 2026-03-09 | v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
+| v2.1 | 1 to 5 | 1/2 | In Progress | 2026-03-09 | v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
 | v1.6 | v16-01 to v16-02 | ✓ Complete | 2026-03-06 |
 | v1.5 | v15-01 to v15-03 | ✓ Complete | 2026-03-05 |
 | v1.4 | 1-4 | ✓ Complete | 2026-03-05 |
