@@ -94,32 +94,28 @@ app → agent-android → agent-core
 ```
 mobile-agent/
 ├── app/                          # 演示壳模块
-│   ├── build.gradle
-│   └── src/main/
-│       ├── java/.../
-│       │   └── MainActivity.kt
-│       ├── assets/
-│       │   ├── config.json       # 运行时配置
-│       │   └── tools.json        # 工具定义
-│       └── AndroidManifest.xml
+│   ├── src/main/
+│   │   ├── java/.../MainActivity.kt
+│   │   ├── assets/
+│   │   └── AndroidManifest.xml
 │
 ├── agent-android/                # Android 适配层
-│   ├── build.gradle
 │   └── src/main/java/.../
 │       ├── AndroidToolManager.java
 │       ├── WorkspaceManager.java
-│       └── tools/                # Android 工具实现
+│       └── tool/                 # Android 工具实现
 │           ├── ShowToastTool.java
 │           ├── DisplayNotificationTool.java
 │           └── ...
 │
 ├── agent-core/                   # 核心库
-│   ├── build.gradle
 │   ├── src/main/
 │   │   ├── cpp/                 # C++ JNI 代码
-│   │   └── java/                # Java 接口
-│   └── src/main/jni/
+│   │   ├── java/                # Java 接口
+│   │   └── assets/              # 内置 Skills
+│   └── src/main/jniLibs/        # 预编译 so 库
 │
+├── docs/                         # 文档
 ├── config.json.template          # 配置模板
 ├── build.gradle                  # 根构建文件
 └── settings.gradle
