@@ -13,7 +13,7 @@ progress:
 
 # STATE: Mobile Agent - C++ 移植版
 
-**Last Updated:** 2026-03-06
+**Last Updated:** 2026-03-09
 
 ---
 
@@ -30,9 +30,9 @@ progress:
 | Field | Value |
 |-------|-------|
 | Milestone | v2.0 接入真实项目 |
-| Phase | Not started (defining requirements) |
-| Status | Defining requirements |
-| Last activity: | 2026-03-06 — Milestone v2.0 started |
+| Phase | v20-03 (code migration) |
+| Status | Context gathered, ready for planning |
+| Last activity: | 2026-03-09 — Phase v20-03 context updated |
 
 ---
 
