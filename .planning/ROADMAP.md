@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- ⏳ **v2.1 架构重构** — Phases 1 to 5 (in progress)
+- ✅ **v2.1 架构重构** — Phases 1 to 5 (shipped 2026-03-09)
 - ✅ **v2.0 接入真实项目** — Phases v20-01 to v20-04 (shipped 2026-03-09)
 - ✅ **v1.6 自定义 Skills 验证** — Phases v16-01 to v16-02 (shipped 2026-03-06)
 - ✅ **v1.5 LLM → Android 调用管道** — Phases v15-01 to v15-03 (shipped 2026-03-05)
@@ -13,7 +13,7 @@
 ## v2.1 (In Progress)
 
 <details>
-<summary>⏳ v2.1 架构重构 (Phases 1 to 5) — Started 2026-03-09</summary>
+<summary>✅ v2.1 架构重构 (Phases 1 to 5) — SHIPPED 2026-03-09</summary>
 
 **Goal:** 将 app 模块拆分为 app + agent-android，实现三层架构
 
@@ -22,7 +22,7 @@
 - [x] Phase 2: 重命名模块 (agent → agent-core, app 简化为壳) (1/1 plans) (completed 2026-03-09)
 - [x] Phase 3: 代码下沉 (AndroidToolManager, WorkspaceManager, Tools → agent-android) (completed 2026-03-09)
 - [x] Phase 4: 启动流程梳理 (内存泄漏、主线程阻塞) (completed 2026-03-09)
-- [ ] Phase 5: 接入文档 (4/5 plans)
+- [x] Phase 5: 接入文档 (5/5 plans)
 
 **Key Deliverables:**
 - agent-android 模块（Android 适配层）
@@ -38,7 +38,7 @@
 - [x] 05-api-key/05-02-PLAN.md — 6 个 Tool 实现新方法
 - [x] 05-api-key/05-03-PLAN.md — AndroidToolManager 动态生成 tools.json
 - [x] 05-api-key/05-04-PLAN.md — WorkspaceManager Skills 初始化修改
-- [ ] 05-api-key/05-05-PLAN.md — 接入文档（README、API）
+- [x] 05-api-key/05-05-PLAN.md — 接入文档（README、API）
 
 </details>
 
@@ -90,7 +90,7 @@
 
 | Milestone | Phase Range | Status | Completed |
 |-----------|-------------|--------|-----------|
-| v2.1 | 1 to 5 | 3/5 | In Progress | 2026-03-09 |
+| v2.1 | 1 to 5 | ✓ Complete | 2026-03-09 |
 | v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
 | v1.6 | v16-01 to v16-02 | ✓ Complete | 2026-03-06 |
 | v1.5 | v15-01 to v15-03 | ✓ Complete | 2026-03-05 |

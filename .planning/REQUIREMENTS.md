@@ -28,9 +28,9 @@
 
 ### 接入文档
 
-- [ ] **ARCH-11**: README 文档（模块说明、依赖关系、快速开始）
-- [ ] **ARCH-12**: 接入示例（标准项目结构、config.json.template 示例）
-- [ ] **ARCH-13**: API 说明文档
+- [x] **ARCH-11**: README 文档（模块说明、依赖关系、快速开始）
+- [x] **ARCH-12**: 接入示例（标准项目结构、config.json.template 示例）
+- [x] **ARCH-13**: API 说明文档
 
 ---
 
@@ -63,9 +63,9 @@
 | ARCH-08 | Phase 4 | Pending |
 | ARCH-09 | Phase 4 | Pending |
 | ARCH-10 | Phase 4 | Pending |
-| ARCH-11 | Phase 5 | Pending |
-| ARCH-12 | Phase 5 | Pending |
-| ARCH-13 | Phase 5 | Pending |
+| ARCH-11 | Phase 5 | Complete |
+| ARCH-12 | Phase 5 | Complete |
+| ARCH-13 | Phase 5 | Complete |
 
 **Coverage:**
 - v1 requirements: 13 total
