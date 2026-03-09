@@ -31,7 +31,7 @@ project.afterEvaluate {
         android.applicationVariants.all { variant ->
             def variantName = variant.name
             def capitalizeVariant = variantName.capitalize()
-            def destDir = "${project.buildDir}/intermediates/assets/${variantName}/merge${capitalizeVariant}Assets/out"
+            def destDir = "${project.buildDir}/intermediates/assets/${variantName}/merge${capitalizeVariant}Assets"
 
             def copyTask = project.tasks.create(name: "copyConfigTemplate${capitalizeVariant}", type: Copy) {
                 from "${rootProject.projectDir}/config.json.template"

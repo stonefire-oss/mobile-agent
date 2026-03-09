@@ -22,11 +22,6 @@
             </intent-filter>
         </activity>
 
-        <!-- 原生 Java 界面 -->
-        <activity
-            android:name=".MainActivity"
-            android:exported="true" />
-
     </application>
 
 </manifest>
