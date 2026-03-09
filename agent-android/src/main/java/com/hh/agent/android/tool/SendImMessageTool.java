@@ -34,4 +34,19 @@ public class SendImMessageTool implements ToolExecutor {
             return "{\"success\": false, \"error\": \"execution_failed\", \"message\": \"" + e.getMessage() + "\"}";
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "发送即时消息";
+    }
+
+    @Override
+    public String getArgsDescription() {
+        return "contact_id: 联系人ID, message: 消息内容";
+    }
+
+    @Override
+    public String getArgsSchema() {
+        return "{\"type\":\"object\",\"properties\":{\"contact_id\":{\"type\":\"string\",\"description\":\"联系人ID\"},\"message\":{\"type\":\"string\",\"description\":\"消息内容\"}},\"required\":[\"contact_id\",\"message\"]}";
+    }
 }

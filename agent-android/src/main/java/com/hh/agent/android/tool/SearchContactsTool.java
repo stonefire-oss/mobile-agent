@@ -61,4 +61,19 @@ public class SearchContactsTool implements ToolExecutor {
             return "{\"success\": false, \"error\": \"execution_failed\", \"message\": \"" + e.getMessage() + "\"}";
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "搜索联系人";
+    }
+
+    @Override
+    public String getArgsDescription() {
+        return "query: 搜索关键字";
+    }
+
+    @Override
+    public String getArgsSchema() {
+        return "{\"type\":\"object\",\"properties\":{\"query\":{\"type\":\"string\",\"description\":\"搜索关键字\"}},\"required\":[\"query\"]}";
+    }
 }

@@ -113,4 +113,19 @@ public class TakeScreenshotTool implements ToolExecutor {
             }
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "截取当前屏幕";
+    }
+
+    @Override
+    public String getArgsDescription() {
+        return "无参数";
+    }
+
+    @Override
+    public String getArgsSchema() {
+        return "{\"type\":\"object\",\"properties\":{}}";
+    }
 }

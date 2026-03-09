@@ -43,4 +43,19 @@ public class ShowToastTool implements ToolExecutor {
             return "{\"success\": false, \"error\": \"execution_failed\", \"message\": \"" + e.getMessage() + "\"}";
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "显示 Toast 消息";
+    }
+
+    @Override
+    public String getArgsDescription() {
+        return "message: 消息内容, duration: 显示时长(0=短, 1=长)";
+    }
+
+    @Override
+    public String getArgsSchema() {
+        return "{\"type\":\"object\",\"properties\":{\"message\":{\"type\":\"string\",\"description\":\"消息内容\"},\"duration\":{\"type\":\"integer\",\"description\":\"显示时长\",\"enum\":[0,1]}},\"required\":[\"message\"]}";
+    }
 }

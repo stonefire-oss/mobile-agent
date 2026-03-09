@@ -81,4 +81,19 @@ public class DisplayNotificationTool implements ToolExecutor {
             return "{\"success\": false, \"error\": \"execution_failed\", \"message\": \"" + e.getMessage() + "\"}";
         }
     }
+
+    @Override
+    public String getDescription() {
+        return "显示系统通知";
+    }
+
+    @Override
+    public String getArgsDescription() {
+        return "title: 通知标题, content: 通知内容";
+    }
+
+    @Override
+    public String getArgsSchema() {
+        return "{\"type\":\"object\",\"properties\":{\"title\":{\"type\":\"string\",\"description\":\"通知标题\"},\"content\":{\"type\":\"string\",\"description\":\"通知内容\"}},\"required\":[\"title\",\"content\"]}";
+    }
 }

@@ -59,4 +59,19 @@ public class ReadClipboardTool implements ToolExecutor {
                 .replace("\r", "\\r")
                 .replace("\t", "\\t");
     }
+
+    @Override
+    public String getDescription() {
+        return "读取剪贴板内容";
+    }
+
+    @Override
+    public String getArgsDescription() {
+        return "无参数";
+    }
+
+    @Override
+    public String getArgsSchema() {
+        return "{\"type\":\"object\",\"properties\":{}}";
+    }
 }
