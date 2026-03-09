@@ -15,16 +15,16 @@
 
 ### 代码下沉
 
-- [ ] **ARCH-04**: AndroidToolManager 下沉到 agent-android
-- [ ] **ARCH-05**: WorkspaceManager 下沉到 agent-android
-- [ ] **ARCH-06**: 所有 Android Tools 下沉到 agent-android (ShowToast, DisplayNotification, ReadClipboard, TakeScreenshot, SearchContacts, SendImMessage)
-- [ ] **ARCH-07**: NativeMobileAgentApiAdapter 下沉到 agent-android（转为接口）
+- [x] **ARCH-04**: AndroidToolManager 下沉到 agent-android
+- [x] **ARCH-05**: WorkspaceManager 下沉到 agent-android
+- [x] **ARCH-06**: 所有 Android Tools 下沉到 agent-android (ShowToast, DisplayNotification, ReadClipboard, TakeScreenshot, SearchContacts, SendImMessage)
+- [x] **ARCH-07**: NativeMobileAgentApiAdapter 下沉到 agent-android（转为接口）
 
 ### 启动流程
 
-- [ ] **ARCH-08**: 梳理应用启动流程
-- [ ] **ARCH-09**: 检查并修复 Context 内存泄漏
-- [ ] **ARCH-10**: 检查并修复主线程阻塞问题
+- [x] **ARCH-08**: 梳理应用启动流程
+- [x] **ARCH-09**: 检查并修复 Context 内存泄漏
+- [x] **ARCH-10**: 检查并修复主线程阻塞问题
 
 ### 接入文档
 
@@ -56,13 +56,13 @@
 | ARCH-01 | Phase 1 | Complete |
 | ARCH-02 | Phase 2 | Complete |
 | ARCH-03 | Phase 2 | Complete |
-| ARCH-04 | Phase 3 | Pending |
-| ARCH-05 | Phase 3 | Pending |
-| ARCH-06 | Phase 3 | Pending |
-| ARCH-07 | Phase 3 | Pending |
-| ARCH-08 | Phase 4 | Pending |
-| ARCH-09 | Phase 4 | Pending |
-| ARCH-10 | Phase 4 | Pending |
+| ARCH-04 | Phase 3 | Complete |
+| ARCH-05 | Phase 3 | Complete |
+| ARCH-06 | Phase 3 | Complete |
+| ARCH-07 | Phase 3 | Complete |
+| ARCH-08 | Phase 4 | Complete |
+| ARCH-09 | Phase 4 | Complete |
+| ARCH-10 | Phase 4 | Complete |
 | ARCH-11 | Phase 5 | Complete |
 | ARCH-12 | Phase 5 | Complete |
 | ARCH-13 | Phase 5 | Complete |
