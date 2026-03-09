@@ -32,7 +32,7 @@ progress:
 | Milestone | v2.0 接入真实项目 |
 | Phase | v20-04 (verification) |
 | Status | Plan v20-04-01 completed |
-| Last activity: | 2026-03-09 — Verification plan v20-04-01 completed |
+| Last activity: | 2026-03-09 — Completed quick task 6: 移除 agent 模块 config-template.gradle 显式引用 |
 
 ---
 
@@ -109,6 +109,9 @@ None
 | 1 | 检查SOUL.md和USER.md有没有加载 | 2026-03-04 | - | [1-soul-md-user-md](./quick/1-soul-md-user-md/) |
 | 2 | 清理 agent 中未使用的 gradle 依赖 | 2026-03-05 | f9c095c | [2-agent-gradle](./quick/2-agent-gradle/) |
 | 3 | 整理 .planning 目录结构 | 2026-03-06 | 069b6e0 | [3-planning](./quick/3-planning/) |
+| 4 | 把拷贝config.json.template的工作，从agent模块的build.gradle中，抽到根目录单独gradle文件中。 | 2026-03-09 | 36e6ad8 | [4-config-json-template-agent-build-gradle-](./quick/4-config-json-template-agent-build-gradle-/) |
+| 5 | 扩展 config-template.gradle 支持 app 模块，并在 app/build.gradle 中引用 | 2026-03-09 | 26eaeeb | [5-quick-task-4-gradle-app](./quick/5-quick-task-4-gradle-app/) |
+| 6 | 移除 agent 模块中显式的 config-template.gradle 引用，改由 root 自动应用 | 2026-03-09 | 67996c2 | [6-quicktask-agent-gradle](./quick/6-quicktask-agent-gradle/) |
 
 ---
 
