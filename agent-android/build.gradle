@@ -29,6 +29,6 @@ android {
 }
 
 dependencies {
-    implementation project(':agent')
+    implementation project(':agent-core')
     implementation 'androidx.core:core:1.12.0'
 }
