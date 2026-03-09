@@ -1,7 +1,7 @@
 package com.hh.agent.library.api;
 
 import android.content.Context;
-import com.hh.agent.library.AndroidToolManager;
+import com.hh.agent.library.AndroidToolCallback;
 import com.hh.agent.library.NativeAgent;
 import com.hh.agent.library.model.Message;
 import com.hh.agent.library.model.Session;
@@ -20,7 +20,7 @@ public class NativeMobileAgentApi implements MobileAgentApi {
     private static NativeMobileAgentApi instance;
     private final Map<String, Session> sessions = new ConcurrentHashMap<>();
     private boolean initialized = false;
-    private AndroidToolManager toolManager;
+    private AndroidToolCallback toolCallback;
 
     private NativeMobileAgentApi() {
     }
@@ -33,6 +33,18 @@ public class NativeMobileAgentApi implements MobileAgentApi {
             instance = new NativeMobileAgentApi();
         }
         return instance;
+    }
+
+    /**
+     * 设置 Android Tool 回调实现
+     * 由 app 模块调用，注册 AndroidToolManager 实例
+     *
+     * @param callback 实现 AndroidToolCallback 接口的实例
+     */
+    public synchronized void setToolCallback(AndroidToolCallback callback) {
+        this.toolCallback = callback;
+        // Forward to NativeAgent to register with C++ layer
+        NativeAgent.registerAndroidToolCallback(callback);
     }
 
     /**
@@ -68,12 +80,6 @@ public class NativeMobileAgentApi implements MobileAgentApi {
             } catch (Exception e) {
                 throw new RuntimeException("Failed to initialize native agent: " + e.getMessage(), e);
             }
-        }
-
-        // Initialize Android Tool Manager
-        if (toolManager == null && context != null) {
-            toolManager = new AndroidToolManager(context);
-            toolManager.initialize();
         }
     }
 

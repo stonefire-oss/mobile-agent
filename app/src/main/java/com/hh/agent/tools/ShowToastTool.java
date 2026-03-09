@@ -1,4 +1,4 @@
-package com.hh.agent.library.tools;
+package com.hh.agent.tools;
 
 import android.widget.Toast;
 import com.hh.agent.library.ToolExecutor;

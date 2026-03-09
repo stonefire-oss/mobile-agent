@@ -1,13 +1,17 @@
-package com.hh.agent.library;
+package com.hh.agent;
 
 import android.content.Context;
 import android.util.Log;
-import com.hh.agent.library.tools.ShowToastTool;
-import com.hh.agent.library.tools.DisplayNotificationTool;
-import com.hh.agent.library.tools.ReadClipboardTool;
-import com.hh.agent.library.tools.TakeScreenshotTool;
-import com.hh.agent.library.tools.SearchContactsTool;
-import com.hh.agent.library.tools.SendImMessageTool;
+import com.hh.agent.tools.ShowToastTool;
+import com.hh.agent.tools.DisplayNotificationTool;
+import com.hh.agent.tools.ReadClipboardTool;
+import com.hh.agent.tools.TakeScreenshotTool;
+import com.hh.agent.tools.SearchContactsTool;
+import com.hh.agent.tools.SendImMessageTool;
+import com.hh.agent.library.AndroidToolCallback;
+import com.hh.agent.library.NativeAgent;
+import com.hh.agent.library.ToolExecutor;
+import com.hh.agent.library.api.NativeMobileAgentApi;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -49,9 +53,9 @@ public class AndroidToolManager implements AndroidToolCallback {
         loadToolsConfig();
         Log.i("AndroidToolManager", "Loaded tools config, version: " + configVersion);
 
-        // Register callback with NativeAgent
-        NativeAgent.registerAndroidToolCallback(this);
-        Log.i("AndroidToolManager", "Registered AndroidToolCallback with NativeAgent");
+        // Register callback with NativeMobileAgentApi
+        NativeMobileAgentApi.getInstance().setToolCallback(this);
+        Log.i("AndroidToolManager", "Registered AndroidToolCallback with NativeMobileAgentApi");
     }
 
     private android.app.Activity getActivity() {
