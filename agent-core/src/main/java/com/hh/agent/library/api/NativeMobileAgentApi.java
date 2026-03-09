@@ -47,6 +47,23 @@ public class NativeMobileAgentApi implements MobileAgentApi {
     }
 
     /**
+     * 设置动态生成的 tools.json
+     * 由 AndroidToolManager 在初始化时调用，传递动态生成的工具描述
+     *
+     * @param toolsJson JSON string for tools definition
+     */
+    public synchronized void setToolsJson(String toolsJson) {
+        if (toolsJson != null && !toolsJson.isEmpty()) {
+            try {
+                NativeAgent.nativeSetToolsSchema(toolsJson);
+                System.out.println("[NativeMobileAgentApi] Successfully set tools.json to native layer");
+            } catch (Exception e) {
+                System.err.println("[NativeMobileAgentApi] Failed to set tools schema: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
      * 初始化 Native Agent
      *
      * @param toolsJson JSON string for tools definition (required for tool definitions)
