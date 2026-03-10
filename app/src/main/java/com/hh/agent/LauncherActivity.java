@@ -9,8 +9,8 @@ import com.hh.agent.android.tool.ShowToastTool;
 import com.hh.agent.android.tool.DisplayNotificationTool;
 import com.hh.agent.android.tool.ReadClipboardTool;
 import com.hh.agent.android.tool.TakeScreenshotTool;
-import com.hh.agent.android.tool.SearchContactsTool;
-import com.hh.agent.android.tool.SendImMessageTool;
+import com.hh.agent.tool.SearchContactsTool;
+import com.hh.agent.tool.SendImMessageTool;
 
 /**
  * 启动界面 - 初始化 Tool 管理器并进入 AgentActivity
