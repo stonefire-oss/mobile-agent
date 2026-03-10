@@ -2,14 +2,7 @@ package com.hh.agent.android;
 
 import android.content.Context;
 import android.util.Log;
-import com.hh.agent.android.tool.ShowToastTool;
-import com.hh.agent.android.tool.DisplayNotificationTool;
-import com.hh.agent.android.tool.ReadClipboardTool;
-import com.hh.agent.android.tool.TakeScreenshotTool;
-import com.hh.agent.android.tool.SearchContactsTool;
-import com.hh.agent.android.tool.SendImMessageTool;
 import com.hh.agent.library.AndroidToolCallback;
-import com.hh.agent.library.NativeAgent;
 import com.hh.agent.library.ToolExecutor;
 import com.hh.agent.library.api.NativeMobileAgentApi;
 import org.json.JSONArray;
@@ -36,18 +29,10 @@ public class AndroidToolManager implements AndroidToolCallback {
 
     /**
      * Initialize and load tools from configuration.
+     * Note: Built-in tools are now registered via registerTool() from app layer.
      */
     public void initialize() {
         Log.i("AndroidToolManager", "Initializing AndroidToolManager");
-
-        // Register built-in tools
-        tools.put("show_toast", new ShowToastTool(getActivity()));
-        tools.put("display_notification", new DisplayNotificationTool(getActivity()));
-        tools.put("read_clipboard", new ReadClipboardTool(getActivity()));
-        tools.put("take_screenshot", new TakeScreenshotTool(getActivity()));
-        tools.put("search_contacts", new SearchContactsTool());
-        tools.put("send_im_message", new SendImMessageTool());
-        Log.i("AndroidToolManager", "Registered 6 tools: show_toast, display_notification, read_clipboard, take_screenshot, search_contacts, send_im_message");
 
         // Load tools.json from assets
         loadToolsConfig();
@@ -61,6 +46,38 @@ public class AndroidToolManager implements AndroidToolCallback {
         String toolsJson = generateToolsJson();
         NativeMobileAgentApi.getInstance().setToolsJson(toolsJson);
         Log.i("AndroidToolManager", "Generated and set tools.json to native layer");
+    }
+
+    /**
+     * Register a ToolExecutor to the tool manager.
+     * This allows app layer to dynamically register custom tools at runtime.
+     *
+     * @param executor The ToolExecutor to register
+     * @throws IllegalArgumentException if a tool with the same name is already registered
+     */
+    public void registerTool(ToolExecutor executor) {
+        if (executor == null) {
+            throw new IllegalArgumentException("ToolExecutor cannot be null");
+        }
+
+        String toolName = executor.getName();
+        if (toolName == null || toolName.trim().isEmpty()) {
+            throw new IllegalArgumentException("Tool name cannot be null or empty");
+        }
+
+        // Check for duplicate tool registration
+        if (tools.containsKey(toolName)) {
+            throw new IllegalArgumentException("Tool with name '" + toolName + "' is already registered");
+        }
+
+        // Add the tool to the registry
+        tools.put(toolName, executor);
+        Log.i("AndroidToolManager", "Registered tool: " + toolName);
+
+        // Generate and push updated tools.json to native layer
+        String toolsJson = generateToolsJson();
+        NativeMobileAgentApi.getInstance().setToolsJson(toolsJson);
+        Log.i("AndroidToolManager", "Generated and pushed tools.json after registering: " + toolName);
     }
 
     /**
