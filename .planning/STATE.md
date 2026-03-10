@@ -32,7 +32,7 @@ progress:
 | Milestone | v2.2 App 层动态注入 Android 工具 |
 | Phase | 03-tool-call |
 | Status | Completed |
-| Last activity: | 2026-03-10 — Completed quick task 9: 删除tools.json |
+| Last activity: | 2026-03-10 — Completed quick task 10: 分析如何把skills也通过上层注入 |
 
 ---
 
@@ -85,6 +85,7 @@ None
 | # | Description | Date | Commit | Directory |
 |---|-------------|------|--------|-----------|
 | 9 | 删除tools.json | 2026-03-10 | 292853f | [9-tools-json](./quick/9-tools-json/) |
+| 10 | 分析如何把skills也通过上层注入 | 2026-03-10 | | [10-skills](./quick/10-skills/) |
 
 ---
 
