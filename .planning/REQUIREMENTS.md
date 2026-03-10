@@ -16,9 +16,9 @@ App 层动态注入 Android 工具
 
 ### Tool 生命周期管理
 
-- [ ] **INJT-04**: 支持查询已注册的 Tool 列表
-- [ ] **INJT-05**: 支持注销已注册的 Tool
-- [ ] **INJT-06**: Tool 变更后主动推送给 Agent（LLM 感知）
+- [x] **INJT-04**: 支持查询已注册的 Tool 列表
+- [x] **INJT-05**: 支持注销已注册的 Tool
+- [x] **INJT-06**: Tool 变更后主动推送给 Agent（LLM 感知）
 
 ### 动态 Tool 调用
 
@@ -56,9 +56,9 @@ App 层动态注入 Android 工具
 | INJT-01 | Phase 1 | Complete |
 | INJT-02 | Phase 1 | Complete |
 | INJT-03 | Phase 1 | Complete |
-| INJT-04 | Phase 2 | Pending |
-| INJT-05 | Phase 2 | Pending |
-| INJT-06 | Phase 2 | Pending |
+| INJT-04 | Phase 2 | Complete |
+| INJT-05 | Phase 2 | Complete |
+| INJT-06 | Phase 2 | Complete |
 | INJT-07 | Phase 3 | Pending |
 | INJT-08 | Phase 3 | Pending |
 | INJT-09 | Phase 3 | Pending |

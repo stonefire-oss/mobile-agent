@@ -177,7 +177,7 @@
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Tool 注册接口 | 1/1 | Complete | 2026-03-10 |
-| 2. Tool 生命周期管理 | 1/1 | Ready to execute | - |
+| 2. Tool 生命周期管理 | 1/1 | Complete    | 2026-03-10 |
 | 3. 动态 Tool 调用与验证 | 0/TBD | Not started | - |
 
 ---

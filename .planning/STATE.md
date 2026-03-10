@@ -3,12 +3,12 @@ gsd_state_version: 1.0
 milestone: v2.2
 milestone_name: milestone
 status: unknown
-last_updated: "2026-03-10T02:26:46.239Z"
+last_updated: "2026-03-10T02:40:42.794Z"
 progress:
   total_phases: 3
-  completed_phases: 1
-  total_plans: 1
-  completed_plans: 1
+  completed_phases: 2
+  total_plans: 2
+  completed_plans: 2
 ---
 
 # STATE: Mobile Agent - v2.2 App 层动态注入 Android 工具
@@ -102,6 +102,7 @@ None
 | v1.6 Phases | 2 (shipped) |
 
 ---
+| Phase 02-tool-lifecycle P02 | 30 | 3 tasks | 1 files |
 
 ## Roadmap Evolution
 
