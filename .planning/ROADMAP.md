@@ -33,7 +33,7 @@
 
 **Plans**: 1 plan
 
-- [ ] 01-tool-register/01-PLAN.md — 添加 registerTool() 接口，内置 Tool 迁移到 app 层
+- [x] 01-tool-register/01-PLAN.md — 添加 registerTool() 接口，内置 Tool 迁移到 app 层
 
 ---
 
@@ -56,7 +56,9 @@
   3. Tool 变更后主动推送给 Agent，LLM 能感知到新增/移除的 Tool
   4. 提供批量操作接口，避免频繁刷新
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+- [ ] 02-tool-lifecycle/02-PLAN.md — 添加查询、注销和批量操作接口
 
 ---
 
@@ -174,8 +176,8 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Tool 注册接口 | 1/1 | Ready to execute | - |
-| 2. Tool 生命周期管理 | 0/TBD | Not started | - |
+| 1. Tool 注册接口 | 1/1 | Complete | 2026-03-10 |
+| 2. Tool 生命周期管理 | 1/1 | Ready to execute | - |
 | 3. 动态 Tool 调用与验证 | 0/TBD | Not started | - |
 
 ---
