@@ -68,6 +68,7 @@ progress:
 ### Recent Changes
 
 - 2026-03-10: v2.2 started - Creating roadmap
+- 2026-03-10: Phase 1 context captured - Tool registration interface decisions
 - 2026-03-09: v2.1 shipped - 架构重构完成
 
 ### Blockers
@@ -84,7 +85,7 @@ None
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 1 | Tool 注册接口 | INJT-01, INJT-02, INJT-03 | Not started |
+| 1 | Tool 注册接口 | INJT-01, INJT-02, INJT-03 | Context ready |
 | 2 | Tool 生命周期管理 | INJT-04, INJT-05, INJT-06 | Not started |
 | 3 | 动态 Tool 调用与验证 | INJT-07, INJT-08, INJT-09, INJT-10, INJT-11 | Not started |
 
