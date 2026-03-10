@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- 🚧 **v2.3 [Current Milestone]** — (planning)
+- 🚧 **v2.3 语音转文字** — Phases 1 to 3 (planning)
 - ✅ **v2.2 App 层动态注入 Android 工具** — Phases 1 to 3 (shipped 2026-03-10)
 - ✅ **v2.1 架构重构** — Phases 1 to 5 (shipped 2026-03-09)
 - ✅ **v2.0 接入真实项目** — Phases v20-01 to v20-04 (shipped 2026-03-09)
@@ -18,13 +18,13 @@
 
 ### Phases
 
-- [ ] **Phase 4: 语音按钮 UI** - 在输入框右侧添加语音按钮
-- [ ] **Phase 5: 语音交互逻辑** - 按压录音、实时转写、松手结束
-- [ ] **Phase 6: 语音能力接入** - 接口定义与注入
+- [ ] **Phase 1: 语音按钮 UI** - 在输入框右侧添加语音按钮
+- [ ] **Phase 2: 语音交互逻辑** - 按压录音、实时转写、松手结束
+- [ ] **Phase 3: 语音能力接入** - 接口定义与注入
 
 ---
 
-### Phase 4: 语音按钮 UI
+### Phase 1: 语音按钮 UI
 
 **Goal:** 在聊天界面添加语音按钮，用户可以看到并控制语音功能
 
@@ -42,11 +42,11 @@
 
 ---
 
-### Phase 5: 语音交互逻辑
+### Phase 2: 语音交互逻辑
 
 **Goal:** 用户可以通过按压按钮进行语音输入，系统实时返回转写结果
 
-**Depends on:** Phase 4
+**Depends on:** Phase 1
 
 **Requirements:** VT-04, VT-05, VT-06
 
@@ -60,11 +60,11 @@
 
 ---
 
-### Phase 6: 语音能力接入
+### Phase 3: 语音能力接入
 
 **Goal:** agent-android 提供语音转文字接口，上层 app 可注入具体实现
 
-**Depends on:** Phase 5
+**Depends on:** Phase 2
 
 **Requirements:** VT-07, VT-08
 
@@ -82,9 +82,9 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 4 - 语音按钮 UI | 0/3 | Not started | - |
-| 5 - 语音交互逻辑 | 0/3 | Not started | - |
-| 6 - 语音能力接入 | 0/3 | Not started | - |
+| 1 - 语音按钮 UI | 0/1 | Not started | - |
+| 2 - 语音交互逻辑 | 0/1 | Not started | - |
+| 3 - 语音能力接入 | 0/1 | Not started | - |
 
 ---
 

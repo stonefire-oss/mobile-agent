@@ -37,14 +37,14 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| VT-01 | Phase 4 | Pending |
-| VT-02 | Phase 4 | Pending |
-| VT-03 | Phase 4 | Pending |
-| VT-04 | Phase 5 | Pending |
-| VT-05 | Phase 5 | Pending |
-| VT-06 | Phase 5 | Pending |
-| VT-07 | Phase 6 | Pending |
-| VT-08 | Phase 6 | Pending |
+| VT-01 | Phase 1 | Pending |
+| VT-02 | Phase 1 | Pending |
+| VT-03 | Phase 1 | Pending |
+| VT-04 | Phase 2 | Pending |
+| VT-05 | Phase 2 | Pending |
+| VT-06 | Phase 2 | Pending |
+| VT-07 | Phase 3 | Pending |
+| VT-08 | Phase 3 | Pending |
 
 **Coverage:**
 - v1 requirements: 8 total

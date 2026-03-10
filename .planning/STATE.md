@@ -30,7 +30,7 @@ progress:
 | Field | Value |
 |-------|-------|
 | Milestone | v2.3 语音转文字 |
-| Phase | Planning (4 phases defined) |
+| Phase | Planning (3 phases defined) |
 | Status | Defining requirements |
 | Last activity: | 2026-03-10 — Roadmap created |
 
@@ -63,9 +63,9 @@ None
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 4 | 语音按钮 UI | VT-01, VT-02, VT-03 | Not started |
-| 5 | 语音交互逻辑 | VT-04, VT-05, VT-06 | Not started |
-| 6 | 语音能力接入 | VT-07, VT-08 | Not started |
+| 1 | 语音按钮 UI | VT-01, VT-02, VT-03 | Not started |
+| 2 | 语音交互逻辑 | VT-04, VT-05, VT-06 | Not started |
+| 3 | 语音能力接入 | VT-07, VT-08 | Not started |
 
 ---
 
