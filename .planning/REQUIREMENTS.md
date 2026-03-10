@@ -18,7 +18,7 @@ App 层动态注入 Android 工具
 
 - [ ] **INJT-04**: 支持查询已注册的 Tool 列表
 - [ ] **INJT-05**: 支持注销已注册的 Tool
-- [ ] **INJT-06**: Tool 注册信息可以在 tools.json 中声明（静态）
+- [ ] **INJT-06**: Tool 变更后主动推送给 Agent（LLM 感知）
 
 ### 动态 Tool 调用
 
@@ -28,8 +28,8 @@ App 层动态注入 Android 工具
 
 ### 示例验证
 
-- [ ] **INJT-10**: 提供 CustomToastTool 示例（App 层注册）
-- [ ] **INJT-11**: 验证 CustomToastTool 可以被 Agent 正常调用
+- [ ] **INJT-10**: 将 SearchContactsTool 和 SendImMessageTool 迁移到 app 层注册
+- [ ] **INJT-11**: 验证 SearchContactsTool 和 SendImMessageTool 可以被 Agent 正常调用
 
 ---
 

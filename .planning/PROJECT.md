@@ -92,4 +92,4 @@
 | JSON String API | app 读取文件，agent 只接收数据 | ✓ v2.0 shipped |
 
 ---
-*Last updated: 2026-03-09 — v2.1 shipped*
+*Last updated: 2026-03-10 — v2.2 started*

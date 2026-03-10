@@ -37,16 +37,22 @@
 
 ### Phase 2: Tool 生命周期管理
 
-**Goal**: 支持 Tool 的查询、注销和静态声明
+**Goal**: 支持 Tool 的查询、注销，并确保变更能主动推送给 Agent（LLM）
 
-**Depends on**: Phase 6
+**Depends on**: Phase 1
 
 **Requirements**: INJT-04, INJT-05, INJT-06
 
+**Design Decisions**:
+- 批量操作优化：提供 `registerTools(Map)` 和 `unregisterTools(List)` 接口，一次性注册/注销多个 Tool 后只刷新一次 tools.json
+- 主动推送机制：Tool 变更后立即调用 `generateToolsJson()` + `NativeMobileAgentApi.setToolsJson()` 推送到 native 层，使 LLM 感知变更
+- 静态声明：仅使用动态生成，assets/tools.json 不再需要
+
 **Success Criteria** (what must be TRUE):
-  1. App 层可以查询已注册的所有 Tool 列表
-  2. App 层可以注销已注册的 Tool（通过 Tool 名称）
-  3. Tool 注册信息可以在 tools.json 中声明（静态注册），应用启动时自动加载
+  1. App 层可以查询已注册的所有 Tool 列表（getToolNames）
+  2. App 层可以注销已注册的 Tool（支持内置和自定义 Tool）
+  3. Tool 变更后主动推送给 Agent，LLM 能感知到新增/移除的 Tool
+  4. 提供批量操作接口，避免频繁刷新
 
 **Plans**: TBD
 
@@ -56,16 +62,19 @@
 
 **Goal**: Agent 能够调用通过 App 层注册的 Tool，完成示例验证
 
-**Depends on**: Phase 7
+**Depends on**: Phase 2
 
 **Requirements**: INJT-07, INJT-08, INJT-09, INJT-10, INJT-11
+
+**Design Decisions**:
+- 验证对象选择：将 SearchContactsTool 和 SendImMessageTool 从 agent-android 迁移到 app 层，作为验证内置 Tool 迁移到 app 层的示例
 
 **Success Criteria** (what must be TRUE):
   1. Agent 可以调用通过 App 层注册的 Tool（通过 Tool 名称）
   2. Tool 执行结果可以返回给 Agent（LLM）
   3. 自定义 Tool 与内置 Tool 使用相同的调用通道（无差异）
-  4. 提供 CustomToastTool 示例，展示 App 层注册的完整流程
-  5. 验证 CustomToastTool 可以被 Agent 正常调用并返回结果
+  4. SearchContactsTool 和 SendImMessageTool 从 agent-android 迁移到 app 层注册
+  5. 验证 SearchContactsTool 和 SendImMessageTool 可以被 Agent 正常调用并返回结果
 
 **Plans**: TBD
 
