@@ -86,6 +86,7 @@ None
 |---|-------------|------|--------|-----------|
 | 9 | 删除tools.json | 2026-03-10 | 292853f | [9-tools-json](./quick/9-tools-json/) |
 | 10 | 分析如何把skills也通过上层注入 | 2026-03-10 | | [10-skills](./quick/10-skills/) |
+| 11 | 更新android-tool-extension.md并新增skills接入文档 | 2026-03-10 | f07df74 | [11-android-tool-extension-md-skills](./quick/11-android-tool-extension-md-skills/) |
 
 ---
 
