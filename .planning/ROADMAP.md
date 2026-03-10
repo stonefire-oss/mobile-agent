@@ -2,7 +2,7 @@
 
 ## Milestones
 
-- 🚧 **v2.3 [Next Milestone]** — (planning)
+- 🚧 **v2.3 [Current Milestone]** — (planning)
 - ✅ **v2.2 App 层动态注入 Android 工具** — Phases 1 to 3 (shipped 2026-03-10)
 - ✅ **v2.1 架构重构** — Phases 1 to 5 (shipped 2026-03-09)
 - ✅ **v2.0 接入真实项目** — Phases v20-01 to v20-04 (shipped 2026-03-09)
@@ -12,101 +12,79 @@
 
 ---
 
-## v2.3 (Next)
+## v2.3 (Current)
 
-*Planning phase - use /gsd:new-milestone to define requirements*
+**Goal:** 在聊天界面添加语音输入能力，实现按压说话、实时语音转文字功能
 
----
+### Phases
 
-## v2.2 (Shipped)
-
-<details>
-<summary>✅ v2.2 App 层动态注入 Android 工具 (Phases 1 to 3) — SHIPPED 2026-03-10</summary>
-
-**Goal:** 实现 app 层可动态注册自定义 Tool 到 AndroidToolManager，使 app 层能够扩展 Android 能力。
-
-**Phases:**
-- [x] Phase 1: Tool 注册接口 (1/1 plans) — completed 2026-03-10
-- [x] Phase 2: Tool 生命周期管理 (1/1 plans) — completed 2026-03-10
-- [x] Phase 3: 动态 Tool 调用与验证 (1/1 plans) — completed 2026-03-10
-
-**Key Deliverables:**
-- App 层 registerTool() 动态注册接口
-- Tool 生命周期管理（查询、注销、批量操作、主动推送）
-- SearchContactsTool 和 SendImMessageTool 迁移到 app 层
-- 删除静态 assets/tools.json，改用动态生成
-
-**See:** [.planning/milestones/v2.2-ROADMAP.md](./milestones/v2.2-ROADMAP.md)
-
-</details>
+- [ ] **Phase 4: 语音按钮 UI** - 在输入框右侧添加语音按钮
+- [ ] **Phase 5: 语音交互逻辑** - 按压录音、实时转写、松手结束
+- [ ] **Phase 6: 语音能力接入** - 接口定义与注入
 
 ---
 
-## v2.1 (Shipped)
+### Phase 4: 语音按钮 UI
 
-<details>
-<summary>✅ v2.1 架构重构 (Phases 1 to 5) — SHIPPED 2026-03-09</summary>
+**Goal:** 在聊天界面添加语音按钮，用户可以看到并控制语音功能
 
-**Goal:** 将 app 模块拆分为 app + agent-android，实现三层架构
+**Depends on:** Nothing (first phase)
 
-**Phases:**
-- [x] Phase 1: 新增 agent-android 模块 (1/1 plans)
-- [x] Phase 2: 重命名模块 (1/1 plans) — completed 2026-03-09
-- [x] Phase 3: 代码下沉 (completed 2026-03-09)
-- [x] Phase 4: 启动流程梳理 (completed 2026-03-09)
-- [x] Phase 5: 接入文档 (5/5 plans)
+**Requirements:** VT-01, VT-02, VT-03
 
-**Key Deliverables:**
-- agent-android 模块（Android 适配层）
-- agent-core 模块（纯 Java 核心）
-- app 简化为接入演示壳
+**Success Criteria** (what must be TRUE):
 
-**See:** [.planning/milestones/v2.1-ROADMAP.md](./milestones/v2.1-ROADMAP.md)
+1. 用户可以在输入框右侧看到语音按钮（当语音功能开启时）
+2. 按钮顺序为 etMessage → btnVoice → btnSend，符合视觉布局
+3. 按钮在 app 关闭语音功能时默认隐藏，开启时显示
 
-</details>
+**Plans:** TBD
 
 ---
 
-## v2.0 (Shipped)
+### Phase 5: 语音交互逻辑
 
-<details>
-<summary>✅ v2.0 接入真实项目 (Phases v20-01 to v20-04) — SHIPPED 2026-03-09</summary>
+**Goal:** 用户可以通过按压按钮进行语音输入，系统实时返回转写结果
 
-- [x] Phase v20-01: 代码清理
-- [x] Phase v20-02: 重命名 — completed 2026-03-06
-- [x] Phase v20-03: 代码迁移 — completed 2026-03-09
-- [x] Phase v20-04: 验证 — completed 2026-03-09
+**Depends on:** Phase 4
 
-**See:** [.planning/milestones/v2.0-ROADMAP.md](./milestones/v2.0-ROADMAP.md)
+**Requirements:** VT-04, VT-05, VT-06
 
-</details>
+**Success Criteria** (what must be TRUE):
+
+1. 用户按压语音按钮时，界面显示录音动画提示，语音识别开始
+2. 用户讲话过程中，语音转文字工具实时返回识别结果（完整文本），实时更新到输入框
+3. 用户松手时，录音动画结束，语音识别停止
+
+**Plans:** TBD
 
 ---
 
-## v1.6 (Shipped)
+### Phase 6: 语音能力接入
 
-<details>
-<summary>✅ v1.6 自定义 Skills 验证 (Phases v16-01 to v16-02) — SHIPPED 2026-03-06</summary>
+**Goal:** agent-android 提供语音转文字接口，上层 app 可注入具体实现
 
-- [x] Phase v16-01: 自定义 Skills 机制 — completed 2026-03-06
-- [x] Phase v16-02: Agent 调用 Tools — completed 2026-03-06
+**Depends on:** Phase 5
 
-**See:** [.planning/milestones/v1.6-ROADMAP.md](./milestones/v1.6-ROADMAP.md)
+**Requirements:** VT-07, VT-08
 
-</details>
+**Success Criteria** (what must be TRUE):
+
+1. agent-android 提供 IVoiceToText 接口定义，包含语音识别能力
+2. 上层 app 模块可以通过接口注入语音转文字能力实现
+3. 注入的实现能够正确回调识别结果到 UI 层
+
+**Plans:** TBD
 
 ---
 
 ## Progress
 
-| Milestone | Phase Range | Status | Completed |
-|-----------|-------------|--------|-----------|
-| v2.2 | 1 to 3 | ✓ Complete | 2026-03-10 |
-| v2.1 | 1 to 5 | ✓ Complete | 2026-03-09 |
-| v2.0 | v20-01 to v20-04 | ✓ Complete | 2026-03-09 |
-| v1.6 | v16-01 to v16-02 | ✓ Complete | 2026-03-06 |
-| v1.5 | v15-01 to v15-03 | ✓ Complete | 2026-03-05 |
-| v1.4 | 1-4 | ✓ Complete | 2026-03-05 |
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 4 - 语音按钮 UI | 0/3 | Not started | - |
+| 5 - 语音交互逻辑 | 0/3 | Not started | - |
+| 6 - 语音能力接入 | 0/3 | Not started | - |
 
 ---
 
