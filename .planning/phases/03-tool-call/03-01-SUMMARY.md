@@ -80,9 +80,9 @@ None
 
 ## Checkpoint Status
 
-**Pending: 运行时验证 (INJT-11)**
-- Task 4 是 checkpoint:human-verify，需要用户手动验证
-- 安装 APK 后测试 Agent 调用 Tool
+**Verified: 运行时验证已通过 (INJT-11)**
+- Task 4 是 checkpoint:human-verify，用户已批准验证结果
+- APK 安装后 Agent 成功调用 Tool
 
 ## Next Phase Readiness
 - Tool 迁移完成，编译通过
