@@ -31,7 +31,9 @@
   2. 注册的 Tool 可以在应用运行期间动态添加，无需重启
   3. Tool 注册时需要提供名称、描述和执行器，三者缺一不可
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+- [ ] 01-tool-register/01-PLAN.md — 添加 registerTool() 接口，内置 Tool 迁移到 app 层
 
 ---
 
@@ -173,7 +175,7 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Tool 注册接口 | 0/TBD | Not started | - |
+| 1. Tool 注册接口 | 1/1 | Ready to execute | - |
 | 2. Tool 生命周期管理 | 0/TBD | Not started | - |
 | 3. 动态 Tool 调用与验证 | 0/TBD | Not started | - |
 
