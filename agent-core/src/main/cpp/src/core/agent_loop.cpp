@@ -79,7 +79,10 @@ std::vector<Message> AgentLoop::process_message(const std::string& message,
     
     // Agent loop
     int iteration = 0;
+    auto loop_start_time = std::chrono::steady_clock::now();
+    ICRAW_LOG_DEBUG("[AGENT_LOOP] Starting agent loop (non-stream), max_iterations={}", max_iterations_);
     while (iteration < max_iterations_ && !stop_requested_) {
+        auto iter_start_time = std::chrono::steady_clock::now();
         iteration++;
         
         // Call LLM
@@ -109,6 +112,11 @@ std::vector<Message> AgentLoop::process_message(const std::string& message,
         new_messages.push_back(assistant_msg);
         request.messages.push_back(assistant_msg);
         
+        // Log iteration timing before decision (ensures log even when breaking)
+        auto iter_end_time = std::chrono::steady_clock::now();
+        auto iter_duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(iter_end_time - iter_start_time).count();
+        ICRAW_LOG_INFO("[LOOP] Iteration {} - {}ms", iteration, iter_duration_ms);
+
         // Check if we're done
         if (response.tool_calls.empty() || response.finish_reason == "end_turn") {
             break;
@@ -127,7 +135,11 @@ std::vector<Message> AgentLoop::process_message(const std::string& message,
             request.messages.push_back(tool_msg);
         }
     }
-    
+
+    auto loop_end_time = std::chrono::steady_clock::now();
+    auto loop_duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(loop_end_time - loop_start_time).count();
+    ICRAW_LOG_INFO("[LOOP] Full loop - {}ms ({} iterations)", loop_duration_ms, iteration);
+
     return new_messages;
 }
 
