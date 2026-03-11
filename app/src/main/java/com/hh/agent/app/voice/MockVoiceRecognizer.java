@@ -1,4 +1,4 @@
-package com.hh.agent.android.voice;
+package com.hh.agent.app.voice;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -7,7 +7,7 @@ import android.os.Looper;
  * Mock 语音识别器实现
  * 用于测试和开发，模拟实时转写更新
  */
-public class MockVoiceRecognizer implements IVoiceRecognizer {
+public class MockVoiceRecognizer implements com.hh.agent.android.voice.IVoiceRecognizer {
 
     private static final String[] MOCK_RESULTS = {
         "你", "你好", "你好，", "你好，今", "你好，今天",
