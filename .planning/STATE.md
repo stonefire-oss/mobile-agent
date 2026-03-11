@@ -31,8 +31,8 @@ progress:
 |-------|-------|
 | Milestone | v2.3 语音转文字 |
 | Phase | 2 (语音交互逻辑) |
-| Status | Context gathered |
-| Last activity: | 2026-03-11 — Phase 2 context gathered |
+| Status | Plan 2 completed |
+| Last activity: | 2026-03-11 — Phase 2 Plan 2 completed |
 
 ---
 
@@ -40,6 +40,7 @@ progress:
 
 ### Recent Changes
 
+- 2026-03-11: Phase 2 Plan 2 completed - 按压说话交互流程
 - 2026-03-11: Phase 2 context gathered - 语音交互逻辑
 - 2026-03-11: Phase 1 completed - 语音按钮 UI
 - 2026-03-10: v2.3 started - 语音转文字功能
@@ -69,7 +70,7 @@ None
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
 | 1 | 语音按钮 UI | VT-01, VT-02, VT-03 | Completed |
-| 2 | 语音交互逻辑 | VT-04, VT-05, VT-06 | Context gathered |
+| 2 | 语音交互逻辑 | VT-04, VT-05, VT-06 | Plan 2 completed |
 | 3 | 语音能力接入 | VT-07, VT-08 | Not started |
 
 ---
