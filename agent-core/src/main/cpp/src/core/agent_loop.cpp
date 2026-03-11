@@ -80,7 +80,7 @@ std::vector<Message> AgentLoop::process_message(const std::string& message,
     // Agent loop
     int iteration = 0;
     auto loop_start_time = std::chrono::steady_clock::now();
-    ICRAW_LOG_DEBUG("[AGENT_LOOP] Starting agent loop (non-stream), max_iterations={}", max_iterations_);
+    ICRAW_LOG_DEBUG("[LOOP] Starting agent loop (non-stream), max_iterations={}", max_iterations_);
     while (iteration < max_iterations_ && !stop_requested_) {
         auto iter_start_time = std::chrono::steady_clock::now();
         iteration++;
@@ -182,11 +182,11 @@ std::vector<Message> AgentLoop::process_message_stream(const std::string& messag
     // Agent loop
     int iteration = 0;
     auto loop_start_time = std::chrono::steady_clock::now();
-    ICRAW_LOG_DEBUG("[AGENT_LOOP] Starting agent loop, max_iterations={}", max_iterations_);
+    ICRAW_LOG_DEBUG("[LOOP] Starting agent loop, max_iterations={}", max_iterations_);
     while (iteration < max_iterations_ && !stop_requested_) {
         iteration++;
         auto iter_start_time = std::chrono::steady_clock::now();
-        ICRAW_LOG_DEBUG("[AGENT_LOOP] Iteration {} started", iteration);
+        ICRAW_LOG_DEBUG("[LOOP] Iteration {} started", iteration);
         
         // Reset state for this iteration
         last_finish_reason_.clear();
@@ -198,7 +198,7 @@ std::vector<Message> AgentLoop::process_message_stream(const std::string& messag
         std::vector<ToolCall> final_tool_calls;
         bool stream_complete = false;
         
-        ICRAW_LOG_DEBUG("[AGENT_LOOP] Starting chat_completion_stream for iteration {}", iteration);
+        ICRAW_LOG_DEBUG("[LOOP] Starting chat_completion_stream for iteration {}", iteration);
         
         // Stream LLM response
         llm_provider_->chat_completion_stream(request, 
@@ -215,7 +215,7 @@ std::vector<Message> AgentLoop::process_message_stream(const std::string& messag
                 
                 // When stream ends, StreamParser provides complete tool calls
                 if (chunk.is_stream_end) {
-                    ICRAW_LOG_DEBUG("[AGENT_LOOP] Stream end: finish_reason='{}', tool_calls={}", 
+                    ICRAW_LOG_DEBUG("[LOOP] Stream end: finish_reason='{}', tool_calls={}", 
                         chunk.finish_reason, chunk.tool_calls.size());
                     stream_complete = true;
                     final_tool_calls = chunk.tool_calls;  // Already accumulated by StreamParser
@@ -228,7 +228,7 @@ std::vector<Message> AgentLoop::process_message_stream(const std::string& messag
                 }
             });
         
-        ICRAW_LOG_DEBUG("[AGENT_LOOP] Stream complete: stream_complete={}, text_len={}, tool_calls={}", 
+        ICRAW_LOG_DEBUG("[LOOP] Stream complete: stream_complete={}, text_len={}, tool_calls={}", 
             stream_complete, accumulated_text.length(), final_tool_calls.size());
         
         // === Deferred Processing ===
@@ -399,7 +399,7 @@ std::vector<Message> AgentLoop::process_message_stream(const std::string& messag
     auto loop_duration_ms = std::chrono::duration_cast<std::chrono::milliseconds>(loop_end_time - loop_start_time).count();
     ICRAW_LOG_INFO("[LOOP] Full loop - {}ms ({} iterations)", loop_duration_ms, iteration);
 
-    ICRAW_LOG_DEBUG("[AGENT_LOOP] Loop ended, iteration={}, total_messages={}",
+    ICRAW_LOG_DEBUG("[LOOP] Loop ended, iteration={}, total_messages={}",
         iteration, new_messages.size());
 
     return new_messages;
