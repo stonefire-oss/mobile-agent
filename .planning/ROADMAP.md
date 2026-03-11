@@ -18,7 +18,7 @@
 
 ### Phases
 
-- [ ] **Phase 1: 语音按钮 UI** - 在输入框右侧添加语音按钮
+- [x] **Phase 1: 语音按钮 UI** - 在输入框右侧添加语音按钮 (Plan 1 completed)
 - [ ] **Phase 2: 语音交互逻辑** - 按压录音、实时转写、松手结束
 - [ ] **Phase 3: 语音能力接入** - 接口定义与注入
 
@@ -38,7 +38,7 @@
 2. 按钮顺序为 etMessage → btnVoice → btnSend，符合视觉布局
 3. 按钮在 app 关闭语音功能时默认隐藏，开启时显示
 
-**Plans:** TBD
+**Plans:** 1/1 completed (Plan 1: 语音按钮 UI)
 
 ---
 
@@ -82,10 +82,10 @@
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1 - 语音按钮 UI | 0/1 | Not started | - |
+| 1 - 语音按钮 UI | 1/1 | Completed | 2026-03-11 |
 | 2 - 语音交互逻辑 | 0/1 | Not started | - |
 | 3 - 语音能力接入 | 0/1 | Not started | - |
 
 ---
 
-*Roadmap updated: 2026-03-10*
+*Roadmap updated: 2026-03-11*
