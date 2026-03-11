@@ -38,19 +38,19 @@
 - ✓ App 层 Tool 动态注册接口 — v2.2 (shipped 2026-03-10)
 - ✓ Tool 生命周期管理 — v2.2 (shipped 2026-03-10)
 - ✓ 动态 Tool 调用与验证 — v2.2 (shipped 2026-03-10)
+- ✓ 语音按钮 UI — v2.3 (shipped 2026-03-11)
+- ✓ 按压说话交互 — v2.3 (shipped 2026-03-11)
+- ✓ 实时语音转文字 — v2.3 (shipped 2026-03-11)
+- ✓ 语音能力依赖注入 — v2.3 (shipped 2026-03-11)
+- ✓ Android 录音权限处理 — v2.3 (shipped 2026-03-11)
 
 ### Active
 
 暂无
 
-## Current Milestone: v2.3 语音转文字
+## Current Milestone: v2.4 (待规划)
 
-**Goal:** 在聊天界面添加语音输入能力，实现按压说话、实时语音转文字功能
-
-**Target features:**
-- UI: 在输入框右侧添加语音按钮，仅在开启语音功能时显示
-- 交互: 按压按钮开始录音，实时返回语音转文字结果，松手结束
-- 能力接入: 通过接口注入语音转文字能力，由上层 app 提供实现
+**Goal:** 待定义
 
 ## Context
 
@@ -96,4 +96,4 @@
 | 语音转文字接口注入 | 语音能力由上层 app 通过接口注入 | — v2.3 planning |
 
 ---
-*Last updated: 2026-03-10 — v2.3 started*
+*Last updated: 2026-03-11 — v2.3 shipped*
