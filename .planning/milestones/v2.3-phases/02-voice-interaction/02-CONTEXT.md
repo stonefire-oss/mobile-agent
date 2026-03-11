@@ -22,13 +22,15 @@
 - 符合用户直觉，节省电量
 
 ### 录音动画效果
-- **图标动画**: 按钮图标变为波形动画，直观显示录音状态
-- 与 Phase 1 预留的点击监听器对接
+- **图标切换**: 录音时切换为波形图标，停止后恢复麦克风图标
+- 创建 `ic_mic_recording.xml` drawable
+- 使用 `setImageResource()` 切换图标
 
 ### 语音识别实现
-- **系统 SpeechRecognizer**: Android 内置免费识别
-- 无需额外集成第三方 SDK
-- 注意: 需要处理 ONLINE_RECOGNITION 权限
+- **系统 SpeechRecognizer**: Android 内置 API
+- **识别模式**: ONLINE_RECOGNITION (需要网络)
+- **结果处理**: 使用 onPartialResults 实时显示识别内容
+- **权限处理**: 运行时请求 RECORD_AUDIO 权限
 
 ### 转写更新策略
 - **实时更新到输入框**: 识别到的文字实时显示在 etMessage 中
