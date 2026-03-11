@@ -273,13 +273,17 @@ void ToolRegistry::set_base_path(const std::string& path) {
 }
 
 void ToolRegistry::register_tools_from_schema(const nlohmann::json& schema) {
+    ICRAW_LOG_INFO("[TOOL] register_tools_from_schema: Received schema, tools count: {}",
+            schema.contains("tools") && schema["tools"].is_array() ? schema["tools"].size() : 0);
+
     if (!schema.contains("tools") || !schema["tools"].is_array()) {
         ICRAW_LOG_WARN("[TOOL] register_tools_from_schema: No 'tools' array in schema");
         return;
     }
 
     const auto& tools = schema["tools"];
-    for (const auto& tool : tools) {
+    for (size_t i = 0; i < tools.size(); i++) {
+        const auto& tool = tools[i];
         if (!tool.contains("type") || !tool.contains("function")) {
             ICRAW_LOG_WARN("[TOOL] register_tools_from_schema: Skipping invalid tool entry");
             continue;
@@ -293,6 +297,8 @@ void ToolRegistry::register_tools_from_schema(const nlohmann::json& schema) {
         ToolSchema tool_schema;
         tool_schema.name = function.value("name", "");
         tool_schema.description = function.value("description", "");
+        ICRAW_LOG_DEBUG("[TOOL] register_tools_from_schema: Processing tool index={}, name='{}', has_name={}",
+                i, tool_schema.name, function.contains("name"));
 
         // Extract parameters from the function's parameters object
         if (function.contains("parameters") && function["parameters"].is_object()) {
@@ -305,6 +311,8 @@ void ToolRegistry::register_tools_from_schema(const nlohmann::json& schema) {
             };
         }
 
+        // Trim whitespace and check if name is empty
+        tool_schema.name.erase(remove_if(tool_schema.name.begin(), tool_schema.name.end(), ::isspace), tool_schema.name.end());
         if (tool_schema.name.empty()) {
             ICRAW_LOG_WARN("[TOOL] register_tools_from_schema: Skipping tool with empty name");
             continue;
