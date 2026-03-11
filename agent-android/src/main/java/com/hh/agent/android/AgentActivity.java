@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.hh.agent.android.contract.MainContract;
 import com.hh.agent.android.voice.IVoiceRecognizer;
-import com.hh.agent.android.voice.MockVoiceRecognizer;
+import com.hh.agent.android.voice.VoiceRecognizerHolder;
 import com.hh.agent.library.model.Message;
 import com.hh.agent.android.presenter.MainPresenter;
 import com.hh.agent.android.presenter.NativeMobileAgentApiAdapter;
@@ -32,7 +32,6 @@ public class AgentActivity extends AppCompatActivity implements MainContract.Vie
     private Toolbar toolbar;
     private MessageAdapter adapter;
     private MainPresenter presenter;
-    private IVoiceRecognizer voiceRecognizer;
     private boolean isRecording = false;
 
     @Override
@@ -61,8 +60,7 @@ public class AgentActivity extends AppCompatActivity implements MainContract.Vie
         btnSend = findViewById(R.id.btnSend);
         btnVoice = findViewById(R.id.btnVoice);
 
-        // 初始化语音识别器
-        voiceRecognizer = new MockVoiceRecognizer();
+        // 设置语音按钮监听器
         setupVoiceButtonListener();
 
         // 设置 Toolbar
@@ -97,18 +95,23 @@ public class AgentActivity extends AppCompatActivity implements MainContract.Vie
      * 设置语音按钮按压监听器（按压说话模式）
      */
     private void setupVoiceButtonListener() {
-        if (btnVoice == null || voiceRecognizer == null) {
+        if (btnVoice == null) {
             return;
         }
 
         btnVoice.setOnTouchListener((v, event) -> {
+            IVoiceRecognizer recognizer = VoiceRecognizerHolder.getInstance().getRecognizer();
+            if (recognizer == null) {
+                return false;
+            }
+
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     // 按下：开始录音
                     if (!isRecording) {
                         isRecording = true;
                         updateVoiceButtonState(true);
-                        voiceRecognizer.start(new IVoiceRecognizer.Callback() {
+                        recognizer.start(new IVoiceRecognizer.Callback() {
                             @Override
                             public void onSuccess(String text) {
                                 runOnUiThread(() -> {
@@ -135,7 +138,7 @@ public class AgentActivity extends AppCompatActivity implements MainContract.Vie
                     if (isRecording) {
                         isRecording = false;
                         updateVoiceButtonState(false);
-                        voiceRecognizer.stop();
+                        recognizer.stop();
                     }
                     return true;
 
