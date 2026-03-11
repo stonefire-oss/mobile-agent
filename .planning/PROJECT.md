@@ -43,9 +43,14 @@
 
 暂无
 
-## Current Milestone: v2.3 (Planning)
+## Current Milestone: v2.3 语音转文字
 
-*Use /gsd:new-milestone to define requirements*
+**Goal:** 在聊天界面添加语音输入能力，实现按压说话、实时语音转文字功能
+
+**Target features:**
+- UI: 在输入框右侧添加语音按钮，仅在开启语音功能时显示
+- 交互: 按压按钮开始录音，实时返回语音转文字结果，松手结束
+- 能力接入: 通过接口注入语音转文字能力，由上层 app 提供实现
 
 ## Context
 
@@ -88,6 +93,7 @@
 | 平台分离 | Tools/Manager 在 app，agent 纯 Java | ✓ v2.0 shipped |
 | Callback 接口 | AndroidToolCallback 解耦 agent/app | ✓ v2.0 shipped |
 | JSON String API | app 读取文件，agent 只接收数据 | ✓ v2.0 shipped |
+| 语音转文字接口注入 | 语音能力由上层 app 通过接口注入 | — v2.3 planning |
 
 ---
-*Last updated: 2026-03-10 — v2.2 shipped*
+*Last updated: 2026-03-10 — v2.3 started*

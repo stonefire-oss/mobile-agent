@@ -2,18 +2,18 @@
 gsd_state_version: 1.0
 milestone: v2.3
 milestone_name: 语音转文字
-status: planning
-last_updated: "2026-03-11T01:45:00.000Z"
+status: shipped
+last_updated: "2026-03-11T02:04:09.899Z"
 progress:
   total_phases: 3
-  completed_phases: 2
-  total_plans: 2
-  completed_plans: 2
+  completed_phases: 3
+  total_plans: 3
+  completed_plans: 3
 ---
 
 # STATE: Mobile Agent - v2.3 语音转文字
 
-**Last Updated:** 2026-03-10
+**Last Updated:** 2026-03-11
 
 ---
 
@@ -31,8 +31,8 @@ progress:
 |-------|-------|
 | Milestone | v2.3 语音转文字 |
 | Phase | 3 (语音能力接入) |
-| Status | Context gathered |
-| Last activity: | 2026-03-11 — Phase 3 context gathered |
+| Status | Plan completed |
+| Last activity: | 2026-03-11 — Phase 3 plan created |
 
 ---
 
@@ -40,6 +40,7 @@ progress:
 
 ### Recent Changes
 
+- 2026-03-11: Phase 3 plan created - VoiceRecognizerHolder 单例
 - 2026-03-11: Phase 3 context gathered - 语音能力接入
 - 2026-03-11: Phase 2 completed - 按压说话交互流程
 - 2026-03-11: Phase 2 context gathered - 语音交互逻辑
@@ -63,6 +64,7 @@ None
 - 2026-03-11: 使用 IVoiceRecognizer 接口抽象
 - 2026-03-11: 实时转写结果更新到输入框
 - 2026-03-10: 语音转文字能力通过接口注入，由上层 app 提供实现
+- 2026-03-11: VoiceRecognizerHolder 单例管理语音识别器
 
 ---
 
@@ -72,7 +74,7 @@ None
 |-------|------|--------------|--------|
 | 1 | 语音按钮 UI | VT-01, VT-02, VT-03 | Completed |
 | 2 | 语音交互逻辑 | VT-04, VT-05, VT-06 | Completed |
-| 3 | 语音能力接入 | VT-07, VT-08 | Context gathered |
+| 3 | 语音能力接入 | VT-07, VT-08 | Completed |
 
 ---
 

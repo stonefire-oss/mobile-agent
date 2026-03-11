@@ -19,8 +19,8 @@
 
 ### 语音能力接入
 
-- [ ] **VT-07**: agent-android 提供语音转文字接口定义
-- [ ] **VT-08**: 上层 app 模块通过接口注入语音转文字能力实现
+- [x] **VT-07**: agent-android 提供语音转文字接口定义
+- [x] **VT-08**: 上层 app 模块通过接口注入语音转文字能力实现
 
 ## v2 Requirements
 
@@ -43,8 +43,8 @@
 | VT-04 | Phase 2 | Complete |
 | VT-05 | Phase 2 | Complete |
 | VT-06 | Phase 2 | Complete |
-| VT-07 | Phase 3 | Pending |
-| VT-08 | Phase 3 | Pending |
+| VT-07 | Phase 3 | Complete |
+| VT-08 | Phase 3 | Complete |
 
 **Coverage:**
 - v1 requirements: 8 total
