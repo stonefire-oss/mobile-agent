@@ -643,6 +643,13 @@ void AgentLoop::set_config(const AgentConfig& config) {
     max_iterations_ = config.max_iterations;
 }
 
+void AgentLoop::set_llm_provider(std::shared_ptr<LLMProvider> provider) {
+    if (provider) {
+        llm_provider_ = provider;
+        ICRAW_LOG_INFO("AgentLoop: LLM provider updated to: {}", provider->get_provider_name());
+    }
+}
+
 std::vector<ContentBlock> AgentLoop::handle_tool_calls(const std::vector<ToolCall>& tool_calls) {
     std::vector<ContentBlock> results;
     

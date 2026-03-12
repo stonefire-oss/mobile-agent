@@ -9,6 +9,8 @@
 #include "icraw/tools/tool_registry.hpp"
 #include <nlohmann/json.hpp>
 
+#include "icraw/core/provider_manager.hpp"
+
 // ICRAW_ANDROID is already defined by CMake, no need to redefine
 
 // Global MobileAgent instance
@@ -353,8 +355,167 @@ JNIEXPORT void JNICALL Java_com_hh_agent_library_NativeAgent_nativeSetToolsSchem
     if (!schema_json || strlen(schema_json) == 0) {
         icraw::Logger::get_instance().logger()->warn("nativeSetToolsSchema: Empty schema JSON");
         if (schema_json) {
-            env->ReleaseStringUTFChars(schemaJson, schema_json);
-        }
+        env->ReleaseStringUTFChars(schemaJson, schema_json);
+}
+
+// ========== Provider管理接口 ==========
+
+/**
+ * 获取当前Provider类型
+ * 返回: 0=RemoteAPI, 1=MNN
+ */
+JNIEXPORT jint JNICALL Java_com_hh_agent_library_NativeAgent_nativeGetCurrentProviderType(
+        JNIEnv* env,
+        jclass /* clazz */) {
+    
+    if (!g_agent) {
+        icraw::Logger::get_instance().logger()->warn("nativeGetCurrentProviderType: Agent not initialized");
+        return 0;  // 默认返回RemoteAPI
+    }
+    
+    auto type = g_agent->get_current_provider_type();
+    return static_cast<jint>(type);
+}
+
+/**
+ * 切换到远程API Provider
+ * 返回: true=成功, false=失败
+ */
+JNIEXPORT jboolean JNICALL Java_com_hh_agent_library_NativeAgent_nativeSwitchToRemote(
+        JNIEnv* env,
+        jclass /* clazz */) {
+    
+    if (!g_agent) {
+        icraw::Logger::get_instance().logger()->warn("nativeSwitchToRemote: Agent not initialized");
+        return JNI_FALSE;
+    }
+    
+    try {
+        bool success = g_agent->switch_to_remote_provider();
+        icraw::Logger::get_instance().logger()->info("nativeSwitchToRemote: {}", success ? "success" : "failed");
+        return success ? JNI_TRUE : JNI_FALSE;
+    } catch (const std::exception& e) {
+        icraw::Logger::get_instance().logger()->error("nativeSwitchToRemote exception: {}", e.what());
+        return JNI_FALSE;
+    }
+}
+
+/**
+ * 检查MNN是否可用（编译期）
+ * 返回: true=可用, false=不可用
+ */
+JNIEXPORT jboolean JNICALL Java_com_hh_agent_library_NativeAgent_nativeIsMNNAvailable(
+        JNIEnv* env,
+        jclass /* clazz */) {
+    
+    return icraw::MobileAgent::is_mnn_available() ? JNI_TRUE : JNI_FALSE;
+}
+
+#ifdef ICRAW_USE_MNN
+/**
+ * 切换到MNN Provider
+ * 返回: true=成功, false=失败
+ */
+JNIEXPORT jboolean JNICALL Java_com_hh_agent_library_NativeAgent_nativeSwitchToMNN(
+        JNIEnv* env,
+        jclass /* clazz */,
+        jstring modelPath,
+        jstring tokenizerPath,
+        jint threadNum,
+        jboolean useMmap,
+        jstring backend,
+        jint maxKvcacheMb) {
+    
+    if (!g_agent) {
+        icraw::Logger::get_instance().logger()->warn("nativeSwitchToMNN: Agent not initialized");
+        return JNI_FALSE;
+    }
+    
+    const char* model_path_str = env->GetStringUTFChars(modelPath, nullptr);
+    const char* tokenizer_path_str = env->GetStringUTFChars(tokenizerPath, nullptr);
+    const char* backend_str = env->GetStringUTFChars(backend, nullptr);
+    
+    if (!model_path_str || !tokenizer_path_str || !backend_str) {
+        if (model_path_str) env->ReleaseStringUTFChars(modelPath, model_path_str);
+        if (tokenizer_path_str) env->ReleaseStringUTFChars(tokenizerPath, tokenizer_path_str);
+        if (backend_str) env->ReleaseStringUTFChars(backend, backend_str);
+        return JNI_FALSE;
+    }
+    
+    icraw::MNNConfig config;
+    config.model_path = model_path_str;
+    config.tokenizer_path = tokenizer_path_str;
+    config.thread_num = threadNum;
+    config.use_mmap = useMmap == JNI_TRUE;
+    config.backend = backend_str;
+    config.max_kvcache_mb = maxKvcacheMb;
+    
+    env->ReleaseStringUTFChars(modelPath, model_path_str);
+    env->ReleaseStringUTFChars(tokenizerPath, tokenizer_path_str);
+    env->ReleaseStringUTFChars(backend, backend_str);
+    
+    try {
+        bool success = g_agent->switch_to_mnn_provider(config);
+        icraw::Logger::get_instance().logger()->info("nativeSwitchToMNN: {}", success ? "success" : "failed");
+        return success ? JNI_TRUE : JNI_FALSE;
+    } catch (const std::exception& e) {
+        icraw::Logger::get_instance().logger()->error("nativeSwitchToMNN exception: {}", e.what());
+        return JNI_FALSE;
+    }
+}
+
+/**
+ * 预加载MNN模型（后台加载，不阻塞）
+ */
+JNIEXPORT void JNICALL Java_com_hh_agent_library_NativeAgent_nativePreloadMNNModel(
+        JNIEnv* env,
+        jclass /* clazz */,
+        jstring modelPath,
+        jstring tokenizerPath) {
+    
+    if (!g_agent) {
+        icraw::Logger::get_instance().logger()->warn("nativePreloadMNNModel: Agent not initialized");
+        return;
+    }
+    
+    const char* model_path_str = env->GetStringUTFChars(modelPath, nullptr);
+    const char* tokenizer_path_str = env->GetStringUTFChars(tokenizerPath, nullptr);
+    
+    if (!model_path_str || !tokenizer_path_str) {
+        if (model_path_str) env->ReleaseStringUTFChars(modelPath, model_path_str);
+        if (tokenizer_path_str) env->ReleaseStringUTFChars(tokenizerPath, tokenizer_path_str);
+        return;
+    }
+    
+    icraw::MNNConfig config;
+    config.model_path = model_path_str;
+    config.tokenizer_path = tokenizer_path_str;
+    
+    env->ReleaseStringUTFChars(modelPath, model_path_str);
+    env->ReleaseStringUTFChars(tokenizerPath, tokenizer_path_str);
+    
+    try {
+        g_agent->preload_mnn_model(config);
+        icraw::Logger::get_instance().logger()->info("nativePreloadMNNModel: Started preloading");
+    } catch (const std::exception& e) {
+        icraw::Logger::get_instance().logger()->error("nativePreloadMNNModel exception: {}", e.what());
+    }
+}
+
+/**
+ * 检查MNN模型是否已预加载完成
+ */
+JNIEXPORT jboolean JNICALL Java_com_hh_agent_library_NativeAgent_nativeIsMNNModelPreloaded(
+        JNIEnv* env,
+        jclass /* clazz */) {
+    
+    if (!g_agent) {
+        return JNI_FALSE;
+    }
+    
+    return g_agent->is_mnn_model_preloaded() ? JNI_TRUE : JNI_FALSE;
+}
+#endif  // ICRAW_USE_MNN
         return;
     }
 

@@ -90,6 +90,8 @@ CMakeLists.txt.user
 *.dylib
 cmake-build-*/
 
+build-mnn/
+
 # OS generated files
 .DS_Store
 .DS_Store?

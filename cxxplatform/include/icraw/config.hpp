@@ -86,6 +86,22 @@ struct AgentConfig {
     nlohmann::json to_json() const;
 };
 
+// --- Provider Type ---
+
+enum class ProviderType {
+    RemoteAPI = 0,  // 远程API（默认）
+    MNN = 1         // 本地MNN推理（条件编译）
+};
+
+// --- Provider Status ---
+
+struct ProviderStatus {
+    ProviderType current_type = ProviderType::RemoteAPI;
+    std::string provider_name;
+    bool is_ready = false;
+    std::string error_message;
+};
+
 // --- Provider Configuration ---
 
 struct ProviderConfig {
@@ -94,6 +110,21 @@ struct ProviderConfig {
     int timeout = 30;
 
     static ProviderConfig from_json(const nlohmann::json& json);
+    nlohmann::json to_json() const;
+};
+
+// --- MNN Configuration ---
+// 本地MNN推理配置（条件编译时可用）
+
+struct MNNConfig {
+    std::string model_path;          // 模型文件路径
+    std::string tokenizer_path;      // tokenizer配置路径
+    int thread_num = 4;              // 推理线程数
+    bool use_mmap = true;            // 使用mmap加载模型
+    std::string backend = "cpu";     // 推理后端: cpu, opencl, metal
+    int max_kvcache_mb = 512;        // KV Cache最大内存(MB)
+
+    static MNNConfig from_json(const nlohmann::json& json);
     nlohmann::json to_json() const;
 };
 
@@ -134,6 +165,7 @@ struct LoggingConfig {
 struct IcrawConfig {
     AgentConfig agent;
     ProviderConfig provider;
+    MNNConfig mnn;  // MNN本地推理配置
     ToolPermissionConfig tools;
     SkillsConfig skills;
     LoggingConfig logging;

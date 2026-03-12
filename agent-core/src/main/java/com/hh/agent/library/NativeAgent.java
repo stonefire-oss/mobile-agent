@@ -82,4 +82,69 @@ public class NativeAgent {
      * @param schemaJson JSON string containing tools schema
      */
     public static native void nativeSetToolsSchema(String schemaJson);
+
+    // ========== Provider管理接口 ==========
+
+    /**
+     * Provider类型常量
+     */
+    public static final int PROVIDER_REMOTE = 0;
+    public static final int PROVIDER_MNN = 2;
+
+    /**
+     * 获取当前Provider类型
+     *
+     * @return Provider类型 (PROVIDER_REMOTE 或 PROVIDER_MNN)
+     */
+    public static native int nativeGetCurrentProviderType();
+
+    /**
+     * 切换到远程API Provider
+     *
+     * @return true表示成功， false表示失败
+     */
+    public static native boolean nativeSwitchToRemote();
+
+    /**
+     * 检查MNN是否可用（编译期）
+     *
+     * @return true表示MNN可用， false表示不可用
+     */
+    public static native boolean nativeIsMNNAvailable();
+
+    /**
+     * 获取当前Provider的状态信息
+     *
+     * @return JSON字符串，包含provider类型、名称、是否就绪等信息
+     */
+    public static native String nativeGetProviderStatus();
+
+    // ========== 便捷方法 ==========
+
+    /**
+     * 切换到远程API Provider
+     *
+     * @return true表示成功
+     */
+    public static boolean switchToRemoteProvider() {
+        return nativeSwitchToRemote();
+    }
+
+    /**
+     * 检查MNN是否可用
+     *
+     * @return true表示MNN已编译且可用
+     */
+    public static boolean isMNNAvailable() {
+        return nativeIsMNNAvailable();
+    }
+
+    /**
+     * 获取当前Provider类型
+     *
+     * @return PROVIDER_REMOTE 或 PROVIDER_MNN
+     */
+    public static int getCurrentProviderType() {
+        return nativeGetCurrentProviderType();
+    }
 }

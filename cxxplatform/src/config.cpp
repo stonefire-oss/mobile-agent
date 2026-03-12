@@ -194,6 +194,29 @@ nlohmann::json ProviderConfig::to_json() const {
     };
 }
 
+// MNNConfig
+MNNConfig MNNConfig::from_json(const nlohmann::json& json) {
+    MNNConfig config;
+    config.model_path = json.value("modelPath", "");
+    config.tokenizer_path = json.value("tokenizerPath", "");
+    config.thread_num = json.value("threadNum", 4);
+    config.use_mmap = json.value("useMmap", true);
+    config.backend = json.value("backend", "cpu");
+    config.max_kvcache_mb = json.value("maxKvcacheMb", 512);
+    return config;
+}
+
+nlohmann::json MNNConfig::to_json() const {
+    return {
+        {"modelPath", model_path},
+        {"tokenizerPath", tokenizer_path},
+        {"threadNum", thread_num},
+        {"useMmap", use_mmap},
+        {"backend", backend},
+        {"maxKvcacheMb", max_kvcache_mb}
+    };
+}
+
 // ToolPermissionConfig
 ToolPermissionConfig ToolPermissionConfig::from_json(const nlohmann::json& json) {
     ToolPermissionConfig config;
@@ -285,6 +308,11 @@ IcrawConfig IcrawConfig::from_json(const nlohmann::json& json) {
         }
     }
     
+    // MNN config (本地推理配置)
+    if (json.contains("mnn")) {
+        config.mnn = MNNConfig::from_json(json["mnn"]);
+    }
+    
     // Tools config
     if (json.contains("tools")) {
         config.tools = ToolPermissionConfig::from_json(json["tools"]);
@@ -333,6 +361,7 @@ nlohmann::json IcrawConfig::to_json() const {
     return {
         {"agent", agent.to_json()},
         {"provider", provider.to_json()},
+        {"mnn", mnn.to_json()},
         {"tools", tools.to_json()},
         {"skills", skills.to_json()},
         {"logging", logging.to_json()},

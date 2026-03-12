@@ -1,6 +1,22 @@
 cmake_minimum_required(VERSION 3.22.1)
 project(icraw)
 
+# ========== MNN条件编译选项 ==========
+option(ICRAW_USE_MNN "Enable MNN local inference" OFF)
+option(ICRAW_MNN_OPENCL "Enable MNN OpenCL backend" OFF)
+
+# ========== 检查MNN是否真正可用 ==========
+set(ICRAW_MNN_AVAILABLE OFF)
+if(ICRAW_USE_MNN)
+    find_package(MNN CONFIG QUIET)
+    if(MNN_FOUND)
+        set(ICRAW_MNN_AVAILABLE ON)
+        message(STATUS "MNN library found")
+    else()
+        message(STATUS "MNN not found, building without MNN support")
+    endif()
+endif()
+
 # Main library sources
 set(ICRAW_SOURCES
         src/config.cpp
@@ -14,11 +30,20 @@ set(ICRAW_SOURCES
         src/core/curl_http_client.cpp
         src/core/token_utils.cpp
         src/core/mcp_client.cpp
+        src/core/provider_manager.cpp
         src/tools/tool_registry.cpp
         src/mobile_agent.cpp
         android_tools.cpp
         native_agent.cpp
 )
+
+# MNN Provider（条件编译）
+if(ICRAW_MNN_AVAILABLE)
+    list(APPEND ICRAW_SOURCES
+            src/core/mnn_provider.cpp
+    )
+    message(STATUS "MNN provider source added")
+endif()
 
 # Headers for IDE navigation
 set(ICRAW_HEADERS
@@ -32,12 +57,20 @@ set(ICRAW_HEADERS
         include/icraw/core/http_client.hpp
         include/icraw/core/token_utils.hpp
         include/icraw/core/mcp_client.hpp
+        include/icraw/core/provider_manager.hpp
         include/icraw/tools/tool_registry.hpp
         include/icraw/tools/android_log_sink.hpp
         include/icraw/config.hpp
         include/icraw/mobile_agent.hpp
         include/icraw/types.hpp
 )
+
+# MNN Provider头文件（条件编译）
+if(ICRAW_MNN_AVAILABLE)
+    list(APPEND ICRAW_HEADERS
+            include/icraw/core/mnn_provider.hpp
+    )
+endif()
 
 # Create shared library
 add_library(icraw SHARED ${ICRAW_SOURCES} ${ICRAW_HEADERS})
@@ -66,3 +99,20 @@ target_link_libraries(icraw PUBLIC
         SQLite::SQLite3
         log
 )
+
+# ========== MNN 链接和编译定义 ==========
+if(ICRAW_MNN_AVAILABLE)
+    # 添加编译定义
+    target_compile_definitions(icraw PUBLIC ICRAW_USE_MNN)
+    
+    # 链接MNN库
+    target_link_libraries(icraw PUBLIC MNN::MNN)
+    message(STATUS "Linking with MNN library")
+    
+    # OpenCL后端
+    if(ICRAW_MNN_OPENCL)
+        target_compile_definitions(icraw PUBLIC ICRAW_MNN_OPENCL)
+    endif()
+elseif(ICRAW_USE_MNN)
+    message(WARNING "MNN requested but not found. Building without MNN support.")
+endif()

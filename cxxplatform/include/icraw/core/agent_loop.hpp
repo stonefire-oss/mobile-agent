@@ -49,6 +49,9 @@ public:
     // Get current config
     const AgentConfig& get_config() const { return agent_config_; }
 
+    // Set LLM provider (for dynamic switching)
+    void set_llm_provider(std::shared_ptr<LLMProvider> provider);
+
     // Trigger memory consolidation if needed (now async)
     void maybe_consolidate_memory(const std::vector<Message>& messages);
     

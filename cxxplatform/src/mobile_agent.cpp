@@ -6,6 +6,7 @@
 #include "icraw/core/agent_loop.hpp"
 #include "icraw/core/llm_provider.hpp"
 #include "icraw/core/http_client.hpp"
+#include "icraw/core/provider_manager.hpp"
 #include "icraw/core/logger.hpp"
 
 namespace icraw {
@@ -33,17 +34,12 @@ MobileAgent::MobileAgent(const IcrawConfig& config)
     prompt_builder_ = std::make_shared<PromptBuilder>(
         memory_manager_, skill_loader_, tool_registry_);
     
-    // Create OpenAI-compatible provider with CurlHttpClient
-    auto provider = std::make_shared<OpenAICompatibleProvider>(
-        config_.provider.api_key,
-        config_.provider.base_url,
-        config_.agent.model);
+    // Initialize ProviderManager (默认使用远程API)
+    provider_manager_ = std::make_shared<ProviderManager>(config_);
+    llm_provider_ = provider_manager_->get_current_provider();
     
-    // Create and set HTTP client
-    auto http_client = std::make_unique<CurlHttpClient>();
-    provider->set_http_client(std::move(http_client));
-    
-    llm_provider_ = provider;
+    ICRAW_LOG_INFO("MobileAgent initialized with provider: {}", 
+                   provider_manager_->get_status().provider_name);
     
     agent_loop_ = std::make_unique<AgentLoop>(
         memory_manager_, skill_loader_, tool_registry_, 
@@ -159,6 +155,72 @@ std::unique_ptr<MobileAgent> MobileAgent::create(const std::string& workspace_pa
 
 std::unique_ptr<MobileAgent> MobileAgent::create_with_config(const IcrawConfig& config) {
     return std::make_unique<MobileAgent>(config);
+}
+
+// ========== Provider管理接口实现 ==========
+
+ProviderType MobileAgent::get_current_provider_type() const {
+    return provider_manager_->get_current_type();
+}
+
+ProviderStatus MobileAgent::get_provider_status() const {
+    return provider_manager_->get_status();
+}
+
+bool MobileAgent::switch_to_remote_provider() {
+    ICRAW_LOG_INFO("MobileAgent: Switching to remote provider");
+    
+    if (provider_manager_->switch_to_remote()) {
+        llm_provider_ = provider_manager_->get_current_provider();
+        agent_loop_->set_llm_provider(llm_provider_);
+        ICRAW_LOG_INFO("MobileAgent: Switched to remote provider successfully");
+        return true;
+    }
+    return false;
+}
+
+#ifdef ICRAW_USE_MNN
+bool MobileAgent::switch_to_mnn_provider(const MNNConfig& config) {
+    ICRAW_LOG_INFO("MobileAgent: Switching to MNN provider");
+    
+    if (provider_manager_->switch_to_mnn(config)) {
+        llm_provider_ = provider_manager_->get_current_provider();
+        agent_loop_->set_llm_provider(llm_provider_);
+        ICRAW_LOG_INFO("MobileAgent: Switched to MNN provider successfully");
+        return true;
+    }
+    ICRAW_LOG_ERROR("MobileAgent: Failed to switch to MNN provider");
+    return false;
+}
+
+void MobileAgent::preload_mnn_model(const MNNConfig& config) {
+    ICRAW_LOG_INFO("MobileAgent: Preloading MNN model");
+    provider_manager_->preload_mnn(config);
+}
+
+bool MobileAgent::is_mnn_model_preloaded() const {
+    return provider_manager_->is_mnn_preloaded();
+}
+#endif
+
+bool MobileAgent::is_mnn_available() {
+    return ProviderManager::is_mnn_available();
+}
+
+bool MobileAgent::switch_provider(ProviderType type,
+                                  const std::optional<MNNConfig>& mnn_config) {
+    ICRAW_LOG_INFO("MobileAgent: Switching provider to type {}", static_cast<int>(type));
+    
+    if (provider_manager_->switch_provider(type, mnn_config)) {
+        llm_provider_ = provider_manager_->get_current_provider();
+        agent_loop_->set_llm_provider(llm_provider_);
+        return true;
+    }
+    return false;
+}
+
+std::shared_ptr<ProviderManager> MobileAgent::get_provider_manager() const {
+    return provider_manager_;
 }
 
 } // namespace icraw
