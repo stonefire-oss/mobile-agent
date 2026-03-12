@@ -1,61 +1,39 @@
-# ROADMAP: Mobile Agent - C++ 移植版
+# Roadmap: 手机上的 AI Agent
 
 ## Milestones
 
-- ✅ **v1.0 C++ 移植** — Phase 1-3 (shipped 2026-03-03)
-- ✅ **v1.1 API Key 配置** — Phase 5 (shipped 2026-03-03)
-- 🚧 **v1.2 清理 agent 模块** — Phase 6 (in progress)
+- ✅ **v2.3 语音转文字** — Phases 1 to 3 (shipped 2026-03-11)
+- ✅ **v2.2 App 层动态注入 Android 工具** — Phases 1 to 3 (shipped 2026-03-10)
+- ✅ **v2.1 架构重构** — Phases 1 to 5 (shipped 2026-03-09)
+- ✅ **v2.0 接入真实项目** — Phases v20-01 to v20-04 (shipped 2026-03-09)
+- ✅ **v1.6 自定义 Skills 验证** — Phases v16-01 to v16-02 (shipped 2026-03-06)
+- ✅ **v1.5 LLM → Android 调用管道** — Phases v15-01 to v15-03 (shipped 2026-03-05)
+- ✅ **v1.4 Android Tools 通道** — Phases 1-4 (shipped 2026-03-05)
 
-## Phases
+## v2.4 Agent 性能分析 (Complete)
 
-### Phase 6: 清理 agent 模块
+**Goal:** 分析 agent-core C++ 层日志和性能，识别耗时点并优化
 
-**Goal:** 清理 agent 模块中不需要的代码和文件
+### Phases
 
-**Depends on:** v1.1 complete
-
-**Requirements:** CLEAN-01 to CLEAN-07
-
-**Plans:** 1 plan
-
-**Plan list:**
-- [ ] 06-01-PLAN.md — 清理未使用的目录和文件
-
-**Success Criteria** (what must be TRUE):
-  1. 移除未使用的源文件和头文件
-  2. 简化 CMakeLists.txt 配置
-  3. 移除不需要的依赖
-  4. 修复所有编译警告
-  5. 代码风格统一
-
----
-
-### Phase 5: API Key 配置 (已完成)
-
-**Goal:** 提供配置文件方式设置 LLM API Key
-
-**Depends on:** v1.0 complete
-
-**Requirements:** CONFIG-01
-
-**Success Criteria** (what must be TRUE):
-  1. 配置文件格式支持 JSON
-  2. 支持配置 API Key 和 Base URL
-  3. C++ Agent 启动时读取配置
-  4. 配置路径可从 Java 层传入
+| Phase | Name | Description |
+|-------|------|-------------|
+| 1 | 统一日志格式 | 改进日志宏，添加脱敏处理 |
+| 2 | 补充关键路径日志 | HTTP/LLM/MCP/TOOL/LOOP 耗时日志 |
+| 3 | 性能分析与优化 | ScopedTimer，识别热点 |
 
 ---
 
 ## Progress
 
-| Phase | Milestone | Plans Complete | Status |
-|-------|-----------|----------------|--------|
-| 1. Build System & Agent Core | v1.0 | 3/3 | Complete |
-| 2. JNI Bridge | v1.0 | 1/1 | Complete |
-| 3. API Integration | v1.0 | 1/1 | Complete |
-| 5. API Key 配置 | v1.1 | 1/1 | Complete |
-| 6. 清理 agent 模块 | v1.2 | 0/1 | Not started |
+| Phase | Plans Complete | Status | Completed |
+|-------|----------------|--------|-----------|
+| 1 | - | Complete | 2026-03-11 |
+| 2 | 1/1 | Complete | 2026-03-11 |
+| 3 | 1/1 | Complete | 2026-03-11 |
 
----
+### Plans
 
-*Generated: 2026-03-03*
+- [x] 03-performance-analysis/03-PLAN.md — 手动日志分析 + 性能热点分析
+
+*Roadmap updated: 2026-03-11*

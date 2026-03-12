@@ -1,103 +1,96 @@
 # Technology Stack
 
-**Analysis Date:** 2026-03-03
+**Analysis Date:** 2026-03-10
 
 ## Languages
 
 **Primary:**
-- Java 21 - Android application development (app, lib modules)
-- C++ - Native library for NDK integration
+- Java 21 - Android application layer (app, agent-android modules)
+- C++ 17 - Native agent core (agent-core module with NDK)
 
 **Secondary:**
-- XML - Android resource files (layouts, values, configurations)
-- Gradle - Build configuration (Groovy-based DSL)
+- Groovy - Gradle build scripts
 
 ## Runtime
 
 **Environment:**
-- Android SDK - API level 24 (minSdk) to 34 (compileSdk)
-- Java 21 - Source and target compatibility
-- NDK 26.3.11579264 - Native development
+- Android (minSdk 24, targetSdk 31, compileSdk 34)
+- Android NDK 26.3.11579264
 
-**Package Manager:**
-- Gradle 8.12.1 - Build automation
-- Android Gradle Plugin 8.3.2 - Android-specific build tasks
-- Lockfile: `gradle/wrapper/gradle-wrapper.properties`
+**Build System:**
+- Gradle 8.12.1
+- Android Gradle Plugin 8.3.2
+- CMake 3.22.1 (for native C++ builds)
+
+**Package Management:**
+- Gradle with Maven Central repositories
+- Conan for native C++ dependencies
 
 ## Frameworks
 
 **Core:**
-- AndroidX AppCompat 1.6.1 - Backward-compatible UI components
-- Material Components 1.11.0 - Material Design UI
-- AndroidX RecyclerView - Message list display
-- AndroidX ConstraintLayout - Layout management
+- AndroidX - Android compatibility library (core:1.12.0, appcompat:1.6.1)
+- Material Design - UI components (material:1.11.0)
+- RecyclerView - List displays (recyclerview:1.3.2)
+- Markwon - Markdown rendering (4.6.2)
 
-**Markdown Rendering:**
-- Markwon Core 4.6.2 - Markdown to Spannable conversion
-- Markwon Ext Strikethrough 4.6.2 - Strikethrough support
-- Markwon Ext Tables 4.6.2 - Table rendering
-- Markwon Ext Tasklist 4.6.2 - Task list (checkbox) support
-
-**HTTP:**
-- OkHttp 4.12.0 - HTTP client for Nanobot API communication
-
-**JSON:**
-- Gson 2.10.1 - JSON serialization/deserialization
-
-**Native:**
-- CMake 3.22.1 - C++ build system
-- Android Log library - Native logging
+**Native Agent:**
+- nlohmann_json - JSON parsing
+- SQLite3 - Local database
+- libcurl - HTTP client
+- OpenSSL - TLS/SSL
+- spdlog - Logging
+- fmt - String formatting
 
 **Testing:**
-- JUnit 4.13.2 - Unit testing framework
-- OkHttp MockWebServer 4.12.0 - HTTP mocking for tests
-- AndroidX Test Runner - Android instrumentation testing
-- Espresso 3.5.1 - UI testing framework
+- JUnit 4.13.2 - Unit testing
+- AndroidJUnitRunner - Android instrumentation tests
 
 ## Key Dependencies
 
-**Critical:**
-- OkHttp 4.12.0 - HTTP client for Nanobot API calls
-- Gson 2.10.1 - JSON serialization for request/response DTOs
-- Markwon 4.6.2 - Markdown rendering for assistant messages
-- Material 1.11.0 - UI components for chat interface
+**Android UI:**
+- `androidx.appcompat:appcompat:1.6.1` - Backward-compatible ActionBar
+- `com.google.android.material:material:1.11.0` - Material Design components
+- `androidx.recyclerview:recyclerview:1.3.2` - Efficient list views
 
-**Infrastructure:**
-- AndroidX AppCompat 1.6.1 - Core Android compatibility
-- AndroidX RecyclerView - Efficient message list rendering
+**Markdown Rendering:**
+- `io.noties.markwon:core:4.6.2` - Markdown parser/renderer
+- `io.noties.markwon:ext-strikethrough:4.6.2` - Strikethrough extension
+- `io.noties.markwon:ext-tables:4.6.2` - Tables extension
+- `io.noties.markwon:ext-tasklist:4.6.2` - Task list extension
+
+**Native Dependencies (via Conan):**
+- `nlohmann_json` - JSON library
+- `SQLite3` - SQLite database
+- `CURL` - HTTP library
+- `OpenSSL` - Cryptography
+- `spdlog` - Logging library
+- `fmt` - Formatting library
 
 ## Configuration
 
 **Environment:**
-- Gradle properties: `gradle.properties`
-  - JVM args: `-Xmx2048m -Dfile.encoding=UTF-8`
-  - AndroidX enabled: `android.useAndroidX=true`
-  - Non-transitive R class: `android.nonTransitiveRClass=true`
-- Local properties: `local.properties` (SDK path)
-- Network security config: `app/src/main/res/xml/network_security_config.xml`
-  - Allows cleartext to localhost and 10.0.2.2 (Android emulator host)
+- Configuration via `config.json` file (template at `config.json.template`)
+- Runtime config loaded from assets
+- Build-time copying via `config-template.gradle`
 
 **Build:**
 - Root `build.gradle` - Plugin definitions
-- `app/build.gradle` - App module configuration
-- `lib/build.gradle` - Library module with NDK/CMake config
-- `agent/build.gradle` - Agent library module
-- `settings.gradle` - Multi-module project setup
+- `gradle.properties` - JVM args, AndroidX settings
+- `settings.gradle` - Module definitions
 
 ## Platform Requirements
 
 **Development:**
-- Android Studio or Gradle-compatible IDE
-- Java 21 JDK
-- Android SDK API 34
+- Android SDK 34 (compileSdk)
 - NDK 26.3.11579264
-- CMake 3.22.1
+- JDK 21
+- CMake 3.22.1+
 
 **Production:**
-- Android device or emulator (minSdk 24, targetSdk 31)
-- Nanobot HTTP service running on localhost:18791
-- ADB reverse for emulator: `adb reverse tcp:18791 tcp:18791`
+- Android 7.0+ (API 24 minimum)
+- Target: Android 12 (API 31)
 
 ---
 
-*Stack analysis: 2026-03-03*
+*Stack analysis: 2026-03-10*

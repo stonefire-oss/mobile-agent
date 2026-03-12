@@ -1,189 +1,168 @@
 # Architecture
 
-**Analysis Date:** 2026-03-03
+**Analysis Date:** 2026-03-10
 
 ## Pattern Overview
 
-**Overall:** Hybrid MVP + Component-based Architecture
-
-This codebase uses a dual architecture pattern:
-- **Android (Java):** MVP (Model-View-Presenter) pattern
-- **Frontend (Vue):** Component-based architecture with Pinia state management
+**Overall:** Layered Architecture with MVP Pattern
 
 **Key Characteristics:**
-- Clean separation between UI and business logic via MVP Contract interfaces
-- API abstraction allowing pluggable implementations (HTTP/Mock)
-- Dual frontend: Native Android UI and WebView-hosted Vue frontend
-- Session-based chat model with in-memory message storage
+- Native C++ Core: The agent engine is implemented in C++ (cxxplatform) providing the core reasoning loop, LLM integration, memory management, and skill/tool system
+- Java/JNI Bridge: Android-specific layer (agent-core) provides JNI wrapper to expose native C++ functionality to Java
+- Dynamic Tool Injection: Tools can be dynamically registered at runtime through AndroidToolManager
+- Skill-based Workflow: Skills (SKILL.md format) define reusable workflows with tool calls
 
 ## Layers
 
-### Android Layer (app module)
+**Native Core Layer (cxxplatform):**
+- Purpose: Core agent engine implementation in C++
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/`
+- Contains:
+  - Core agent loop (`src/core/agent_loop.cpp`)
+  - LLM provider abstraction (`src/core/llm_provider.cpp`)
+  - Memory management with SQLite (`src/core/memory_manager.cpp`)
+  - Skill loader (`src/core/skill_loader.cpp`)
+  - Tool registry (`src/tools/tool_registry.cpp`)
+  - HTTP client for API calls (`src/core/curl_http_client.cpp`)
+- Depends on: nlohmann-json, curl, sqlite3
+- Used by: agent-core (via JNI)
 
-**View Layer:**
-- Location: `app/src/main/java/com/hh/agent/`
-- Contains: `MainActivity.java`, `VueActivity.java`, `MessageAdapter.java`
-- Responsibilities: UI rendering, user input handling, lifecycle management
-- Depends on: Presenter, Models
-- Used by: Android framework
+**Native Bridge Layer (agent-core):**
+- Purpose: Java JNI bindings to native C++ library
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/agent-core/src/main/java/com/hh/agent/library/`
+- Contains:
+  - `NativeAgent.java` - JNI wrapper class loading libicraw.so
+  - `AndroidToolCallback.java` - Interface for Android tool callbacks
+  - `ToolExecutor.java` - Base interface for tool implementations
+  - `api/MobileAgentApi.java` - High-level API abstraction
+  - `api/NativeMobileAgentApi.java` - Native API singleton
+  - `model/Message.java`, `model/Session.java` - Data models
+- Depends on: cxxplatform native library
+- Used by: agent-android, app
 
-**Presenter Layer:**
-- Location: `app/src/main/java/com/hh/agent/presenter/`
-- Contains: `MainPresenter.java`
-- Responsibilities: Business logic, API coordination, thread management
-- Depends on: Contract interfaces, NanobotApi
-- Used by: View (MainActivity)
+**Android Tool Layer (agent-android):**
+- Purpose: Built-in Android tools and UI foundation
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/`
+- Contains:
+  - `AndroidToolManager.java` - Dynamic tool registration and routing
+  - `AgentActivity.java` - Main UI entry (MVP View)
+  - `presenter/MainPresenter.java` - MVP Presenter
+  - `contract/MainContract.java` - MVP contract
+  - `tool/*.java` - Built-in tools (ShowToastTool, DisplayNotificationTool, etc.)
+- Depends on: agent-core
+- Used by: app
 
-**Contract Layer:**
-- Location: `app/src/main/java/com/hh/agent/contract/`
-- Contains: `MainContract.java`
-- Responsibilities: Define View and Presenter interfaces for MVP communication
-- Depends on: Models (Message)
-- Used by: View and Presenter
+**Application Layer (app):**
+- Purpose: Application-specific tools and launcher
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/app/src/main/java/com/hh/agent/`
+- Contains:
+  - `LauncherActivity.java` - App entry, registers tools to AndroidToolManager
+  - `tool/SearchContactsTool.java` - App-specific tool
+  - `tool/SendImMessageTool.java` - App-specific tool
+- Depends on: agent-android
+- Provides: Custom tools that can be dynamically injected
 
-### Library Layer (lib module)
-
-**API Layer:**
-- Location: `lib/src/main/java/com/hh/agent/lib/api/`
-- Contains: `NanobotApi.java` (interface)
-- Responsibilities: Define contract for chat operations
-- Depends on: Models
-- Used by: Presenters, HTTP/Mock implementations
-
-**HTTP Implementation:**
-- Location: `lib/src/main/java/com/hh/agent/lib/http/`
-- Contains: `HttpNanobotApi.java`
-- Responsibilities: Execute HTTP calls to Nanobot service
-- Depends on: NanobotApi, Config, DTOs, OkHttp
-- Used by: Presenters
-
-**Mock Implementation:**
-- Location: `lib/src/main/java/com/hh/agent/lib/impl/`
-- Contains: `MockNanobotApi.java`
-- Responsibilities: Provide mock responses for testing
-- Depends on: NanobotApi interface
-- Used by: Presenters (switchable via ApiType)
-
-**Model Layer:**
-- Location: `lib/src/main/java/com/hh/agent/lib/model/`
-- Contains: `Message.java`, `Session.java`
-- Responsibilities: Data entities for messages and sessions
-- Used by: All layers
-
-**DTO Layer:**
-- Location: `lib/src/main/java/com/hh/agent/lib/dto/`
-- Contains: `ChatRequest.java`, `ChatResponse.java`
-- Responsibilities: Request/response serialization structures
-- Used by: HTTP implementation
-
-**Config Layer:**
-- Location: `lib/src/main/java/com/hh/agent/lib/config/`
-- Contains: `NanobotConfig.java`
-- Responsibilities: HTTP endpoint and timeout configuration
-- Used by: HTTP implementation
-
-### Vue Frontend Layer
-
-**Store Layer (Pinia):**
-- Location: `vue/src/stores/`
-- Contains: `chat.ts`
-- Responsibilities: State management, business logic coordination
-- Depends on: API layer
-- Used by: Vue components
-
-**API Layer:**
-- Location: `vue/src/api/`
-- Contains: `nanobot.ts`, `http.ts`
-- Responsibilities: HTTP communication with Nanobot service
-- Used by: Store
-
-**Component Layer:**
-- Location: `vue/src/components/`
-- Contains: `MessageBubble.vue`, `InputBar.vue`, `ThinkingIndicator.vue`
-- Responsibilities: Reusable UI components
-- Depends on: Types, Stores
-
-**View Layer:**
-- Location: `vue/src/views/`
-- Contains: `ChatView.vue`
-- Responsibilities: Page-level component composition
-- Depends on: Components, Stores
+**Assets/Skills Layer:**
+- Purpose: Skill definitions loaded at runtime
+- Locations:
+  - `/Users/caixiao/Workspace/projects/mobile-agent/agent-core/src/main/assets/workspace/skills/`
+  - `/Users/caixiao/Workspace/projects/mobile-agent/app/src/main/assets/workspace/skills/`
+- Contains: SKILL.md files defining workflows
 
 ## Data Flow
 
-**Message Send Flow:**
+**User Message Flow:**
 
-1. User enters message in UI (MainActivity/ChatView)
-2. View calls Presenter.store method (sendMessage)
-3. Presenter creates user message and notifies View
-4. Presenter shows "thinking" indicator
-5. Presenter executes API call in background thread
-6. API implementation (HttpNanobotApi) sends HTTP POST to Nanobot
-7. Response converted to Message model
-8. Presenter updates View with assistant response
-9. View renders message in RecyclerView/List
+1. User types message in AgentActivity (UI Layer)
+2. MainPresenter sends message via NativeMobileAgentApi
+3. NativeMobileAgentApi calls NativeAgent.nativeSendMessage (JNI)
+4. C++ MobileAgent.chat() receives message
+5. AgentLoop.process_message() orchestrates the turn:
+   - Builds prompts with SkillLoader
+   - Calls LLMProvider for completion
+   - Handles tool calls via ToolRegistry
+   - Updates MemoryManager with conversation
+6. Response flows back through JNI to Java
+7. MainPresenter updates MessageAdapter
+8. AgentActivity displays message in RecyclerView
 
-**State Management:**
-- Android: Presenter holds reference to View, uses Handler for UI thread updates
-- Vue: Pinia store manages reactive state, components subscribe via composables
+**Tool Execution Flow:**
+
+1. LLM returns tool_call in response
+2. AgentLoop.handle_tool_calls() processes tool_calls
+3. If Android tool: calls back through AndroidToolCallback JNI
+4. AndroidToolManager.callTool() routes to registered ToolExecutor
+5. ToolExecutor.execute() performs the action
+6. Result returned to AgentLoop
+7. Tool result added to conversation context
+8. LLM receives tool result and continues
 
 ## Key Abstractions
 
-**NanobotApi Interface:**
-- Purpose: Define chat operations contract
-- Examples: `lib/src/main/java/com/hh/agent/lib/api/NanobotApi.java`
-- Pattern: Strategy pattern - allows runtime selection of HTTP or Mock implementation
+**MobileAgent (Facade):**
+- Purpose: Simplified entry point for mobile platforms
+- Examples: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/include/icraw/mobile_agent.hpp`
+- Pattern: Facade pattern - wraps all core components
 
-**MainContract Interface:**
-- Purpose: Decouple View and Presenter
-- Examples: `app/src/main/java/com/hh/agent/contract/MainContract.java`
-- Pattern: Passive View - View interface only, no Presenter reference in View
+**AgentLoop (Orchestration):**
+- Purpose: Main agent reasoning loop implementation
+- Examples: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/include/icraw/core/agent_loop.hpp`
+- Pattern: Loop/Reactor pattern - handles message processing iterations
 
-**Session Management:**
-- Purpose: Group messages per conversation
-- Examples: `lib/src/main/java/com/hh/agent/lib/model/Session.java`
-- Pattern: In-memory session store with key-based lookup
+**SkillLoader (Dynamic Loading):**
+- Purpose: Loads and parses SKILL.md files at runtime
+- Examples: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/include/icraw/core/skill_loader.hpp`
+- Pattern: Plugin/Extension pattern
+
+**ToolRegistry (Tool Management):**
+- Purpose: Manages available tools and executes them
+- Examples: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/include/icraw/tools/tool_registry.hpp`
+- Pattern: Registry pattern
+
+**AndroidToolManager (Dynamic Tool Injection):**
+- Purpose: Runtime tool registration and JSON schema generation
+- Examples: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/AndroidToolManager.java`
+- Pattern: Service Locator / Dynamic Registry
+
+**LLMProvider (Abstraction):**
+- Purpose: Abstracts LLM API calls with support for multiple providers
+- Examples: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/include/icraw/core/llm_provider.hpp`
+- Pattern: Strategy pattern - supports OpenAI-compatible APIs
 
 ## Entry Points
 
-**Android Main Entry:**
-- Location: `app/src/main/java/com/hh/agent/MainActivity.java`
-- Triggers: App launch from launcher
-- Responsibilities: Initialize MVP, load messages, handle user input
+**App Launch Entry:**
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/app/src/main/java/com/hh/agent/LauncherActivity.java`
+- Triggers: App launch (intent from launcher or splash)
+- Responsibilities: Initialize AndroidToolManager, register tools, navigate to AgentActivity
 
-**Android Vue Entry:**
-- Location: `app/src/main/java/com/hh/agent/VueActivity.java`
-- Triggers: Navigate from MainActivity or direct launch
-- Responsibilities: Initialize WebView, load Vue assets
+**Agent Entry:**
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/AgentActivity.java`
+- Triggers: User opens agent interface
+- Responsibilities: Load config, initialize presenter, display messages
 
-**Vue Entry:**
-- Location: `vue/src/main.ts`
-- Triggers: WebView loads index.html
-- Responsibilities: Bootstrap Vue app, mount to DOM
-
-**Android Application:**
-- Location: `app/src/main/java/com/hh/agent/LauncherActivity.java`
-- Triggers: Splash screen / app start
-- Responsibilities: Route to MainActivity or VueActivity
+**Native Agent Entry:**
+- Location: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/mobile_agent.cpp`
+- Triggers: First JNI call (nativeInitialize)
+- Responsibilities: Initialize all core components, load skills, prepare agent
 
 ## Error Handling
 
-**Strategy:** Try-catch with fallback messaging
+**Strategy:** Result objects and exception propagation
 
 **Patterns:**
-- Presenter catches exceptions and displays error via View.onError()
-- HTTP implementation catches IOException and returns error Message
-- Vue store catches errors and displays in UI
-- Network errors show as user-friendly messages
+- C++: Exceptions for critical errors, error codes for recoverable errors
+- Java: Try-catch in UI layer, error callbacks to View
+- Tool execution: JSON error responses with success=false
 
 ## Cross-Cutting Concerns
 
-**Logging:** Android Log.d/e for debugging WebView and HTTP operations
+**Logging:** Android Log (Java), custom logger (C++)
 
-**Validation:** Input validation in Presenter (empty message check)
+**Validation:** Path validation in ToolRegistry, JSON schema for tools
 
-**Authentication:** Session-based via sessionKey parameter (no auth token)
+**Authentication:** API key passed through config, not hardcoded
 
 ---
 
-*Architecture analysis: 2026-03-03*
+*Architecture analysis: 2026-03-10*

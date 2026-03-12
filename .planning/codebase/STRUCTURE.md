@@ -1,146 +1,157 @@
 # Codebase Structure
 
-**Analysis Date:** 2026-03-03
+**Analysis Date:** 2026-03-10
 
 ## Directory Layout
 
 ```
 mobile-agent/
-├── app/                         # Android Application module
+├── cxxplatform/           # Native C++ core library
+│   ├── include/icraw/     # Public headers
+│   ├── src/               # Implementation
+│   ├── tests/             # Unit tests
+│   ├── demo/              # Demo application
+│   ├── workspace/         # Default skill workspace
+│   └── test_skill_workspace/  # Test skills
+├── agent-core/            # Java JNI bridge library
 │   └── src/main/
-│       ├── java/com/hh/agent/  # Java source code
-│       │   ├── contract/        # MVP contract interfaces
-│       │   ├── presenter/       # Presenter implementations
-│       │   ├── ui/             # UI adapters
-│       │   ├── MainActivity.java
-│       │   ├── VueActivity.java
-│       │   └── LauncherActivity.java
-│       ├── res/                 # Android resources
-│       │   ├── layout/          # XML layouts
-│       │   ├── drawable/       # Graphics
-│       │   ├── values/         # Colors, strings, themes
-│       │   └── xml/             # Network security config
-│       └── assets/              # Bundled assets
-│           └── dist/            # Vue build output
-├── lib/                         # Native Library module
+│       ├── java/          # Java sources
+│       └── assets/        # Core skills/assets
+├── agent-android/         # Android UI and tools
 │   └── src/main/
-│       ├── java/com/hh/agent/lib/
-│       │   ├── api/            # NanobotApi interface
-│       │   ├── config/         # Configuration classes
-│       │   ├── dto/            # Request/Response DTOs
-│       │   ├── http/           # HTTP implementation
-│       │   ├── impl/           # Mock implementation
-│       │   └── model/          # Data models
-│       └── cpp/                # C++ JNI code (if needed)
-├── vue/                         # Vue Frontend
-│   └── src/
-│       ├── api/                # HTTP client
-│       ├── components/         # Vue components
-│       ├── stores/             # Pinia stores
-│       ├── types/              # TypeScript types
-│       ├── views/              # Page components
-│       ├── App.vue
-│       ├── main.ts
-│       └── router.ts
-├── agent/                      # Agent module (C++/other)
-├── build.gradle                # Root build config
-└── settings.gradle
+│       ├── java/          # Java sources
+│       ├── res/           # Android resources
+│       └── assets/        # Android assets
+├── app/                  # Application module
+│   ├── src/main/
+│   │   ├── java/         # Application sources
+│   │   ├── res/          # Resources
+│   │   └── assets/       # App-specific skills
+│   └── src/test/         # Unit tests
+└── build.gradle           # Gradle build config
 ```
 
 ## Directory Purposes
 
-**app/src/main/java/com/hh/agent/:**
-- Purpose: Android application source code
-- Contains: Activities, MVP contracts, presenters, UI adapters
+**cxxplatform:**
+- Purpose: Native C++ agent engine
+- Contains: Core reasoning loop, LLM integration, memory, skills, tools
+- Key files:
+  - `include/icraw/mobile_agent.hpp` - Main facade
+  - `include/icraw/core/agent_loop.hpp` - Agent loop
+  - `include/icraw/core/llm_provider.hpp` - LLM abstraction
+  - `include/icraw/core/memory_manager.hpp` - Memory/SQLite
+  - `include/icraw/tools/tool_registry.hpp` - Tool registry
+  - `src/mobile_agent.cpp` - Implementation
 
-**app/src/main/res/:**
-- Purpose: Android UI resources
-- Contains: XML layouts, drawables, colors, strings, themes
+**agent-core:**
+- Purpose: JNI bridge library (AAR)
+- Contains: Java bindings for native library
+- Key files:
+  - `src/main/java/com/hh/agent/library/NativeAgent.java` - JNI wrapper
+  - `src/main/java/com/hh/agent/library/api/NativeMobileAgentApi.java` - API singleton
+  - `src/main/assets/workspace/skills/` - Core skills
 
-**app/src/main/assets/:**
-- Purpose: Bundled web assets
-- Contains: Vue build output (dist/index.html, dist/assets/)
+**agent-android:**
+- Purpose: Android UI and built-in tools
+- Contains: MVP UI, Android tool implementations
+- Key files:
+  - `src/main/java/com/hh/agent/android/AgentActivity.java` - Main UI
+  - `src/main/java/com/hh/agent/android/AndroidToolManager.java` - Tool manager
+  - `src/main/java/com/hh/agent/android/presenter/MainPresenter.java` - MVP Presenter
 
-**lib/src/main/java/com/hh/agent/lib/:**
-- Purpose: Reusable library for API communication
-- Contains: API interface, implementations, models, DTOs, configuration
-
-**vue/src/:**
-- Purpose: Vue.js frontend source
-- Contains: Components, stores, API clients, views
+**app:**
+- Purpose: Application module
+- Contains: Launcher, app-specific tools
+- Key files:
+  - `src/main/java/com/hh/agent/LauncherActivity.java` - Entry point
+  - `src/main/java/com/hh/agent/tool/SearchContactsTool.java` - Custom tool
+  - `src/main/java/com/hh/agent/tool/SendImMessageTool.java` - Custom tool
 
 ## Key File Locations
 
 **Entry Points:**
-- `app/src/main/java/com/hh/agent/MainActivity.java`: Native Android chat UI
-- `app/src/main/java/com/hh/agent/VueActivity.java`: WebView container for Vue
-- `app/src/main/java/com/hh/agent/LauncherActivity.java`: Launch activity
+- `/Users/caixiao/Workspace/projects/mobile-agent/app/src/main/java/com/hh/agent/LauncherActivity.java` - App launch
+- `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/AgentActivity.java` - Agent UI
+- `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/mobile_agent.cpp` - Native agent
 
 **Configuration:**
-- `lib/src/main/java/com/hh/agent/lib/config/NanobotConfig.java`: HTTP endpoint config
+- `/Users/caixiao/Workspace/projects/mobile-agent/config.json.template` - Config template
+- `/Users/caixiao/Workspace/projects/mobile-agent/build.gradle` - Build config
+- `/Users/caixiao/Workspace/projects/mobile-agent/settings.gradle` - Project settings
 
 **Core Logic:**
-- `app/src/main/java/com/hh/agent/presenter/MainPresenter.java`: Business logic
-- `lib/src/main/java/com/hh/agent/lib/http/HttpNanobotApi.java`: HTTP API client
+- `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/mobile_agent.cpp` - MobileAgent impl
+- `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/core/agent_loop.cpp` - Agent loop
+- `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/core/llm_provider.cpp` - LLM provider
+- `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/core/memory_manager.cpp` - Memory
 
 **Testing:**
-- `app/src/test/java/com/hh/agent/`: Android unit tests
-- `lib/src/test/java/com/hh/agent/lib/`: Library unit tests
+- `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/tests/` - C++ tests
+- `/Users/caixiao/Workspace/projects/mobile-agent/app/src/test/java/` - Android tests
 
 ## Naming Conventions
 
 **Files:**
-- Java: PascalCase (e.g., `MainActivity.java`, `NanobotApi.java`)
-- Vue: PascalCase (e.g., `ChatView.vue`, `MessageBubble.vue`)
-- TypeScript: camelCase (e.g., `nanobot.ts`, `chat.ts`)
+- Java: PascalCase (e.g., `AgentActivity.java`, `AndroidToolManager.java`)
+- C++ Headers: snake_case.hpp (e.g., `mobile_agent.hpp`, `agent_loop.hpp`)
+- C++ Sources: snake_case.cpp (e.g., `mobile_agent.cpp`, `agent_loop.cpp`)
+- Skills: SKILL.md (uppercase)
 
 **Directories:**
-- Java packages: lowercase with dots (e.g., `com.hh.agent.lib.api`)
-- Vue directories: lowercase (e.g., `components`, `stores`)
+- Java packages: lowercase with dots (e.g., `com/hh/agent/android/tool`)
+- C++ modules: snake_case (e.g., `core/`, `tools/`)
+- Assets: lowercase (e.g., `workspace/skills/`)
 
-**Classes:**
-- Java: PascalCase (e.g., `MainPresenter`, `MessageAdapter`)
-- TypeScript: PascalCase (e.g., `useChatStore`)
+**Functions/Methods:**
+- Java: camelCase (e.g., `initializeToolManager()`, `registerTool()`)
+- C++: snake_case (e.g., `load_skills_from_directory()`)
 
 ## Where to Add New Code
 
-**New Feature (Android):**
-- UI: Add to `app/src/main/java/com/hh/agent/ui/`
-- Logic: Add to `app/src/main/java/com/hh/agent/presenter/`
-- Contract: Modify `app/src/main/java/com/hh/agent/contract/MainContract.java`
-- Tests: `app/src/test/java/com/hh/agent/`
+**New Native C++ Feature:**
+- Headers: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/include/icraw/`
+- Implementation: `/Users/caixiao/Workspace/projects/mobile-agent/cxxplatform/src/`
 
-**New Feature (Vue):**
-- Component: Add to `vue/src/components/`
-- Page: Add to `vue/src/views/`
-- Store: Add to `vue/src/stores/`
-- API: Add to `vue/src/api/`
+**New Android Tool:**
+- Implementation: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/tool/`
+- Registration: `AndroidToolManager.java`
 
-**New API Implementation:**
-- Interface: `lib/src/main/java/com/hh/agent/lib/api/NanobotApi.java`
-- Implementation: `lib/src/main/java/com/hh/agent/lib/impl/` or `lib/src/main/java/com/hh/agent/lib/http/`
+**New App Tool:**
+- Implementation: `/Users/caixiao/Workspace/projects/mobile-agent/app/src/main/java/com/hh/agent/tool/`
+- Registration: `LauncherActivity.java`
 
-**New Model/DTO:**
-- Model: `lib/src/main/java/com/hh/agent/lib/model/`
-- DTO: `lib/src/main/java/com/hh/agent/lib/dto/`
+**New Skill:**
+- Core skills: `/Users/caixiao/Workspace/projects/mobile-agent/agent-core/src/main/assets/workspace/skills/`
+- App skills: `/Users/caixiao/Workspace/projects/mobile-agent/app/src/main/assets/workspace/skills/`
+
+**New UI Feature:**
+- Activity: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/`
+- Presenter: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/presenter/`
+- Contract: `/Users/caixiao/Workspace/projects/mobile-agent/agent-android/src/main/java/com/hh/agent/android/contract/`
 
 ## Special Directories
 
-**app/src/main/assets/dist/:**
-- Purpose: Vue build output for WebView
-- Generated: Yes (by Vue build)
-- Committed: Yes (bundled in APK)
+**cxxplatform/include/icraw:**
+- Purpose: Public C++ API headers
+- Generated: No
+- Committed: Yes
 
-**lib/.cxx/:**
-- Purpose: CMake build output for native code
-- Generated: Yes
-- Committed: No (in .gitignore)
+**cxxplatform/src/core:**
+- Purpose: Core agent implementations
+- Generated: No
+- Committed: Yes
 
-**vue/node_modules/:**
-- Purpose: Vue dependencies
-- Generated: Yes
-- Committed: No (in .gitignore)
+**workspace/skills:**
+- Purpose: Skill definitions (SKILL.md files)
+- Generated: No
+- Committed: Yes
+
+**app/src/main/assets/workspace:**
+- Purpose: App-specific skills and resources
+- Generated: No
+- Committed: Yes
 
 ---
 
-*Structure analysis: 2026-03-03*
+*Structure analysis: 2026-03-10*

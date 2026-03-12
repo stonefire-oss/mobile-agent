@@ -2,14 +2,6 @@ plugins {
     id 'com.android.application'
 }
 
-// Read apiKey from local.properties
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file('local.properties')
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withInputStream { localProperties.load(it) }
-}
-def apiKey = localProperties.getProperty('apiKey', '')
-
 android {
     namespace 'com.hh.agent'
     compileSdk 34
@@ -38,8 +30,8 @@ android {
 dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.11.0'
-    implementation project(':lib')
-    implementation project(':agent')
+    implementation project(':agent-core')
+    implementation project(':agent-android')
 
     // Markwon Markdown 渲染库
     implementation 'io.noties.markwon:core:4.6.2'
@@ -50,20 +42,5 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
 }
 
-// Task to inject apiKey into config.json before build
-task injectApiKey {
-    doLast {
-        def configFile = file('src/main/assets/config.json')
-        if (configFile.exists() && apiKey && apiKey != 'YOUR_API_KEY_HERE') {
-            def configContent = configFile.text
-            configContent = configContent.replace('"apiKey": "YOUR_API_KEY_HERE"', "\"apiKey\": \"${apiKey}\"")
-            configFile.text = configContent
-            println "Injected apiKey into config.json"
-        }
-    }
-}
-
-// Use afterEvaluate to add dependency after project is configured
-afterEvaluate {
-    project.tasks.getByName('processDebugResources').dependsOn injectApiKey
-}
+// Apply config-template.gradle for copying config.json.template to assets
+apply from: rootProject.file('config-template.gradle')

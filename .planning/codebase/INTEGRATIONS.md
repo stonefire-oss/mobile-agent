@@ -1,111 +1,90 @@
 # External Integrations
 
-**Analysis Date:** 2026-03-03
+**Analysis Date:** 2026-03-10
 
 ## APIs & External Services
 
-**Nanobot Chat Service:**
-- Primary external API for chat functionality
-- SDK/Client: Custom `HttpNanobotApi` implementation using OkHttp 4.12.0
-- Base URL: `http://localhost:18791` (configurable via `NanobotConfig`)
-- Endpoints:
-  - `POST /api/chat` - Send message and receive response
-  - `GET /health` - Health check
-- Connection: Configurable via `NanobotConfig.java`
-  - Default: `http://localhost:18791`
-  - Connect timeout: 30 seconds
-  - Read timeout: 60 seconds
-
-**API Request/Response Format:**
-```json
-// Request (ChatRequest)
-{
-  "message": "user message",
-  "session_key": "channel:chatId"
-}
-
-// Response (ChatResponse)
-{
-  "success": true,
-  "response": "assistant reply",
-  "session_key": "channel:chatId",
-  "error": null
-}
-```
+**AI/LLM Provider:**
+- MiniMax API - Primary AI model provider
+  - SDK: Direct HTTP via libcurl (C++ native layer)
+  - Endpoint: `https://api.minimaxi.com/v1`
+  - Model: `MiniMax-M2.5-highspeed`
+  - Auth: API key via `config.json` (provider.apiKey)
 
 ## Data Storage
 
-**In-Memory:**
-- Session and message storage: In-memory `ConcurrentHashMap` in `HttpNanobotApi`
-- No persistent database
-- Session key format: `channel:chatId` (e.g., `http:default`)
+**Local Database:**
+- SQLite3 - Embedded database (native layer)
+  - Used for memory management and session storage
+  - Library: `SQLite::SQLite3` (Conan package)
+  - Location: App-specific internal storage
 
-**No External Database:**
-- All data is ephemeral and lost on app restart
-- Session history maintained per session key in memory
+**File Storage:**
+- Android internal storage - Config files, assets
+- MediaStore API - Screenshots (TakeScreenshotTool)
 
 ## Authentication & Identity
 
-**None:**
-- No authentication or identity provider integrated
-- No user management system
-- Session key used as lightweight session identifier
+**API Authentication:**
+- API Key based (provider.apiKey in config.json)
+- Bearer token in HTTP Authorization header
 
 ## Monitoring & Observability
 
-**None:**
-- No error tracking service (e.g., Crashlytics, Sentry)
-- No analytics or monitoring
-- Native Android logging only (Logcat)
+**Logging:**
+- Android Log API (android.util.Log)
+- Native logging: spdlog with Android log sink
+- Log tag: Configurable per component
 
-**Logging Approach:**
-- Android `Log` class for debug logging
-- Native C++ logging via Android log library
+**Error Handling:**
+- Java: try-catch with Toast/Notification user feedback
+- C++: Exception handling with native crash logging
 
-## CI/CD & Deployment
+## Build & Dependencies
 
-**Build System:**
-- Gradle 8.12.1 with AGP 8.3.2
+**Dependency Management:**
+- Maven Central - Android/Java dependencies
+- Conan - Native C++ dependencies
+- Gradle - Build orchestration
 
-**Hosting:**
-- Not applicable (Android app distributed via APK)
+## Configuration
 
-**CI Pipeline:**
-- None detected
+**Required config.json fields:**
+```json
+{
+  "provider": {
+    "apiKey": "<MiniMax API key>",
+    "baseUrl": "https://api.minimaxi.com/v1"
+  },
+  "agent": {
+    "model": "MiniMax-M2.5-highspeed"
+  }
+}
+```
 
-## Environment Configuration
-
-**Required Configuration:**
-- Nanobot service must be running at configured base URL
-- For emulator: `adb reverse tcp:18791 tcp:18791` to forward requests
-- Network security config allows localhost cleartext traffic
-
-**Optional Configuration:**
-- Custom base URL via `NanobotConfig` constructor
-- Custom timeouts via `NanobotConfig` constructor
-- API type switching (MOCK vs HTTP) in `MainPresenter.ApiType`
+**Config location:**
+- Template: `/config.json.template`
+- Runtime: App assets `config.json`
+- Copied at build time via `config-template.gradle`
 
 ## Webhooks & Callbacks
 
-**Incoming:**
-- None - App is the client, not a server
+**Tool Callbacks:**
+- AndroidToolCallback interface - Native to Java callback
+- ToolExecutor - Executes tools and returns results
+- Implemented tools:
+  - DisplayNotificationTool - System notifications
+  - TakeScreenshotTool - Screen capture
+  - ReadClipboardTool - Clipboard access
+  - ShowToastTool - Toast messages
+  - SearchContactsTool - Contact search (app module)
+  - SendImMessageTool - IM messaging (app module)
 
-**Outgoing:**
-- HTTP POST to Nanobot service for chat messages
-- HTTP GET to Nanobot health endpoint
-
-## Key Integration Points
-
-**NanobotApi Interface:**
-- `lib/src/main/java/com/hh/agent/lib/api/NanobotApi.java`
-- Two implementations:
-  - `HttpNanobotApi` - Real HTTP calls to Nanobot service
-  - `MockNanobotApi` - Mock responses for testing/development
-
-**Configuration:**
-- `lib/src/main/java/com/hh/agent/lib/config/NanobotConfig.java`
-- HTTP client: `lib/src/main/java/com/hh/agent/lib/http/HttpNanobotApi.java`
+**Android Integration:**
+- AgentActivity - Main UI activity
+- NativeMobileAgentApi - Bridge between Java and native
+- AndroidToolManager - Tool registration and execution
 
 ---
 
-*Integration audit: 2026-03-03*
+*Integration audit: 2026-03-10*
