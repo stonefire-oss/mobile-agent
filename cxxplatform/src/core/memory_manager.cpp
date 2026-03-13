@@ -591,7 +591,8 @@ std::vector<MemoryEntry> MemoryManager::get_recent_messages(int limit,
 }
 
 std::vector<MemoryEntry> MemoryManager::get_all_messages(const std::string& session_id) const {
-    return get_recent_messages(1000000, session_id);  // Large limit for "all"
+    // 使用安全限制，避免加载过多数据导致内存问题
+    return get_recent_messages(1000, session_id);  // 限制最多1000条
 }
 
 void MemoryManager::clear_history(const std::string& session_id) {
@@ -641,6 +642,11 @@ std::vector<MemoryEntry> MemoryManager::search_memory(const std::string& query,
     
     if (!db_ || !db_->is_open()) {
         return results;
+    }
+    
+    // 边界检查：限制最大结果数，防止内存问题
+    if (limit <= 0 || limit > 100) {
+        limit = 50;  // 安全默认值
     }
     
     // Use parameterized query to prevent SQL injection

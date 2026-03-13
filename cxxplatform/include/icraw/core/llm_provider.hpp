@@ -14,6 +14,7 @@ struct ChatCompletionRequest {
     std::vector<Message> messages;
     std::string model;
     double temperature = 0.7;
+    double top_p = 0.9;  // 添加 top_p 参数
     int max_tokens = 4096;
     std::vector<nlohmann::json> tools;
     bool tool_choice_auto = true;

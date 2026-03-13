@@ -11,6 +11,9 @@ target_include_directories(icraw_demo PRIVATE
 
 target_link_libraries(icraw_demo PRIVATE icraw)
 
+# MNN support - inherit from icraw library
+# icraw library already has ICRAW_USE_MNN defined when MNN is available
+
 # Windows specific settings
 if(WIN32)
     target_compile_definitions(icraw_demo PRIVATE

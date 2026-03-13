@@ -6,21 +6,60 @@
 #include "icraw/config.hpp"
 #include <memory>
 #include <string>
+#include <functional>
+#include <streambuf>
+#include <vector>
 
-// MNN前向声明（避免在头文件中包含MNN头文件）
+// MNN-LLM前向声明
 namespace MNN {
-    class Interpreter;
-    class Session;
-    class Tensor;
+namespace Transformer {
+    class Llm;
+    class Tokenizer;
+}
 }
 
 namespace icraw {
 
 /**
- * MNNProvider - 基于MNN的本地LLM推理Provider
+ * 流式输出回调缓冲区
+ * 用于将MNN-LLM的流式输出转换为回调函数调用
+ */
+class LlmStreamBuffer : public std::streambuf {
+public:
+    using Callback = std::function<void(const char* str, size_t len)>;
+    
+    explicit LlmStreamBuffer(Callback callback);
+    
+protected:
+    std::streamsize xsputn(const char* s, std::streamsize n) override;
+    int overflow(int c) override;
+    
+private:
+    Callback callback_;
+};
+
+/**
+ * 图像输入数据结构
+ */
+struct MNNImageInput {
+    std::vector<uint8_t> data;  // 图像数据（RGB格式）
+    int width = 0;
+    int height = 0;
+    int channels = 3;  // 默认RGB
+};
+
+/**
+ * MNNProvider - 基于MNN-LLM的本地LLM推理Provider
  * 
- * 实现LLMProvider接口，使用MNN引擎进行本地推理
+ * 实现LLMProvider接口，使用MNN-LLM高级API进行本地推理
  * 仅在ICRAW_USE_MNN编译时可用
+ * 
+ * 支持功能：
+ * - 自动加载tokenizer（Tiktoken/SentencePiece）
+ * - 流式生成
+ * - 采样策略（temperature, top_p, top_k）
+ * - KV Cache优化
+ * - 多模态支持（图像输入）
  */
 class MNNProvider : public LLMProvider {
 public:
@@ -49,6 +88,9 @@ public:
     // 检查模型是否已加载
     bool is_model_loaded() const { return model_loaded_; }
     
+    // 检查是否为多模态模型
+    bool is_multimodal() const { return is_multimodal_; }
+    
     // 获取当前内存使用量（字节）
     size_t get_memory_usage() const;
     
@@ -60,30 +102,48 @@ public:
     
     // 获取当前生成长度限制
     int get_max_tokens() const { return max_tokens_; }
+    
+    // 重置对话状态（清除KV Cache）
+    void reset();
+    
+    // ========== 多模态支持 ==========
+    
+    // 带图像的聊天完成（非流式）
+    ChatCompletionResponse chat_completion_with_image(
+        const std::string& prompt,
+        const MNNImageInput& image);
+    
+    // 带图像的聊天完成（流式）
+    void chat_completion_with_image_stream(
+        const std::string& prompt,
+        const MNNImageInput& image,
+        std::function<void(const ChatCompletionResponse&)> callback);
+    
+    // 从文件加载图像
+    static std::optional<MNNImageInput> load_image(const std::string& image_path);
 
 private:
-    // 初始化MNN会话
-    bool init_session();
+    // 初始化MNN-LLM
+    bool init_llm();
     
-    // Tokenizer相关（简化实现，后续可扩展）
-    std::vector<int> tokenize(const std::string& text);
-    std::string detokenize(const std::vector<int>& tokens);
+    // 构建Qwen Chat格式的prompt
+    std::string build_qwen_prompt(const std::vector<Message>& messages);
     
-    // 执行推理
-    std::string run_inference(const std::vector<int>& input_tokens, 
-                              int max_new_tokens,
-                              float temperature,
-                              float top_p);
+    // 构建MNN-LLM配置文件
+    bool create_config_files(const std::string& model_dir);
+    
+    // 解析工具调用（Qwen格式）
+    void parse_tool_calls(const std::string& output, ChatCompletionResponse& response);
     
     MNNConfig config_;
-    std::unique_ptr<MNN::Interpreter> interpreter_;
-    MNN::Session* session_ = nullptr;
+    std::unique_ptr<MNN::Transformer::Llm> llm_;
     bool model_loaded_ = false;
+    bool is_multimodal_ = false;
     int max_tokens_ = 4096;
     
-    // Tokenizer（简化版，后续可替换为sentencepiece）
-    std::vector<std::string> vocab_;
-    std::unordered_map<std::string, int> vocab_map_;
+    // 配置文件路径
+    std::string config_path_;
+    std::string model_dir_;
 };
 
 } // namespace icraw

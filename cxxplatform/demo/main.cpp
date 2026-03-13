@@ -11,6 +11,10 @@
 #include <icraw/core/llm_provider.hpp>
 #include <icraw/core/logger.hpp>
 
+#ifdef ICRAW_USE_MNN
+#include <icraw/core/mnn_provider.hpp>
+#endif
+
 std::atomic<bool> g_running(true);
 
 void signal_handler(int) {
@@ -21,21 +25,36 @@ void signal_handler(int) {
 void print_usage(const char* program_name) {
     std::cout << "icraw CLI Agent Demo\n\n";
     std::cout << "Usage: " << program_name << " [options]\n";
-    std::cout << "  --api-key <key>      OpenAI API key (or set OPENAI_API_KEY env)\n";
-    std::cout << "  --base-url <url>     API base URL (default: https://api.openai.com/v1)\n";
-    std::cout << "  --model <model>      Model name (default: gpt-4o)\n";
-    std::cout << "  --workspace <path>   Workspace directory (default: ~/.icraw/workspace)\n";
-    std::cout << "  --skill <path>       Skills directory (default: <workspace>/skills)\n";
-    std::cout << "  --log <path>         Log directory (default: disabled)\n";
-    std::cout << "  --log-level <level>  Log level: trace, debug, info, warn, error (default: info)\n";
-    std::cout << "  --no-stream          Disable streaming output\n";
-    std::cout << "  --help               Show this help message\n";
+    std::cout << "\n远程API选项:\n";
+    std::cout << "  --api-key <key>      OpenAI API key (或设置 OPENAI_API_KEY 环境变量)\n";
+    std::cout << "  --base-url <url>     API base URL (默认: https://api.openai.com/v1)\n";
+    std::cout << "  --model <model>      模型名称 (默认: gpt-4o)\n";
+#ifdef ICRAW_USE_MNN
+    std::cout << "\n本地MNN选项:\n";
+    std::cout << "  --mnn-model <path>   使用本地MNN模型 (例如: D:\\models\\Qwen3.5-0.8B-MNN)\n";
+    std::cout << "  --mnn-threads <n>    MNN推理线程数 (默认: 4)\n";
+    std::cout << "  --mnn-backend <type> MNN后端类型: cpu, opencl, metal (默认: cpu)\n";
+#endif
+    std::cout << "\n其他选项:\n";
+    std::cout << "  --workspace <path>   工作目录 (默认: ~/.icraw/workspace)\n";
+    std::cout << "  --skill <path>       Skills目录 (默认: <workspace>/skills)\n";
+    std::cout << "  --log <path>         日志目录 (默认: 禁用)\n";
+    std::cout << "  --log-level <level>  日志级别: trace, debug, info, warn, error (默认: info)\n";
+    std::cout << "  --no-stream          禁用流式输出\n";
+    std::cout << "  --help               显示帮助信息\n";
 }
 
-void print_welcome() {
+void print_welcome(bool use_mnn, const std::string& model_name) {
     std::cout << "\n";
     std::cout << "==================================================\n";
     std::cout << "            icraw CLI Agent Demo\n";
+    if (use_mnn) {
+        std::cout << "            [本地MNN模式]\n";
+        std::cout << "            Model: " << model_name << "\n";
+    } else {
+        std::cout << "            [远程API模式]\n";
+        std::cout << "            Model: " << model_name << "\n";
+    }
     std::cout << "              Type /exit to quit\n";
     std::cout << "==================================================\n\n";
 }
@@ -45,7 +64,6 @@ int main(int argc, char* argv[]) {
 #ifdef _WIN32
     SetConsoleCP(CP_UTF8);
     SetConsoleOutputCP(CP_UTF8);
-    // _setmode(_O_U16TEXT);  // Removed - this causes issues with std::string
 #endif
     std::string api_key;
     std::string base_url = "https://api.openai.com/v1";
@@ -55,6 +73,11 @@ int main(int argc, char* argv[]) {
     std::string log_path;
     std::string log_level = "info";
     bool use_stream = true;
+    
+    // MNN options
+    std::string mnn_model_path;
+    int mnn_threads = 4;
+    std::string mnn_backend = "cpu";
 
     // Parse command line arguments
     for (int i = 1; i < argc; ++i) {
@@ -75,24 +98,52 @@ int main(int argc, char* argv[]) {
             log_level = argv[++i];
         } else if (arg == "--no-stream") {
             use_stream = false;
-        } else if (arg == "--help") {
+        }
+#ifdef ICRAW_USE_MNN
+        else if (arg == "--mnn-model" && i + 1 < argc) {
+            mnn_model_path = argv[++i];
+        } else if (arg == "--mnn-threads" && i + 1 < argc) {
+            mnn_threads = std::stoi(argv[++i]);
+        } else if (arg == "--mnn-backend" && i + 1 < argc) {
+            mnn_backend = argv[++i];
+        }
+#endif
+        else if (arg == "--help") {
             print_usage(argv[0]);
             return 0;
         }
     }
 
-    // Check for API key
-    if (api_key.empty()) {
-        const char* env_key = std::getenv("OPENAI_API_KEY");
-        if (env_key) {
-            api_key = env_key;
-        }
-    }
+    // Check if using MNN local model
+    bool use_mnn = !mnn_model_path.empty();
 
-    if (api_key.empty()) {
-        std::cerr << "Error: No API key provided.\n";
-        std::cerr << "Set OPENAI_API_KEY environment variable or use --api-key option.\n";
+#ifdef ICRAW_USE_MNN
+    if (use_mnn) {
+        std::cout << "Using local MNN model: " << mnn_model_path << std::endl;
+    }
+#else
+    if (use_mnn) {
+        std::cerr << "Error: MNN support not compiled in.\n";
+        std::cerr << "Rebuild with -DICRAW_USE_MNN=ON to use local models.\n";
         return 1;
+    }
+#endif
+
+    // Check for API key (only needed for remote API)
+    if (!use_mnn) {
+        if (api_key.empty()) {
+            const char* env_key = std::getenv("OPENAI_API_KEY");
+            if (env_key) {
+                api_key = env_key;
+            }
+        }
+
+        if (api_key.empty()) {
+            std::cerr << "Error: No API key provided.\n";
+            std::cerr << "Set OPENAI_API_KEY environment variable or use --api-key option.\n";
+            std::cerr << "Or use --mnn-model for local inference.\n";
+            return 1;
+        }
     }
 
     // Setup signal handler
@@ -101,9 +152,6 @@ int main(int argc, char* argv[]) {
     try {
         // Create configuration
         icraw::IcrawConfig config;
-        config.provider.api_key = api_key;
-        config.provider.base_url = base_url;
-        config.agent.model = model;
         
         // Set workspace path
         if (workspace_path.empty()) {
@@ -124,7 +172,6 @@ int main(int argc, char* argv[]) {
             config.logging.directory = log_path;
             config.logging.level = log_level;
             
-            // Verify logger is initialized
             if (icraw::Logger::get_instance().is_initialized()) {
                 std::cout << "Logger initialized successfully!" << std::endl;
             } else {
@@ -132,10 +179,39 @@ int main(int argc, char* argv[]) {
             }
         }
         
-        // Create the agent using the config directly
+        // Set provider config BEFORE creating agent
+        if (!use_mnn) {
+            // Remote API mode - set API config before creating agent
+            config.provider.api_key = api_key;
+            config.provider.base_url = base_url;
+            config.agent.model = model;
+        }
+        
+        // Create the agent
         icraw::MobileAgent agent(config);
         
-        print_welcome();
+        // Switch to MNN if requested
+        if (use_mnn) {
+#ifdef ICRAW_USE_MNN
+            icraw::MNNConfig mnn_config;
+            mnn_config.model_path = mnn_model_path;
+            mnn_config.thread_num = mnn_threads;
+            mnn_config.backend = mnn_backend;
+            mnn_config.use_mmap = true;
+            
+            std::cout << "Loading MNN model: " << mnn_model_path << std::endl;
+            if (!agent.switch_to_mnn_provider(mnn_config)) {
+                std::cerr << "Error: Failed to switch to MNN provider\n";
+                return 1;
+            }
+            std::cout << "MNN model loaded successfully!" << std::endl;
+#else
+            (void)mnn_threads;
+            (void)mnn_backend;
+#endif
+        }
+        
+        print_welcome(use_mnn, use_mnn ? mnn_model_path : model);
         std::cout << "Agent ready! Type your message and press Enter.\n";
         std::cout << "Commands: /exit, /clear, /help\n\n";
         

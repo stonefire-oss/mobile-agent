@@ -735,6 +735,11 @@ std::string ToolRegistry::search_memory_tool(const nlohmann::json& params) {
         return result.dump();
     }
     
+    // 边界检查：限制最大返回结果数，防止内存问题
+    if (limit <= 0 || limit > 100) {
+        limit = 50;  // 安全默认值
+    }
+    
     if (query.empty()) {
         nlohmann::json result;
         result["success"] = false;

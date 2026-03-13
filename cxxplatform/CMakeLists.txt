@@ -14,10 +14,17 @@ option(ICRAW_USE_MNN "Enable MNN local inference" OFF)
 option(ICRAW_MNN_OPENCL "Enable MNN OpenCL backend (Android)" OFF)
 option(ICRAW_MNN_METAL "Enable MNN Metal backend (iOS)" OFF)
 
+# MNN目录路径（手动指定）
+set(MNN_DIR "" CACHE PATH "Path to MNN source directory")
+
 if(ICRAW_USE_MNN)
     message(STATUS "MNN local inference enabled")
     message(STATUS "  OpenCL backend: ${ICRAW_MNN_OPENCL}")
     message(STATUS "  Metal backend: ${ICRAW_MNN_METAL}")
+    message(STATUS "  MNN_DIR: ${MNN_DIR}")
+    message(STATUS "")
+    message(STATUS "  NOTE: MNN must be compiled with -DMNN_BUILD_LLM=true to enable LLM support")
+    message(STATUS "        Example: cmake .. -DMNN_BUILD_LLM=true -DMNN_SUPPORT_TRANSFORMER_FUSE=true")
 else()
     message(STATUS "MNN local inference disabled")
 endif()
@@ -38,17 +45,47 @@ find_package(spdlog CONFIG REQUIRED)
 
 # ========== MNN 依赖处理 ==========
 set(ICRAW_MNN_AVAILABLE OFF)
+
+# 保存用户指定的MNN_DIR（因为find_package可能会覆盖它）
+set(USER_MNN_DIR "${MNN_DIR}")
+
 if(ICRAW_USE_MNN)
     # 尝试查找已安装的MNN
     find_package(MNN CONFIG QUIET)
     
     if(MNN_FOUND)
         set(ICRAW_MNN_AVAILABLE ON)
-        message(STATUS "MNN library found")
+        message(STATUS "MNN library found via find_package")
+    elseif(NOT "${USER_MNN_DIR}" STREQUAL "" AND EXISTS "${USER_MNN_DIR}")
+        # 手动指定MNN目录
+        message(STATUS "Using MNN from: ${USER_MNN_DIR}")
+        
+        # 检查MNN头文件
+        if(EXISTS "${USER_MNN_DIR}/include/MNN/MNNDefine.h")
+            set(MNN_INCLUDE_DIR "${USER_MNN_DIR}/include")
+            message(STATUS "MNN headers found at ${MNN_INCLUDE_DIR}")
+        else()
+            message(FATAL_ERROR "MNN headers not found at ${USER_MNN_DIR}/include")
+        endif()
+        
+        # 检查MNN库文件
+        if(EXISTS "${USER_MNN_DIR}/build/Release/MNN.lib")
+            set(MNN_LIB_DIR "${USER_MNN_DIR}/build/Release")
+        elseif(EXISTS "${USER_MNN_DIR}/build/MNN.lib")
+            set(MNN_LIB_DIR "${USER_MNN_DIR}/build")
+        else()
+            message(FATAL_ERROR "MNN library not found at ${USER_MNN_DIR}/build")
+        endif()
+        
+        # 恢复MNN_DIR为用户指定的值
+        set(MNN_DIR "${USER_MNN_DIR}")
+        set(ICRAW_MNN_AVAILABLE ON)
+        message(STATUS "MNN library found at ${MNN_LIB_DIR}")
     else()
-        message(STATUS "MNN not found via find_package, will need manual setup")
+        message(STATUS "MNN not found via find_package and MNN_DIR not set or invalid")
         message(WARNING "MNN library not found. ICRAW_USE_MNN will be disabled.")
-        message(STATUS "To enable MNN, please install MNN or set MNN_DIR cmake variable")
+        message(STATUS "To enable MNN, set MNN_DIR cmake variable:")
+        message(STATUS "  cmake .. -DICRAW_USE_MNN=ON -DMNN_DIR=/path/to/MNN")
     endif()
 endif()
 
@@ -127,9 +164,40 @@ if(ICRAW_MNN_AVAILABLE)
     # 添加编译定义
     target_compile_definitions(icraw PUBLIC ICRAW_USE_MNN)
     
-    # 链接MNN库
-    target_link_libraries(icraw PUBLIC MNN::MNN)
-    message(STATUS "Linking with MNN library")
+    if(MNN_FOUND)
+        # 使用find_package找到MNN
+        target_link_libraries(icraw PUBLIC MNN::MNN)
+        message(STATUS "Linking with MNN library (via find_package)")
+        
+        if(TARGET MNN::MNN_LLM)
+            target_link_libraries(icraw PUBLIC MNN::MNN_LLM)
+            message(STATUS "Linking with MNN-LLM library")
+        endif()
+    elseif(DEFINED MNN_DIR)
+        # 使用手动指定的MNN路径
+        # 添加MNN头文件路径
+        target_include_directories(icraw PUBLIC
+            "${MNN_DIR}/include"
+            "${MNN_DIR}/transformers/llm/engine/include"
+            "${MNN_DIR}/source"
+            "${MNN_DIR}/express"
+        )
+        
+        # 链接MNN库
+        target_link_libraries(icraw PUBLIC
+            "${MNN_LIB_DIR}/MNN.lib"
+        )
+        
+        # 添加LLM静态库
+        if(EXISTS "${MNN_DIR}/build/llm.dir/Release/llm.lib")
+            target_link_libraries(icraw PUBLIC
+                "${MNN_DIR}/build/llm.dir/Release/llm.lib"
+            )
+            message(STATUS "Linking with MNN-LLM library")
+        endif()
+        
+        message(STATUS "Linking with MNN library from ${MNN_DIR}")
+    endif()
     
     # OpenCL后端（Android）
     if(ICRAW_MNN_OPENCL)
@@ -163,6 +231,23 @@ endif()
 if(BUILD_TESTS)
     enable_testing()
     add_subdirectory(tests)
+endif()
+
+# MNN Test executable (only when MNN is available)
+if(ICRAW_MNN_AVAILABLE)
+    add_executable(mnn_test tests/mnn_test.cpp)
+    target_link_libraries(mnn_test PRIVATE icraw)
+    
+    add_executable(mnn_tool_test tests/mnn_tool_test.cpp)
+    target_link_libraries(mnn_tool_test PRIVATE icraw)
+    
+    add_executable(mnn_full_tool_test tests/mnn_full_tool_test.cpp)
+    target_link_libraries(mnn_full_tool_test PRIVATE icraw)
+    
+    add_executable(mnn_interactive tests/mnn_interactive.cpp)
+    target_link_libraries(mnn_interactive PRIVATE icraw)
+    
+    message(STATUS "MNN test executables will be built")
 endif()
 
 # Install
