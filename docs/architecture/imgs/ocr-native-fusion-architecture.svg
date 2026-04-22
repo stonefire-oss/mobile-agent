@@ -1,0 +1,112 @@
+<svg width="1800" height="1060" viewBox="0 0 1800 1060" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8fbff"/>
+      <stop offset="100%" stop-color="#eef5ff"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L12,6 L0,12 z" fill="#3b4a6b" />
+    </marker>
+    <style>
+      .title { font: 700 46px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #0f1c36; }
+      .subtitle { font: 500 22px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #44516d; }
+      .panel-title { font: 700 26px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #12305f; }
+      .box-title { font: 700 22px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #0f274a; }
+      .box-text { font: 500 18px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #223556; }
+      .note { font: 600 17px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #2d3f63; }
+      .chip { font: 600 17px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #17386f; }
+      .flow-text { font: 600 18px 'PingFang SC', 'Microsoft YaHei', sans-serif; fill: #1e2f50; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1800" height="1060" fill="url(#bg)"/>
+
+  <text x="70" y="75" class="title">OCR + Native 融合点击架构图（PPT版）</text>
+  <text x="70" y="112" class="subtitle">目标：让“可见文本”与“可点击结构”统一到高置信候选，并最终点击 Native 可点击父容器</text>
+
+  <rect x="60" y="150" width="1680" height="860" rx="26" fill="#ffffff" stroke="#dbe6ff" stroke-width="3"/>
+
+  <text x="100" y="205" class="panel-title">① 双源输入层</text>
+
+  <rect x="100" y="235" width="460" height="290" rx="18" fill="#e8f1ff" stroke="#9ab9f5" stroke-width="2.5"/>
+  <text x="130" y="278" class="box-title">Screen Vision / OCR</text>
+  <text x="130" y="315" class="box-text">• 截图 OCR 文本（可见词）</text>
+  <text x="130" y="348" class="box-text">• 视觉控件 / 卡片区域（bbox）</text>
+  <text x="130" y="381" class="box-text">• 区域语义（icon/card/section）</text>
+  <text x="130" y="414" class="box-text">• 能回答“屏幕上看到了什么”</text>
+  <rect x="130" y="445" width="395" height="55" rx="12" fill="#f7fbff" stroke="#b8cffb"/>
+  <text x="148" y="479" class="note">优势：可见性强，补齐图标/卡片语义</text>
+
+  <rect x="620" y="235" width="460" height="290" rx="18" fill="#e9fff7" stroke="#94d8bf" stroke-width="2.5"/>
+  <text x="650" y="278" class="box-title">Native UI Tree / XML</text>
+  <text x="650" y="315" class="box-text">• 稳定结构（id/class/hierarchy）</text>
+  <text x="650" y="348" class="box-text">• 真实 clickable / enabled 状态</text>
+  <text x="650" y="381" class="box-text">• 真实 bounds（可注入点击）</text>
+  <text x="650" y="414" class="box-text">• 父子关系（文本节点→容器）</text>
+  <rect x="650" y="445" width="395" height="55" rx="12" fill="#f4fffa" stroke="#b8e9d7"/>
+  <text x="668" y="479" class="note">优势：可执行性强，结构和可点击性稳定</text>
+
+  <text x="100" y="580" class="panel-title">② 融合与候选生成层</text>
+
+  <rect x="100" y="610" width="980" height="220" rx="18" fill="#fff8e8" stroke="#f1cd87" stroke-width="2.5"/>
+
+  <rect x="130" y="645" width="290" height="150" rx="14" fill="#fffdf7" stroke="#f1d6a0"/>
+  <text x="155" y="680" class="box-title">parseNative + parseVision</text>
+  <text x="155" y="712" class="box-text">统一字段：</text>
+  <text x="155" y="742" class="box-text">text / resourceId / bounds</text>
+  <text x="155" y="772" class="box-text">clickable / semantic kind</text>
+
+  <rect x="450" y="645" width="290" height="150" rx="14" fill="#fffdf7" stroke="#f1d6a0"/>
+  <text x="480" y="680" class="box-title">match + 互选阈值</text>
+  <text x="480" y="712" class="box-text">空间重叠 + 文本语义评分</text>
+  <text x="480" y="742" class="box-text">MATCH_THRESHOLD ≥ 0.40</text>
+  <text x="480" y="772" class="box-text">双向最佳才标记为 fused</text>
+
+  <rect x="770" y="645" width="280" height="150" rx="14" fill="#fffdf7" stroke="#f1d6a0"/>
+  <text x="800" y="680" class="box-title">buildActionable</text>
+  <text x="800" y="712" class="box-text">产出优先级：</text>
+  <text x="800" y="742" class="box-text">fused &gt; native &gt; vision_only</text>
+  <text x="800" y="772" class="box-text">输出高置信动作候选池</text>
+
+  <text x="1140" y="205" class="panel-title">③ Agent Core 归一化决策层</text>
+
+  <rect x="1140" y="235" width="560" height="350" rx="18" fill="#f2eeff" stroke="#b5a3f3" stroke-width="2.5"/>
+
+  <rect x="1170" y="270" width="500" height="110" rx="14" fill="#fbf9ff" stroke="#c7b8fb"/>
+  <text x="1195" y="307" class="box-title">CandidateMatcher（Canonical 化）</text>
+  <text x="1195" y="337" class="box-text">合并父/子/文本/图标重复候选</text>
+  <text x="1195" y="365" class="box-text">输出一个统一入口（CanonicalCandidate）</text>
+
+  <rect x="1170" y="400" width="500" height="160" rx="14" fill="#fbf9ff" stroke="#c7b8fb"/>
+  <text x="1195" y="437" class="box-title">点击目标提升策略</text>
+  <text x="1195" y="467" class="box-text">若文本子节点不可点击：</text>
+  <text x="1195" y="497" class="box-text">沿 parent chain 找 clickable=true 父容器</text>
+  <text x="1195" y="527" class="box-text">最终采用 Native 父容器真实 bounds 执行 tap</text>
+
+  <text x="1140" y="640" class="panel-title">④ 执行层</text>
+
+  <rect x="1140" y="670" width="560" height="250" rx="18" fill="#e9f9ff" stroke="#8ecde6" stroke-width="2.5"/>
+
+  <rect x="1170" y="710" width="500" height="80" rx="14" fill="#f6fdff" stroke="#b7e4f5"/>
+  <text x="1195" y="758" class="box-text">GestureToolChannel: tap(referencedBounds = native parent bounds)</text>
+
+  <rect x="1170" y="805" width="500" height="80" rx="14" fill="#f6fdff" stroke="#b7e4f5"/>
+  <text x="1195" y="853" class="box-text">结果回写：命中日志 + 下一轮 observation 闭环</text>
+
+  <rect x="100" y="865" width="980" height="125" rx="16" fill="#f8fbff" stroke="#c8d9f9" stroke-width="2"/>
+  <text x="130" y="905" class="box-title">关键收益（适合 PPT 结论页）</text>
+  <text x="130" y="936" class="chip">• OCR 负责“看得见”   • Native 负责“点得准”   • 融合负责“选得稳”</text>
+  <text x="130" y="967" class="chip">• CandidateMatcher 负责“去重合并”   • 最终点击目标锁定在 Native 可点击父容器</text>
+
+  <!-- arrows -->
+  <line x1="560" y1="380" x2="620" y2="380" stroke="#3b4a6b" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="560" y1="525" x2="560" y2="610" stroke="#3b4a6b" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="850" y1="525" x2="850" y2="610" stroke="#3b4a6b" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1080" y1="720" x2="1140" y2="720" stroke="#3b4a6b" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1080" y1="720" x2="1080" y2="720" stroke="#3b4a6b" stroke-width="3"/>
+  <line x1="1080" y1="720" x2="1140" y2="470" stroke="#3b4a6b" stroke-width="3" marker-end="url(#arrow)"/>
+  <line x1="1420" y1="585" x2="1420" y2="670" stroke="#3b4a6b" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <text x="1015" y="695" class="flow-text">高置信 fused 候选</text>
+  <text x="1460" y="628" class="flow-text">执行指令</text>
+</svg>
