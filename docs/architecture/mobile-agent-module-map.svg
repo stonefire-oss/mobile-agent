@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#475569" />
+    </marker>
+    <style>
+      .title { font: 700 34px 'Segoe UI', 'PingFang SC', sans-serif; fill: #0f172a; }
+      .subtitle { font: 500 18px 'Segoe UI', 'PingFang SC', sans-serif; fill: #334155; }
+      .box-title { font: 700 22px 'Segoe UI', 'PingFang SC', sans-serif; fill: #0f172a; }
+      .box-text { font: 500 16px 'Segoe UI', 'PingFang SC', sans-serif; fill: #1e293b; }
+      .edge { stroke: #475569; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .edge-text { font: 600 16px 'Segoe UI', 'PingFang SC', sans-serif; fill: #334155; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="900" fill="#f8fafc"/>
+  <text x="70" y="75" class="title">Mobile Agent 项目模块关系图</text>
+  <text x="70" y="110" class="subtitle">可直接粘贴到 PPT（推荐插入 SVG 保持矢量清晰度）</text>
+
+  <rect x="80" y="220" rx="18" ry="18" width="300" height="150" fill="#dbeafe" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="110" y="270" class="box-title">app</text>
+  <text x="110" y="300" class="box-text">示例宿主应用</text>
+  <text x="110" y="325" class="box-text">集成所有库模块</text>
+
+  <rect x="80" y="460" rx="18" ry="18" width="300" height="150" fill="#fee2e2" stroke="#ef4444" stroke-width="2.5"/>
+  <text x="110" y="510" class="box-title">benchmark-android</text>
+  <text x="110" y="540" class="box-text">Android 侧任务触发</text>
+  <text x="110" y="565" class="box-text">Benchmark 支撑模块</text>
+
+  <rect x="470" y="140" rx="18" ry="18" width="340" height="180" fill="#ede9fe" stroke="#8b5cf6" stroke-width="2.5"/>
+  <text x="500" y="190" class="box-title">agent-screen-vision</text>
+  <text x="500" y="220" class="box-text">屏幕视觉能力（OCR/识别）</text>
+  <text x="500" y="245" class="box-text">二次封装 Android 能力</text>
+  <text x="500" y="270" class="box-text">对外独立发布 AAR</text>
+
+  <rect x="470" y="400" rx="18" ry="18" width="340" height="180" fill="#dcfce7" stroke="#22c55e" stroke-width="2.5"/>
+  <text x="500" y="450" class="box-title">agent-android</text>
+  <text x="500" y="480" class="box-text">Android 集成层 / UI / Tools</text>
+  <text x="500" y="505" class="box-text">初始化、Fragment、Route、Workspace</text>
+  <text x="500" y="530" class="box-text">连接宿主与核心引擎</text>
+
+  <rect x="930" y="280" rx="18" ry="18" width="340" height="180" fill="#fef3c7" stroke="#f59e0b" stroke-width="2.5"/>
+  <text x="960" y="330" class="box-title">agent-core</text>
+  <text x="960" y="360" class="box-text">Java API + JNI + C++ Agent 引擎</text>
+  <text x="960" y="385" class="box-text">消息、工具调用、推理主循环</text>
+  <text x="960" y="410" class="box-text">内置 workspace/skills 资源</text>
+
+  <rect x="1330" y="280" rx="18" ry="18" width="220" height="180" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="2.5"/>
+  <text x="1360" y="330" class="box-title">C++ Native</text>
+  <text x="1360" y="360" class="box-text">icraw core</text>
+  <text x="1360" y="385" class="box-text">tool registry</text>
+  <text x="1360" y="410" class="box-text">llm provider</text>
+
+  <path d="M 380 280 L 470 230" class="edge"/>
+  <text x="400" y="230" class="edge-text">implementation</text>
+
+  <path d="M 380 295 L 470 470" class="edge"/>
+  <text x="400" y="390" class="edge-text">implementation</text>
+
+  <path d="M 380 535 L 470 510" class="edge"/>
+  <text x="400" y="500" class="edge-text">implementation</text>
+
+  <path d="M 810 500 L 930 380" class="edge"/>
+  <text x="825" y="445" class="edge-text">依赖核心能力</text>
+
+  <path d="M 810 230 L 930 330" class="edge"/>
+  <text x="820" y="295" class="edge-text">复用 Android Agent 层</text>
+
+  <path d="M 1270 370 L 1330 370" class="edge"/>
+  <text x="1278" y="350" class="edge-text">JNI</text>
+
+  <rect x="70" y="700" rx="12" ry="12" width="1480" height="140" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+  <text x="95" y="740" class="box-title">PPT 使用建议</text>
+  <text x="95" y="772" class="box-text">1) 优先插入本 SVG，缩放不失真；2) 如需二次编辑，可按同名模块拆分为动画逐步出现；</text>
+  <text x="95" y="800" class="box-text">3) 演讲顺序建议：app → agent-android → agent-core → C++ Native，再补充 screen-vision 与 benchmark。</text>
+</svg>
