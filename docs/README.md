@@ -11,6 +11,8 @@
 - [HybridObservation 字段详解](./architecture/hybrid-observation-reference.md)
 - [Me 页面 nativeViewXml / screenVision / hybridObservation 融合示例](./architecture/me-page-hybrid-observation-example.md)
 - [Agent 执行链路优化说明](./architecture/agent-execution-optimizations.md)
+- [Web DOM 与 Native XML 元素提取双轨设计方案](./architecture/web-dom-native-xml-ui-locator-design.md)
+- [Web UI 与 Native UI 元素提取汇聚方案（PPT）](./architecture/web-dom-native-xml-ui-locator-presentation.md)
 
 ## Guides
 
